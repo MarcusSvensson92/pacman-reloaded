@@ -82,15 +82,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer1.h" />
-    <ClInclude Include="Object3D.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Buffer1.cpp" />
-    <ClCompile Include="Object3D.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinApp.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
