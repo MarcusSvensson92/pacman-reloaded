@@ -47,12 +47,12 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Create</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>External\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -82,18 +82,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer1.h" />
     <ClInclude Include="d3dApp.h" />
-    <ClInclude Include="Object3D.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Buffer1.cpp" />
     <ClCompile Include="d3dApp.cpp" />
-    <ClCompile Include="Object3D.cpp" />
-    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="WinApp.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>

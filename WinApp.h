@@ -1,8 +1,7 @@
 #ifndef WINAPP_H
 #define WINAPP_H
 
-#include <Windows.h>
-#include <string>
+#include "stdafx.h"
 
 class WinApp
 {

@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "d3dApp.h"
 
 d3dApp::d3dApp(void)

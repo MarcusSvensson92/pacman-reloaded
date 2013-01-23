@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "WinApp.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
