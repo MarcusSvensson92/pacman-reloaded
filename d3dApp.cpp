@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "d3dApp.h"
 
 d3dApp::d3dApp(void)
@@ -41,8 +42,6 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 	swapChainDesc.BufferDesc.RefreshRate.Numerator			= 60;
 	swapChainDesc.BufferDesc.RefreshRate.Denominator		= 1;
 	swapChainDesc.BufferDesc.Format							= DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapChainDesc.BufferDesc.ScanlineOrdering				= DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	swapChainDesc.BufferDesc.Scaling						= DXGI_MODE_SCALING_UNSPECIFIED;
 	swapChainDesc.SampleDesc.Count							= 1;
 	swapChainDesc.SampleDesc.Quality						= 0;
 	swapChainDesc.BufferUsage								= DXGI_USAGE_RENDER_TARGET_OUTPUT;
