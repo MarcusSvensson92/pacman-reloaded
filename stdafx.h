@@ -16,4 +16,6 @@
 #include <string>
 #include <sstream>
 
+#define RELEASE(x) { if (x) { x->Release(); x = NULL; } }
+
 #endif
