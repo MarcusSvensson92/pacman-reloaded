@@ -1,6 +1,8 @@
 #ifndef _D3DAPP_H_
 #define _D3DAPP_H_
 
+#include "stdafx.h"
+
 class d3dApp
 {
 public:
