@@ -26,9 +26,9 @@ private:
 	ID3D11Device*			g_Device;
 	ID3D11DeviceContext*	g_DeviceContext;
 
-	D3DXMATRIX				wvp;
-	D3DXMATRIX				world;
-	D3DXMATRIX				iwvp;
+	D3DXMATRIX				g_World;
+	D3DXMATRIX				g_WVP;
+	D3DXMATRIX				g_iWorld;
 };
 
 #endif
