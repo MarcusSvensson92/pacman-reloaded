@@ -4,9 +4,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{c620db80-6496-4f42-a7f3-9f8f46badd75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3DObject">
-      <UniqueIdentifier>{384215af-a08c-4b2c-b7e8-b98a0b2e6167}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{6e5f9fc4-8440-4562-a61b-4bf2029e5407}</UniqueIdentifier>
     </Filter>
@@ -14,15 +11,6 @@
   <ItemGroup>
     <ClInclude Include="WinApp.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>3DObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Buffer1.h">
-      <Filter>3DObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3D.h">
-      <Filter>3DObject</Filter>
     </ClInclude>
     <ClInclude Include="d3dApp.h">
       <Filter>Core</Filter>
@@ -36,15 +24,6 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
-    <ClCompile Include="Buffer1.cpp">
-      <Filter>3DObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Object3D.cpp">
-      <Filter>3DObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>3DObject</Filter>
-    </ClCompile>
     <ClCompile Include="d3dApp.cpp">
       <Filter>Core</Filter>
     </ClCompile>
