@@ -2,6 +2,7 @@
 #define WINAPP_H
 
 #include "stdafx.h"
+#include "Timer.h"
 
 class WinApp
 {
@@ -27,6 +28,8 @@ private:
 	DWORD		m_style;
 	UINT		m_clientWidth;
 	UINT		m_clientHeight;
+
+	Timer m_timer;
 
 	// Add D3D-initializer here!
 };

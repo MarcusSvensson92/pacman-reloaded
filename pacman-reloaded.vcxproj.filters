@@ -18,6 +18,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -25,6 +28,9 @@
     </ClCompile>
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="d3dApp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -74,6 +74,8 @@ bool WinApp::init(int cmdShow)
 
 int WinApp::run(void)
 {
+	m_timer.reset();
+
 	MSG msg = {0};
 	while (msg.message != WM_QUIT)
 	{
@@ -84,6 +86,8 @@ int WinApp::run(void)
 		}
 		else
 		{
+			m_timer.tick();
+
 			// Add update- and render-stuff here!
 		}
 	}
@@ -94,6 +98,14 @@ LRESULT WinApp::wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
+	// Stop timer while resizing window
+	case WM_ENTERSIZEMOVE:
+		m_timer.stop();
+		break;
+	case WM_EXITSIZEMOVE:
+		m_timer.start();
+		break;
+
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
