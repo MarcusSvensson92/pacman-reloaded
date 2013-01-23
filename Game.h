@@ -4,11 +4,11 @@
 #include "stdafx.h"
 #include "d3dApp.h"
 
-class game
+class Game
 {
 public:
-	game(void);
-	~game(void);
+	Game(void);
+	~Game(void);
 
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(float dt);

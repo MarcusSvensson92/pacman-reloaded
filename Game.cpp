@@ -1,15 +1,15 @@
 #include "stdafx.h"
-#include "game.h"
+#include "Game.h"
 
-game::game(void)
+Game::Game(void)
 {
 }
-game::~game(void)
+Game::~Game(void)
 {
 	delete m_Graphics;
 }
 
-void game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
+void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
 {
 	// Initialize d3d graphic app
 	m_Graphics = new d3dApp();
@@ -19,13 +19,13 @@ void game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 }
 
-void game::Update(float dt)
+void Game::Update(float dt)
 {
 
 	// SPACE TO UPDATE STUFF
 
 }
-void game::Draw()
+void Game::Draw()
 {
 	m_Graphics->DrawBegin();
 
