@@ -21,6 +21,9 @@
     <ClInclude Include="Object3D.h">
       <Filter>3DObject</Filter>
     </ClInclude>
+    <ClInclude Include="d3dApp.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>3DObject</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dApp.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
