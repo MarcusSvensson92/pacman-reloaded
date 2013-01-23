@@ -10,7 +10,8 @@ public:
 	~d3dApp(void);
 
 	void Update(float dt);
-	void Draw();
+	void DrawBegin();
+	void DrawEnd();
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 
 private:

@@ -69,6 +69,9 @@ bool WinApp::init(int cmdShow)
 	ShowWindow(m_hWnd, cmdShow);
 	UpdateWindow(m_hWnd);
 
+	// Init D3D
+	m_game.Init(m_hInstance, m_hWnd, true, false, 1.0f, 0.0f); 
+
 	return true;
 }
 
@@ -89,6 +92,8 @@ int WinApp::run(void)
 			m_timer.tick();
 
 			// Add update- and render-stuff here!
+			m_game.Update(m_timer.getDeltaTime());
+			m_game.Draw();
 		}
 	}
 	return (int)msg.wParam;

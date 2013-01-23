@@ -100,14 +100,15 @@ void d3dApp::Update(float dt)
 	//D3DXMatrixInverse(&g_iWorld,&det,&g_World);
 	//D3DXMatrixTranspose(&g_iWorld, &g_iWorld);
 }
-void d3dApp::Draw()
+void d3dApp::DrawBegin()
 {
 	static float ClearColor[4] = { 0.5f, 0.7f, 1.0f, 1.0f };
 	g_DeviceContext->ClearRenderTargetView( g_RenderTargetView, ClearColor );	
 	g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	g_DeviceContext->ClearDepthStencilView( g_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );
-
-
+}
+void d3dApp::DrawEnd()
+{
 	g_SwapChain->Present( 0, 0 );
 }
 

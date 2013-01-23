@@ -83,12 +83,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="d3dApp.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="WinApp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="d3dApp.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="WinApp.cpp" />
     <ClCompile Include="WinMain.cpp" />

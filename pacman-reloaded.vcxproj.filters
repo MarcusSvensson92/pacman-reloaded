@@ -21,6 +21,7 @@
     <ClInclude Include="Timer.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -33,5 +34,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="game.cpp" />
   </ItemGroup>
 </Project>

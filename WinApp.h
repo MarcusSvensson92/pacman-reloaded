@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "Timer.h"
+#include "game.h"
 
 class WinApp
 {
@@ -32,6 +33,7 @@ private:
 	Timer m_timer;
 
 	// Add D3D-initializer here!
+	game m_game;
 };
 
 #endif
