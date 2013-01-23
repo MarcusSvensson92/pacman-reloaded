@@ -14,8 +14,9 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 
 private:
+	void SetDriverType();
 	void SetRenderTargetView();
-	void SetDepthStencil(float, float);
+	void SetDepthStencil(int, int);
 	void SetViewPort(float, float, float, float);
 
 	IDXGISwapChain*         g_SwapChain;
