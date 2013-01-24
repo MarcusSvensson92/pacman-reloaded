@@ -33,7 +33,7 @@ private:
 	Timer m_timer;
 
 	// Add D3D-initializer here!
-	game m_game;
+	Game m_game;
 };
 
 #endif
