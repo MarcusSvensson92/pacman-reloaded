@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "WinApp.h"
 
-// Test from other computer
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 				   PSTR pCmdLine, int nCmdShow)
 {
