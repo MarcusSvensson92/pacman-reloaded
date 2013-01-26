@@ -5,10 +5,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pacman-reloaded", "pacman-r
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug - Create PCH|Win32 = Debug - Create PCH|Win32
 		Debug|Win32 = Debug|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{028FC72E-0402-4E58-8240-A55C1A7AB43F}.Debug - Create PCH|Win32.ActiveCfg = Debug - Create PCH|Win32
+		{028FC72E-0402-4E58-8240-A55C1A7AB43F}.Debug - Create PCH|Win32.Build.0 = Debug - Create PCH|Win32
 		{028FC72E-0402-4E58-8240-A55C1A7AB43F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{028FC72E-0402-4E58-8240-A55C1A7AB43F}.Debug|Win32.Build.0 = Debug|Win32
 		{028FC72E-0402-4E58-8240-A55C1A7AB43F}.Release|Win32.ActiveCfg = Release|Win32
