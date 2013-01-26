@@ -14,6 +14,8 @@ public:
 	void DrawEnd();
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 
+	ID3D11Device*			getDevice();
+	ID3D11DeviceContext*	getDeviceContext();
 private:
 	void SetDriverType();
 	void SetRenderTargetView();
