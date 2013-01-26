@@ -7,6 +7,12 @@
     <Filter Include="Resource Files">
       <UniqueIdentifier>{6e5f9fc4-8440-4562-a61b-4bf2029e5407}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{675bed0e-71a5-4927-882c-2ccdf3f356a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FX">
+      <UniqueIdentifier>{a8fd872d-fcf0-414f-8fb7-771c71c964d0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -22,6 +28,18 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Buffere.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj3D.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -35,5 +53,28 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Buffere.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj3D.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FX\Basic.fx">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\Lights.fx">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\RenderStates.fx">
+      <Filter>FX</Filter>
+    </None>
   </ItemGroup>
 </Project>
