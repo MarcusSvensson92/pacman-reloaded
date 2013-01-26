@@ -13,22 +13,18 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 {
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
-	// SPACE TO INIT OTHER STUFF
-
+	test = Obj3D(g_Device,g_DeviceContext,D3DXVECTOR3(0,0,0), D3DXVECTOR3(1,1,1));
 }
 
 void Game::Update(float dt)
 {
 	d3dApp::Update(dt);
-
-	// SPACE TO UPDATE STUFF
-
 }
 void Game::Draw()
 {
 	DrawBegin();
 	
-	// SPACE TO DRAW STUFF
+	test.Draw(g_DeviceContext, mCamera);
 
 	DrawEnd();
 }

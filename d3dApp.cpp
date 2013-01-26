@@ -8,12 +8,8 @@ d3dApp::~d3dApp(void)
 {
 }
 
-Obj3D test;
-
 void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
 {
-	mCamera = Camera();
-
 	// hresult for bugtesting
 	HRESULT hr; 
 
@@ -99,8 +95,6 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 void d3dApp::InitMouse( int screenWidth, int screenHeight )
 {
 	mCamera.SetLens(0.45f*D3DX_PI, screenWidth / screenHeight, 1.0f, 1000.0f);
-
-	test = Obj3D(g_Device,g_DeviceContext,D3DXVECTOR3(0,0,0), D3DXVECTOR3(1,1,1));
 
 	mCamera.LookAt(D3DXVECTOR3(0, 0,-5), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0));
 	SetCursorPos(600,500);
@@ -195,23 +189,11 @@ void d3dApp::SetViewPort(float width, float height, float screenDepth, float scr
 	g_DeviceContext->RSSetViewports( 1, &vp );
 }
 
-void d3dApp::Render()
-{
-
-	DrawBegin();
-
-	test.Draw(g_DeviceContext,mCamera);
-
-	DrawEnd();
-
-}
-
 void d3dApp::OnMouseMove()
 {
 	GetCursorPos(&mMousePos);
 	float dx = D3DX_PI/180*0.25f*(mMousePos.x - mLastMousePos.x);
 	float dy = D3DX_PI/180*0.25f*(mMousePos.y - mLastMousePos.y);
-
 
 	mCamRotY += dx;
 
@@ -235,5 +217,8 @@ void d3dApp::Keyboards()
 		mCamera.Strafe(-0.5f,0.001f);
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(0.5f, -0.001f);
+
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		PostQuitMessage(0);
 }
 
