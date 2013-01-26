@@ -33,7 +33,7 @@ PSSceneIn VSScene(VSIn input)
 {
 	PSSceneIn output = (PSSceneIn)1;
 
-	output.posW = input.Pos;//mul(float4(input.Pos,1.0f),gWorld);
+	output.posW = mul(float4(input.Pos,1.0f),gWorld);
 	output.normalW = mul(float4(input.Normal,0.0f),gWVP);
 	output.Pos = mul(float4(input.Pos, 1), gWVP);
 
@@ -66,7 +66,8 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	lightColor = CalcPointLight(sfi,gLight,gEyePos) + CalcDirectionalLight(sfi,input.normalW, gEyePos);
 
-	return float4(lightColor,color.a);
+	return float4(1,1,1,1);
+	//return float4(lightColor,color.a);
 }
 
 

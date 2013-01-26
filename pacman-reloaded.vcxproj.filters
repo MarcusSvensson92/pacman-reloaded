@@ -10,8 +10,11 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{675bed0e-71a5-4927-882c-2ccdf3f356a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FX">
-      <UniqueIdentifier>{a8fd872d-fcf0-414f-8fb7-771c71c964d0}</UniqueIdentifier>
+    <Filter Include="Resource Files\Content">
+      <UniqueIdentifier>{740c085e-bba9-49d0-a730-3563446b1e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Shaders">
+      <UniqueIdentifier>{92b8c40d-da28-467b-9ca4-8671301de163}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -27,7 +30,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Buffere.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -40,19 +42,23 @@
     <ClInclude Include="Camera.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Candy.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="d3dApp.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Buffere.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -65,16 +71,25 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Candy.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FX\Basic.fx">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\Lights.fx">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\RenderStates.fx">
-      <Filter>FX</Filter>
-    </None>
+    <CustomBuild Include="Content\Shaders\Lights.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Basic.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\RenderStates.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

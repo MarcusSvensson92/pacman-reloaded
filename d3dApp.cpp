@@ -8,8 +8,12 @@ d3dApp::~d3dApp(void)
 {
 }
 
+Obj3D test;
+
 void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
 {
+	mCamera = Camera();
+
 	// hresult for bugtesting
 	HRESULT hr; 
 
@@ -87,14 +91,33 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 	SetDepthStencil(screenWidth, screenHeight);
 	// Setup the viewport
 	SetViewPort((float)screenWidth, (float)screenHeight, screenDepth, screenNear);
+
+	InitMouse(screenWidth, screenHeight);
+
 }
+
+void d3dApp::InitMouse( int screenWidth, int screenHeight )
+{
+	mCamera.SetLens(0.45f*D3DX_PI, screenWidth / screenHeight, 1.0f, 1000.0f);
+
+	test = Obj3D(g_Device,g_DeviceContext,D3DXVECTOR3(0,0,0), D3DXVECTOR3(1,1,1));
+
+	mCamera.LookAt(D3DXVECTOR3(0, 0,-5), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0));
+	SetCursorPos(600,500);
+	GetCursorPos(&mLastMousePos);
+
+	mCamRotP = 0;
+	mCamRotY = 0;
+}
+
 
 void d3dApp::Update(float dt)
 {
 	// calculate WVP matrix
-	D3DXMatrixIdentity(&g_World);
-	g_WVP = g_World;// * m_cam.getView() * m_cam.getProj();
-
+	//D3DXMatrixIdentity(&g_World);
+	//g_WVP = g_World;// * m_cam.getView() * m_cam.getProj();
+ 	OnMouseMove();
+ 	Keyboards();
 	// calculate iWVP matrix
 	//float det = D3DXMatrixDeterminant(&g_World);
 	//D3DXMatrixInverse(&g_iWorld,&det,&g_World);
@@ -104,12 +127,12 @@ void d3dApp::DrawBegin()
 {
 	static float ClearColor[4] = { 0.5f, 0.7f, 1.0f, 1.0f };
 	g_DeviceContext->ClearRenderTargetView( g_RenderTargetView, ClearColor );	
-	g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 	g_DeviceContext->ClearDepthStencilView( g_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );
 }
 void d3dApp::DrawEnd()
 {
-	g_SwapChain->Present( 0, 0 );
+	g_SwapChain->Present( 1, 0 );
 }
 
 void d3dApp::SetRenderTargetView()
@@ -171,3 +194,46 @@ void d3dApp::SetViewPort(float width, float height, float screenDepth, float scr
 	vp.TopLeftY = 0;
 	g_DeviceContext->RSSetViewports( 1, &vp );
 }
+
+void d3dApp::Render()
+{
+
+	DrawBegin();
+
+	test.Draw(g_DeviceContext,mCamera);
+
+	DrawEnd();
+
+}
+
+void d3dApp::OnMouseMove()
+{
+	GetCursorPos(&mMousePos);
+	float dx = D3DX_PI/180*0.25f*(mMousePos.x - mLastMousePos.x);
+	float dy = D3DX_PI/180*0.25f*(mMousePos.y - mLastMousePos.y);
+
+
+	mCamRotY += dx;
+
+	mCamRotP += dy;
+	mCamera.Pitch(mCamRotP);
+	mCamera.RotateY(mCamRotY);
+	
+	mCamera.UpdateMatrix();
+
+	SetCursorPos(600, 500);
+	mLastMousePos = mMousePos;
+}
+
+void d3dApp::Keyboards()
+{
+	if (GetAsyncKeyState('W') & 0x8000)
+		mCamera.Walk(0.5f);
+	if (GetAsyncKeyState('S') & 0x8000)
+		mCamera.Walk(-0.5f);
+	if (GetAsyncKeyState('A') & 0x8000)
+		mCamera.Strafe(-0.5f,0.001f);
+	if (GetAsyncKeyState('D') & 0x8000)
+		mCamera.Strafe(0.5f, -0.001f);
+}
+

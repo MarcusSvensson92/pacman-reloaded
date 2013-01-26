@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "Obj3D.h"
 
-
 Obj3D::Obj3D(void)
 {
 }
-
 
 Obj3D::~Obj3D(void)
 {
@@ -15,17 +13,23 @@ Obj3D::Obj3D(ID3D11Device* device,ID3D11DeviceContext* deviceContext,D3DXVECTOR3
 {
 	mScale = scale;
 	mWorldPos = pos;
+	mRotation = D3DXVECTOR3(0,0,0);
 
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
 
 	mModelPath = "default";
-	mShaderPath = "../Shaders/Obj3D.fx";
+	mShaderPath = "Content/Shaders/Basic.fx";
+	mTexturePath = "Content/Img/white.png";
+
+	mShader = new Shader();
 
 	InitGFX(device,deviceContext);
 
+	LoadModel(mModelPath);
+
 	InitBuffers(device);
 
-	mShader = new Shader();
+	
 
 }
 
@@ -95,6 +99,9 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	//calculate WVP matrix
 	D3DXMATRIX world, wvp, worldInv, worldInvTranspose,rotation,translation,scaling;
 	D3DXMatrixIdentity(&world);
+	D3DXMatrixIdentity(&rotation);
+	D3DXMatrixIdentity(&translation);
+	D3DXMatrixIdentity(&scaling);
 
 	D3DXMatrixScaling(&scaling,mScale.x,mScale.y,mScale.z);
 
@@ -102,7 +109,7 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	D3DXMatrixRotationY(&rotation, mRotation.y);
 	D3DXMatrixRotationZ(&rotation, mRotation.z);
 
-	D3DXMatrixTranslation(&translation,mWorldPos.x,mWorldPos.y,mWorldPos.z);
+ 	D3DXMatrixTranslation(&translation,mWorldPos.x,mWorldPos.y,mWorldPos.z);
 
 	world = scaling*rotation*translation;
 
@@ -128,4 +135,34 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	mShader->Apply(0);
 	g_DeviceContext->Draw(mMesh.size(),0);
 	
+}
+
+void Obj3D::LoadModel(const std::string& filename )
+{
+	if(filename == "default")
+	{
+			Vertex vx;
+
+			vx.pos = D3DXVECTOR3(1,1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(1,1);
+			mMesh.push_back(vx);
+
+			vx.pos = D3DXVECTOR3(-1,-1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(0,0);
+			mMesh.push_back(vx);
+		
+			vx.pos = D3DXVECTOR3(2,-1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(0,1);
+			mMesh.push_back(vx);
+	}
+
 }

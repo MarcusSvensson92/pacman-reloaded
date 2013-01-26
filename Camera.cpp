@@ -128,24 +128,13 @@ D3DXMATRIX Camera::ViewProj() const
 	return mView*mProj;
 }
 
-void Camera::Strafe( float d ,bool jet,float angle)
+void Camera::Strafe( float d,float angle)
 {
-	if(!jet)
 	mPosition += d*mRight;
-	else
-	{
-		D3DXMATRIX R;
-		D3DXMatrixRotationAxis(&R, &mUp, -angle);
-		D3DXVec3TransformNormal(&mLook, &mLook, &R);
-		D3DXVec3TransformNormal(&mRight, &mRight, &R);
-	}
 }
 
-void Camera::Walk( float d,bool jet )
+void Camera::Walk( float d)
 {
-	//jet = true;
-
-	//if(jet)
 	mPosition += d*mLook;
 	//else
 	//	mPosition += D3DXVECTOR3(d*mLook.x,0,d*mLook.z);

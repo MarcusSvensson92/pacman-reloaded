@@ -28,7 +28,7 @@ private:
 
 	void InitBuffers( ID3D11Device* device );
 
-	//void ReadModelInfo(const std::string& filename);
+	void LoadModel(const std::string& filename);
 
 	void InitGFX(ID3D11Device* device,ID3D11DeviceContext* deviceContext);
 

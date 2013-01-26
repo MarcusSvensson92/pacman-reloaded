@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="Buffere.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Candy.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Obj3D.h" />
@@ -128,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Buffere.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Candy.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Obj3D.cpp" />
@@ -139,9 +141,21 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FX\Basic.fx" />
-    <None Include="FX\Lights.fx" />
-    <None Include="FX\RenderStates.fx" />
+    <CustomBuild Include="Content\Shaders\Basic.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(DXSDK_DIR)Utilities\bin\x86\"fxc.exe  /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(filename).fxo</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Lights.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(DXSDK_DIR)Utilities\bin\x86\"fxc.exe  /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(filename).fxo</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\RenderStates.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(DXSDK_DIR)Utilities\bin\x86\"fxc.exe  /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(filename).fxo</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -93,7 +93,7 @@ int WinApp::run(void)
 
 			// Add update- and render-stuff here!
 			m_game.Update((float)m_timer.getDeltaTime());
-			m_game.Draw();
+			m_game.Render();
 		}
 	}
 	return (int)msg.wParam;

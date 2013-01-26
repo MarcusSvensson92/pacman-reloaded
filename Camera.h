@@ -34,8 +34,8 @@ public:
 	D3DXMATRIX Proj() const;
 	D3DXMATRIX ViewProj() const;
 
-	void Strafe(float d,bool jet,float angle);
-	void Walk(float d,bool jet);
+	void Strafe(float d,float angle);
+	void Walk(float d);
 
 	void Pitch(float angle);
 	void RotateY(float angle);
