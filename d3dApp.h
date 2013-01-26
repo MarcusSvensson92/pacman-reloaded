@@ -9,13 +9,15 @@ public:
 	d3dApp(void);
 	~d3dApp(void);
 
-	void Update(float dt);
+	virtual void Init(HINSTANCE, HWND, bool, bool, float, float);
+	virtual void Update(float dt);
+	virtual void Draw() = 0;
+protected:
 	void DrawBegin();
 	void DrawEnd();
-	void Init(HINSTANCE, HWND, bool, bool, float, float);
 
-	ID3D11Device*			getDevice();
-	ID3D11DeviceContext*	getDeviceContext();
+	ID3D11Device*		 g_Device;
+	ID3D11DeviceContext* g_DeviceContext;
 private:
 	void SetDriverType();
 	void SetRenderTargetView();
@@ -26,8 +28,6 @@ private:
 	ID3D11RenderTargetView* g_RenderTargetView;
 	ID3D11Texture2D*        g_DepthStencil;
 	ID3D11DepthStencilView* g_DepthStencilView;
-	ID3D11Device*			g_Device;
-	ID3D11DeviceContext*	g_DeviceContext;
 
 	D3DXMATRIX				g_World;
 	D3DXMATRIX				g_WVP;

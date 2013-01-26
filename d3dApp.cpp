@@ -112,15 +112,6 @@ void d3dApp::DrawEnd()
 	g_SwapChain->Present( 0, 0 );
 }
 
-ID3D11Device* d3dApp::getDevice()
-{
-	return g_Device;
-}
-ID3D11DeviceContext* d3dApp::getDeviceContext()
-{
-	return g_DeviceContext;
-}
-
 void d3dApp::SetRenderTargetView()
 {
 	// hresult for bugtesting
