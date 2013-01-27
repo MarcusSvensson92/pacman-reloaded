@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Buffer.h"
 
 class Obj3D
 {
@@ -17,20 +18,20 @@ class Obj3D
 
 public:
 	Obj3D(void);
-	Obj3D(ID3D11Device* device,ID3D11DeviceContext* g_DeviceContext,D3DXVECTOR3 pos, D3DXVECTOR3 scale);
+	Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	~Obj3D(void);
 
 	void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
 
-	void Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera);
+	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 
 private:
 
-	void InitBuffers( ID3D11Device* device );
+	void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
 
 	void LoadModel(const std::string& filename);
 
-	void InitGFX(ID3D11Device* device,ID3D11DeviceContext* deviceContext);
+	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 	std::string 
 		mModelPath,
@@ -41,8 +42,7 @@ private:
 
 	D3DXVECTOR3 mPosition;
 	std::vector<Vertex> mMesh;
-	ID3D11Buffer* mVB;
-	ID3D11Buffer* mIB;
+
 
 	D3DXMATRIX mTexTransform;
 
@@ -51,6 +51,7 @@ private:
 	D3DXVECTOR3 mRotation;
 
 	Shader* mShader;
+	Buffer* mVBuffer;
 
 	std::vector<std::string> mModelInfo;
 };

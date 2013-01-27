@@ -9,7 +9,7 @@ Obj3D::~Obj3D(void)
 {
 }
 
-Obj3D::Obj3D(ID3D11Device* device,ID3D11DeviceContext* deviceContext,D3DXVECTOR3 pos, D3DXVECTOR3 scale)
+Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
 	mScale = scale;
 	mWorldPos = pos;
@@ -27,13 +27,10 @@ Obj3D::Obj3D(ID3D11Device* device,ID3D11DeviceContext* deviceContext,D3DXVECTOR3
 
 	LoadModel(mModelPath);
 
-	InitBuffers(device);
-
-	
-
+	InitBuffers(device, deviceContext);
 }
 
-void Obj3D::InitGFX(ID3D11Device* device,ID3D11DeviceContext* deviceContext)
+void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -78,19 +75,20 @@ void Obj3D::Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view)
 	//deviceContext->Unmap(mVB, 0);
 }
 
-void Obj3D::InitBuffers( ID3D11Device* device )
+void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext )
 {
-	// VertexBuffer
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_DYNAMIC;
-	vbd.ByteWidth = sizeof(Vertex) * mMesh.size();
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	vbd.MiscFlags = 0;
-	vbd.StructureByteStride = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &mMesh[0];
-	device->CreateBuffer(&vbd, &vinitData, &mVB);
+	BUFFER_INIT_DESC vbd;
+	vbd.ElementSize = sizeof(Vertex);
+	vbd.InitData = &mMesh[0];
+	vbd.NumElements = mMesh.size();
+	vbd.Type = VERTEX_BUFFER;
+	vbd.Usage = BUFFER_CPU_WRITE;
+
+	mVBuffer = new Buffer();
+	if(FAILED(mVBuffer->Init(device, deviceContext, vbd)))
+	{
+		MessageBox(0, "Failed to initialize vertex buffer in Obj3D.cpp", "Fail!", 0);
+	}
 }
 
 void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
@@ -126,9 +124,9 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	//mShader->SetRawData("gLight",&light,sizeof(PointLight));
 
 	g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	UINT stride = sizeof(Vertex);
-	UINT offset = 0;
-	g_DeviceContext->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
+
+	mVBuffer->Apply();
+
 	mShader->SetMatrix("gTextureTransform", mTexTransform);
 
 	mShader->SetResource("mTexture", mTexture);
@@ -164,5 +162,4 @@ void Obj3D::LoadModel(const std::string& filename )
 			vx.Tex = D3DXVECTOR2(0,1);
 			mMesh.push_back(vx);
 	}
-
 }

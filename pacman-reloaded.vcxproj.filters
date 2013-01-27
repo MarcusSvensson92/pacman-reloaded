@@ -30,9 +30,6 @@
     <ClInclude Include="Timer.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Buffere.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Obj3D.h">
       <Filter>Objects</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
     <ClInclude Include="Candy.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -58,9 +58,6 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Buffere.cpp">
-      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Obj3D.cpp">
       <Filter>Objects</Filter>
@@ -78,6 +75,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Candy.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,8 +2,8 @@
 #define _GAME_H_
 
 #include "d3dApp.h"
-#include "Obj3D.h"
 #include "Camera.h"
+#include "Candy.h"
 
 class Game : public d3dApp
 {
