@@ -37,7 +37,7 @@ PSSceneIn VSScene(VSIn input)
 	output.normalW = mul(float4(input.Normal,0.0f),gWVP);
 	output.Pos = mul(float4(input.Pos, 1), gWVP);
 
-	output.Tex = mul(float4(input.Tex.x,-input.Tex.y, 0.0f, 1.0f), gTextureTransform);
+	output.Tex = mul(float4(input.Tex.x,input.Tex.y, 0.0f, 1.0f), gTextureTransform);
 
 
 	output.spec = input.spec;
@@ -66,7 +66,7 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	lightColor = CalcPointLight(sfi,gLight,gEyePos) + CalcDirectionalLight(sfi,input.normalW, gEyePos);
 
-	return float4(1,1,1,1);
+	return color;
 	//return float4(lightColor,color.a);
 }
 

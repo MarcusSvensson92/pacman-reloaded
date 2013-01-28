@@ -29,7 +29,7 @@ public:
 	Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	~Obj3D(void);
 
-	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
+	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
 
 	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);

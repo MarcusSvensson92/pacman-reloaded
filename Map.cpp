@@ -21,7 +21,7 @@ std::vector<MapOutput> Map::Init(ID3D11Device* device, ID3D11DeviceContext* devi
 	// Create Mesh
 	mMesh = CreateMesh(ColorMap, width, height);
 
-	Obj3D::Init(device,deviceContext,D3DXVECTOR3(0,0,0),D3DXVECTOR3(1,1,1));
+	Obj3D::Init(device,deviceContext,"Content/Img/mazetexture.png",D3DXVECTOR3(0,0,0),D3DXVECTOR3(1,1,1));
 	return output;
 }
 
@@ -53,19 +53,19 @@ std::vector<Vertex> Map::CreateMesh(std::vector<int> ColorMap, int width, int he
 		if ( ColorMap[i] != 0 )
 		{
 			//Create floor
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.50f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.50f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), -(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.50f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			//Create ceiling
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1,0), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.00f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1,	0.00f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z-(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1, 0.00f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x-(size*0.5), +(size*0.5), z+(size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1, 0.25f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 		}
 
 		// Keeping track of position

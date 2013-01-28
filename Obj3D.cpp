@@ -30,7 +30,7 @@ Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTO
 	InitBuffers(device, deviceContext);
 }
 
-void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
+void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
 	mScale = scale;
 	mWorldPos = pos;
@@ -39,7 +39,7 @@ void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXV
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
 
 	mShaderPath = "Content/Shaders/Basic.fx";
-	mTexturePath = "Content/Img/white.png";
+	mTexturePath = texture;
 
 	mShader = new Shader();
 
