@@ -14,6 +14,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
 	test = Candy(g_Device,g_DeviceContext,D3DXVECTOR3(0,0,0), D3DXVECTOR3(1,1,1));
+
+	m_map.Init(g_Device, g_DeviceContext, "map.RAW", 28, 31);
 }
 
 void Game::Update(float dt)
@@ -25,6 +27,7 @@ void Game::Draw()
 	DrawBegin();
 	
 	test.Draw(g_DeviceContext, mCamera);
+	m_map.Draw(g_DeviceContext, mCamera);
 
 	DrawEnd();
 }

@@ -48,6 +48,7 @@
     <ClInclude Include="Buffer.h">
       <Filter>Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -80,6 +81,7 @@
     <ClCompile Include="Buffer.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">

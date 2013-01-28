@@ -121,6 +121,7 @@
     <ClInclude Include="Candy.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Candy.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Obj3D.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Timer.cpp" />

@@ -4,6 +4,7 @@
 #include "d3dApp.h"
 #include "Camera.h"
 #include "Candy.h"
+#include "Map.h"
 
 class Game : public d3dApp
 {
@@ -16,6 +17,7 @@ public:
 	void Draw();
 private:
 	Obj3D test;
+	Map m_map;
 };
 
 #endif

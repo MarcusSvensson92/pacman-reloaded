@@ -30,6 +30,24 @@ Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTO
 	InitBuffers(device, deviceContext);
 }
 
+void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
+{
+	mScale = scale;
+	mWorldPos = pos;
+	mRotation = D3DXVECTOR3(0,0,0);
+
+	D3DXMatrixScaling(&mTexTransform, 1,1,1);
+
+	mShaderPath = "Content/Shaders/Basic.fx";
+	mTexturePath = "Content/Img/white.png";
+
+	mShader = new Shader();
+
+	InitGFX(device,deviceContext);
+
+	InitBuffers(device, deviceContext);
+}
+
 void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
 	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
