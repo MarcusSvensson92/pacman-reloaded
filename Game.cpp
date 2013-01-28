@@ -26,7 +26,7 @@ void Game::Draw()
 {
 	DrawBegin();
 	
-	test.Draw(g_DeviceContext, mCamera);
+	//test.Draw(g_DeviceContext, mCamera);
 	m_map.Draw(g_DeviceContext, mCamera);
 
 	DrawEnd();
