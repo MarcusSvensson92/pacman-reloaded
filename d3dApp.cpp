@@ -94,7 +94,7 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 
 void d3dApp::InitCamera( int screenWidth, int screenHeight )
 {
-	mCamera.SetLens(0.45f*D3DX_PI, (float)screenWidth / (float)screenHeight, 1.0f, 1000.0f);
+	mCamera.SetLens(0.25f*D3DX_PI, (float)screenWidth / (float)screenHeight, 1.0f, 1000.0f);
 
 	mCamera.LookAt(D3DXVECTOR3(0, 0,-5), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0));
 	SetCursorPos(600,500);
