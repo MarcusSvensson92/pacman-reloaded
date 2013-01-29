@@ -94,4 +94,12 @@
       <Filter>Resource Files\Content\Shaders</Filter>
     </CustomBuild>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shaders\Lightning.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\Billboard.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </None>
+  </ItemGroup>
 </Project>
