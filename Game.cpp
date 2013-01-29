@@ -58,7 +58,7 @@ void Game::Draw()
 
 void Game::CameraFollowPlayer()
 {
-	mCamera.SetPosition(mPlayer.GetPosition());
+	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0,1.5f,0));
 
 
 	if (GetAsyncKeyState('W') & 0x8000)
