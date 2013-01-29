@@ -13,9 +13,19 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 {
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
-	test = Candy(g_Device,g_DeviceContext,D3DXVECTOR3(0,0,0), D3DXVECTOR3(1,1,1));
+	// Init Map and fetch ObjectSpawnList
+	std::vector<MapOutput> ObjectSpawnList;
+	ObjectSpawnList = m_map.Init(g_Device, g_DeviceContext, "map.RAW", 28, 31);
 
-	m_map.Init(g_Device, g_DeviceContext, "map.RAW", 28, 31);
+	// Loop to spawn Objects
+	for (int i = 0; i < ObjectSpawnList.size(); i++) 
+	{
+		if ( ObjectSpawnList[i].Type = CANDY)
+		{
+			ObjListTest.push_back(Candy(g_Device,g_DeviceContext,ObjectSpawnList[i].Node->Position, D3DXVECTOR3(1,1,1)));
+		}
+	}
+	
 }
 
 void Game::Update(float dt)
@@ -25,8 +35,12 @@ void Game::Update(float dt)
 void Game::Draw()
 {
 	DrawBegin();
-	
-	//test.Draw(g_DeviceContext, mCamera);
+
+	// Loop to draw Objects
+	for (int i = 0; i < ObjListTest.size(); i++) 
+	{
+		ObjListTest[i].Draw(g_DeviceContext, mCamera);
+	}
 	m_map.Draw(g_DeviceContext, mCamera);
 
 	DrawEnd();

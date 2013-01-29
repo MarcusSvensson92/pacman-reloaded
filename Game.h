@@ -16,7 +16,7 @@ public:
 	void Update(float dt);
 	void Draw();
 private:
-	Obj3D test;
+	std::vector<Obj3D> ObjListTest;
 	Map m_map;
 };
 
