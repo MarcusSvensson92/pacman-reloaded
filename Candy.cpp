@@ -19,7 +19,7 @@ void Candy::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	D3DXMatrixScaling(&scaling,mScale.x,mScale.y,mScale.z);
 
 	// Calculate the rotation that needs to be applied to the billboard model to face the current camera position using the arc tangent function.
-	float angle = atan2(mPosition.x - camera.GetPosition().x, mPosition.z - camera.GetPosition().z) * (180.0 / D3DX_PI);
+	float angle = atan2(camera.GetPosition().x - mPosition.x, camera.GetPosition().z - mPosition.z) * (180.0 / D3DX_PI);
 
 	// Convert rotation into radians.
 	float rot = (float)angle * 0.0174532925f;
