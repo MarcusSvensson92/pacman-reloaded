@@ -73,7 +73,7 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 	for (int i = 0; i < 4; i++)
 	{
 		output.positionH = mul(float4(positions[i], 1.f), gViewProj);
-		output.normalW	 = look;
+		output.normalW	 = -look;
 		output.tex0		 = gTexCoords[i];
 		stream.Append(output);
 	}

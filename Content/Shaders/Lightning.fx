@@ -18,9 +18,9 @@ struct Material
 	float4 specular;
 };
 
-float4 CalculatePointLight(PointLight light, Material material,
-						   float3 position, float3 normal,
-						   float3 toCamera, float4 color)
+float4 CalcPointLight(PointLight light, Material material,
+					  float3 position, float3 normal,
+					  float3 toCamera, float4 color)
 {
 	float4 litColor = float4(0.f, 0.f, 0.f, 0.f);
 
