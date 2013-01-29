@@ -73,24 +73,66 @@ void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 
 void Obj3D::Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view)
 {
-	//D3D11_MAPPED_SUBRESOURCE mappedResource;
-	//Vertex* verticesPtr;
+	// 	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	// 	Vertex* verticesPtr;
+	// 
+	// 	mMesh.clear();
+	// 
+	// 	D3DXVECTOR3 rightVect;
+	// 	D3DXVECTOR3 tempV = D3DXVECTOR3(view._11, view._21, view._31);
+	// 	D3DXVec3Normalize(&rightVect, &tempV);
+	// 	rightVect *= mScale.x;
+	// 
+	// 	D3DXVECTOR3 upVect;
+	// 	tempV = D3DXVECTOR3(view._12, view._22, view._32);
+	// 	D3DXVec3Normalize(&upVect, &tempV);
+	// 	upVect *= mScale.y;
+	// 
+	// 	Vertex temp;
+	// 	D3DXVec3Cross(&temp.normal,&rightVect,&upVect);
+	// 	temp.diff	= mDiffuse;
+	// 	temp.spec	= mSpecular;
 
-	//mMesh.Vertices.clear();
 
-	//for(int i = 0; i < mParticles.size(); i ++)
-	//{
-	//	mParticles[i].Update(timeSinceLastUpdate);
-	//}
-
-	//if(FAILED(deviceContext->Map(mVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-	//{
-	//	return;
-	//}
-
-	//verticesPtr = (Vertex*)mappedResource.pData;
-	//memcpy(verticesPtr, &mMesh.Vertices[0], sizeof(Vertex)*mMesh.Vertices.size());
-	//deviceContext->Unmap(mVB, 0);
+	// 	temp.pos = mPosition;
+	// 	temp.pos -= upVect;
+	// 	temp.Tex = D3DXVECTOR2(0,1);
+	// 	mMesh.push_back(temp);
+	// 
+	// 	temp.pos =  mPosition;
+	// 	temp.pos -= upVect;
+	// 	temp.Tex = D3DXVECTOR2(1,1);
+	// 	mMesh.push_back(temp);
+	// 
+	// 	temp.pos =  mPosition;
+	// 	temp.pos += rightVect;
+	// 	temp.Tex = D3DXVECTOR2(0,0);
+	// 	mMesh.push_back(temp);
+	// 
+	// 	temp.pos =  mPosition;
+	// 	temp.pos += rightVect;
+	// 	temp.Tex = D3DXVECTOR2(0,0);
+	// 	mMesh.push_back(temp);
+	// 
+	// 	temp.pos = mPosition;
+	// 	temp.pos -= upVect;
+	// 	temp.Tex = D3DXVECTOR2(1,1);
+	// 	mMesh.push_back(temp);
+	// 
+	// 	temp.pos = mPosition;
+	// 	temp.pos += upVect;
+	// 	temp.Tex = D3DXVECTOR2(1,0);
+	// 	mMesh.push_back(temp);
+	// 	
+	// 
+	// 	if(FAILED(deviceContext->Map(mVBuffer->GetBufferPointer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+	// 	{
+	// 		return;
+	// 	}
+	// 
+	// 	verticesPtr = (Vertex*)mappedResource.pData;
+	// 	memcpy(verticesPtr, &mMesh[0], sizeof(Vertex)*mMesh.size());
+	// 	deviceContext->Unmap(mVBuffer->GetBufferPointer(), 0);
 }
 
 void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext )
@@ -121,9 +163,21 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 
 	D3DXMatrixScaling(&scaling,mScale.x,mScale.y,mScale.z);
 
-	D3DXMatrixRotationX(&rotation, mRotation.x);
-	D3DXMatrixRotationY(&rotation, mRotation.y);
-	D3DXMatrixRotationZ(&rotation, mRotation.z);
+// 	D3DXMatrixRotationX(&rotation, mRotation.x);
+// 	D3DXMatrixRotationY(&rotation, mRotation.y);
+// 	D3DXMatrixRotationZ(&rotation, mRotation.z);
+
+// 		V.a V.e V.i x
+// 		V.b V.f V.j y
+// 		V.c V.g V.k z
+// 		0   0   0   1
+
+//	D3DXMATRIX view = camera.View();
+
+// 	rotation = D3DXMATRIX(	view._11,view._21,view._31,mPosition.x,
+// 							view._12,view._22,view._32,mPosition.y,
+// 							view._13,view._23,view._33,mPosition.z,
+// 							0,0,0,1);
 
  	D3DXMatrixTranslation(&translation,mWorldPos.x,mWorldPos.y,mWorldPos.z);
 
@@ -159,11 +213,25 @@ void Obj3D::LoadModel(const std::string& filename )
 	{
 			Vertex vx;
 
+			vx.pos = D3DXVECTOR3(-1,-1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(0,0);
+			mMesh.push_back(vx);
+
 			vx.pos = D3DXVECTOR3(1,1,0);
 			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
 			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
 			vx.normal = D3DXVECTOR3(0,0,-1);
 			vx.Tex = D3DXVECTOR2(1,1);
+			mMesh.push_back(vx);
+		
+			vx.pos = D3DXVECTOR3(-1,1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(0,1);
 			mMesh.push_back(vx);
 
 			vx.pos = D3DXVECTOR3(-1,-1,0);
@@ -172,12 +240,19 @@ void Obj3D::LoadModel(const std::string& filename )
 			vx.normal = D3DXVECTOR3(0,0,-1);
 			vx.Tex = D3DXVECTOR2(0,0);
 			mMesh.push_back(vx);
-		
-			vx.pos = D3DXVECTOR3(2,-1,0);
+
+			vx.pos = D3DXVECTOR3(1,-1,0);
 			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
 			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
 			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(0,1);
+			vx.Tex = D3DXVECTOR2(1,0);
+			mMesh.push_back(vx);
+
+			vx.pos = D3DXVECTOR3(1,1,0);
+			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+			vx.normal = D3DXVECTOR3(0,0,-1);
+			vx.Tex = D3DXVECTOR2(1,1);
 			mMesh.push_back(vx);
 	}
 }

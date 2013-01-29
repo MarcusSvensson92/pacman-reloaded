@@ -40,7 +40,7 @@ BlendState AlphaBlending2
 
 RasterizerState NoCulling
 {
-	CullMode = 0;
+	CullMode = None;
 	FillMode = 3;
 };
 

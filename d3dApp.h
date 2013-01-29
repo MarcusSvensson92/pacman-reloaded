@@ -27,7 +27,7 @@ private:
 	void SetRenderTargetView();
 	void SetDepthStencil(int, int);
 	void SetViewPort(float, float, float, float);
-	void InitMouse( int screenWidth, int screenHeight );
+	void InitCamera( int screenWidth, int screenHeight );
 	void Keyboards();
 	void OnMouseMove();
 	// Här också!
