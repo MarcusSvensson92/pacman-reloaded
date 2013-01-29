@@ -209,15 +209,6 @@ void d3dApp::OnMouseMove()
 
 void d3dApp::Keyboards()
 {
-	if (GetAsyncKeyState('W') & 0x8000)
-		mCamera.Walk(0.5f);
-	if (GetAsyncKeyState('S') & 0x8000)
-		mCamera.Walk(-0.5f);
-	if (GetAsyncKeyState('A') & 0x8000)
-		mCamera.Strafe(-0.5f,0.001f);
-	if (GetAsyncKeyState('D') & 0x8000)
-		mCamera.Strafe(0.5f, -0.001f);
-
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		PostQuitMessage(0);
 }

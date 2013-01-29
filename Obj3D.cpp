@@ -12,7 +12,7 @@ Obj3D::~Obj3D(void)
 Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
 	mScale = scale;
-	mWorldPos = pos;
+	mPosition = pos;
 	mRotation = D3DXVECTOR3(0,0,0);
 
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
@@ -33,7 +33,7 @@ Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTO
 void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
 	mScale = scale;
-	mWorldPos = pos;
+	mPosition = pos;
 	mRotation = D3DXVECTOR3(0,0,0);
 
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
@@ -46,6 +46,11 @@ void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCST
 	InitGFX(device,deviceContext);
 
 	InitBuffers(device, deviceContext);
+
+	D3DXMatrixIdentity(&world);
+	D3DXMatrixIdentity(&rotation);
+	D3DXMatrixIdentity(&translation);
+	D3DXMatrixIdentity(&scaling);
 }
 
 void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -73,66 +78,7 @@ void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 
 void Obj3D::Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view)
 {
-	// 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	// 	Vertex* verticesPtr;
-	// 
-	// 	mMesh.clear();
-	// 
-	// 	D3DXVECTOR3 rightVect;
-	// 	D3DXVECTOR3 tempV = D3DXVECTOR3(view._11, view._21, view._31);
-	// 	D3DXVec3Normalize(&rightVect, &tempV);
-	// 	rightVect *= mScale.x;
-	// 
-	// 	D3DXVECTOR3 upVect;
-	// 	tempV = D3DXVECTOR3(view._12, view._22, view._32);
-	// 	D3DXVec3Normalize(&upVect, &tempV);
-	// 	upVect *= mScale.y;
-	// 
-	// 	Vertex temp;
-	// 	D3DXVec3Cross(&temp.normal,&rightVect,&upVect);
-	// 	temp.diff	= mDiffuse;
-	// 	temp.spec	= mSpecular;
-
-
-	// 	temp.pos = mPosition;
-	// 	temp.pos -= upVect;
-	// 	temp.Tex = D3DXVECTOR2(0,1);
-	// 	mMesh.push_back(temp);
-	// 
-	// 	temp.pos =  mPosition;
-	// 	temp.pos -= upVect;
-	// 	temp.Tex = D3DXVECTOR2(1,1);
-	// 	mMesh.push_back(temp);
-	// 
-	// 	temp.pos =  mPosition;
-	// 	temp.pos += rightVect;
-	// 	temp.Tex = D3DXVECTOR2(0,0);
-	// 	mMesh.push_back(temp);
-	// 
-	// 	temp.pos =  mPosition;
-	// 	temp.pos += rightVect;
-	// 	temp.Tex = D3DXVECTOR2(0,0);
-	// 	mMesh.push_back(temp);
-	// 
-	// 	temp.pos = mPosition;
-	// 	temp.pos -= upVect;
-	// 	temp.Tex = D3DXVECTOR2(1,1);
-	// 	mMesh.push_back(temp);
-	// 
-	// 	temp.pos = mPosition;
-	// 	temp.pos += upVect;
-	// 	temp.Tex = D3DXVECTOR2(1,0);
-	// 	mMesh.push_back(temp);
-	// 	
-	// 
-	// 	if(FAILED(deviceContext->Map(mVBuffer->GetBufferPointer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-	// 	{
-	// 		return;
-	// 	}
-	// 
-	// 	verticesPtr = (Vertex*)mappedResource.pData;
-	// 	memcpy(verticesPtr, &mMesh[0], sizeof(Vertex)*mMesh.size());
-	// 	deviceContext->Unmap(mVBuffer->GetBufferPointer(), 0);
+	
 }
 
 void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext )
@@ -154,32 +100,9 @@ void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContex
 void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 {
 
-	//calculate WVP matrix
-	D3DXMATRIX world, wvp, worldInv, worldInvTranspose,rotation,translation,scaling;
-	D3DXMatrixIdentity(&world);
-	D3DXMatrixIdentity(&rotation);
-	D3DXMatrixIdentity(&translation);
-	D3DXMatrixIdentity(&scaling);
-
 	D3DXMatrixScaling(&scaling,mScale.x,mScale.y,mScale.z);
 
-// 	D3DXMatrixRotationX(&rotation, mRotation.x);
-// 	D3DXMatrixRotationY(&rotation, mRotation.y);
-// 	D3DXMatrixRotationZ(&rotation, mRotation.z);
-
-// 		V.a V.e V.i x
-// 		V.b V.f V.j y
-// 		V.c V.g V.k z
-// 		0   0   0   1
-
-//	D3DXMATRIX view = camera.View();
-
-// 	rotation = D3DXMATRIX(	view._11,view._21,view._31,mPosition.x,
-// 							view._12,view._22,view._32,mPosition.y,
-// 							view._13,view._23,view._33,mPosition.z,
-// 							0,0,0,1);
-
- 	D3DXMatrixTranslation(&translation,mWorldPos.x,mWorldPos.y,mWorldPos.z);
+ 	D3DXMatrixTranslation(&translation,mPosition.x,mPosition.y,mPosition.z);
 
 	world = scaling*rotation*translation;
 

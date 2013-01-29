@@ -18,6 +18,7 @@ struct Node
 	Node*			Right;
 	D3DXVECTOR3		Position;
 };	
+
 enum ObjectType
 {
 	PACMAN,

@@ -32,9 +32,19 @@ public:
 	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
 
-	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
+	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
 	std::vector<Vertex> mMesh;
+	D3DXVECTOR3 mScale;
+	D3DXVECTOR3 mPosition;
+	D3DXVECTOR3 mRotation;
+
+	Shader* mShader;
+	D3DXMATRIX mTexTransform;
+	ID3D11ShaderResourceView* mTexture;
+	Buffer* mVBuffer;
+
+	D3DXMATRIX world, wvp, worldInv, worldInvTranspose,rotation,translation,scaling;
 
 private:
 
@@ -48,21 +58,6 @@ private:
 		mModelPath,
 		mShaderPath,
 		mTexturePath;
-
-	ID3D11ShaderResourceView* mTexture;
-
-	D3DXVECTOR3 mPosition;
-
-
-
-	D3DXMATRIX mTexTransform;
-
-	D3DXVECTOR3 mScale;
-	D3DXVECTOR3 mWorldPos;
-	D3DXVECTOR3 mRotation;
-
-	Shader* mShader;
-	Buffer* mVBuffer;
 
 	std::vector<std::string> mModelInfo;
 };
