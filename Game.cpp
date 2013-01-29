@@ -20,7 +20,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	// Loop to spawn Objects
 	for (int i = 0; i < ObjectSpawnList.size(); i++) 
 	{
-		if ( ObjectSpawnList[i].Type = CANDY)
+		if ( ObjectSpawnList[i].Type == CANDY )
 		{
 			ObjListTest.push_back(Candy(g_Device,g_DeviceContext,ObjectSpawnList[i].Node->Position, D3DXVECTOR3(1,1,1)));
 		}
