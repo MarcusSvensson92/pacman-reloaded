@@ -3,21 +3,7 @@
 
 #include "stdafx.h"
 #include "Obj3D.h"
-
-struct Node
-{
-	Node() {}
-	Node(D3DXVECTOR3 p)
-	{
-		Position = p;
-		Front = Back = Left = Right = NULL;
-	}
-	Node*			Front;
-	Node*			Back;
-	Node*			Left;
-	Node*			Right;
-	D3DXVECTOR3		Position;
-};	
+#include "Node.h"
 
 enum ObjectType
 {

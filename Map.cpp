@@ -174,6 +174,18 @@ std::vector<MapOutput>	Map::CreateOutput(std::vector<int> ColorMap, int width, i
 }
 void					Map::CreateNodes(std::vector<int> ColorMap, int width, int height)
 {
+	//	 NODE STRUCTURE
+	// z
+	// ^
+	// |      Left
+	// |       o				Up		= -x
+	// |       |				Back	= +x
+	// |  Up o-o-o Back			Left	= +z
+	// |       |				Right	= -z
+	// |       o 
+	// |     Right
+	//-|-----------------> x
+
 	m_nodes = new Node[width*height];
 	int z = 0, x = 0;
 	for (int i = 0; i < ColorMap.size(); i++) 

@@ -122,6 +122,7 @@
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
@@ -136,6 +137,7 @@
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Obj3D.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />
