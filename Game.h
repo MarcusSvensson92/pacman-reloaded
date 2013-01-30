@@ -16,7 +16,7 @@ public:
 	~Game(void);
 
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
-	void Update(float dt);
+	void Update(const float dt);
 	void Draw();
 private:
 	void initShaderManager(void);

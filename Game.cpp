@@ -13,7 +13,7 @@ Game::~Game(void)
 
 void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
 {
-	mLastKeyDir = Player::Direction::FORWARD;
+	//mLastKeyDir = Player::Direction::FORWARD;
 
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
@@ -33,17 +33,26 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjListTest.push_back(candy);
 		}
 
-		if ( ObjectSpawnList[i].Type == PACMAN)
-			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
+		/*if ( ObjectSpawnList[i].Type == PACMAN)
+			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);*/
 	}
 
 	m_ghost.Init(m_Device, m_DeviceContext, m_shaders.get("Billboard"), "Content/Img/ghost.png", D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(1.f, 1.f, 1.f));
 }
 
-void Game::Update(float dt)
+void Game::Update(const float dt)
 {
-	if(mPlayer.GetStatus() == Player::ALIVE)
-	{CameraFollowPlayer(); mPlayer.Update();}
+	/*if(mPlayer.GetStatus() == Player::ALIVE)
+	{CameraFollowPlayer(); mPlayer.Update();}*/
+
+	if (GetAsyncKeyState('W') & 0x8000)
+		mCamera.Walk(20.f * dt);
+	if (GetAsyncKeyState('S') & 0x8000)
+		mCamera.Walk(-20.f * dt);
+	if (GetAsyncKeyState('A') & 0x8000)
+		mCamera.Strafe(-20.f * dt);
+	if (GetAsyncKeyState('D') & 0x8000)
+		mCamera.Strafe(20.f * dt);
 
 	d3dApp::Update(dt);
 }
