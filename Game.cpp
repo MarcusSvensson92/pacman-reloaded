@@ -33,7 +33,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
 	}
 
-	m_ghost.Init(g_Device, g_DeviceContext, "Content/Img/ghost.png", D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(1.f, 1.f, 1.f));
+	m_ghost.Init(m_Device, m_DeviceContext, "Content/Img/ghost.png", D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(1.f, 1.f, 1.f));
 }
 
 void Game::Update(float dt)
@@ -53,7 +53,7 @@ void Game::Draw()
  		ObjListTest[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
-	m_ghost.Draw(g_DeviceContext, mCamera);
+	m_ghost.Draw(m_DeviceContext, mCamera);
 
 	DrawEnd();
 }

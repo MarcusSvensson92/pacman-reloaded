@@ -25,7 +25,7 @@ void Ghost::InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext
 	};
 
 	BillboardVertex vertex;
-	vertex.position = mWorldPos;
+	vertex.position = mPosition;
 	vertex.size		= D3DXVECTOR2(10.f, 10.f);
 
 	BUFFER_INIT_DESC initDesc;
