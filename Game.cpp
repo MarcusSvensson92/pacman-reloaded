@@ -38,7 +38,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 void Game::Update(float dt)
 {
 	if(mPlayer.GetStatus() == Player::ALIVE)
-	CameraFollowPlayer();
+	{CameraFollowPlayer(); mPlayer.Update();}
 
 	d3dApp::Update(dt);
 }
@@ -58,11 +58,11 @@ void Game::Draw()
 
 void Game::CameraFollowPlayer()
 {
-	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0,1.5f,0));
+	
 
 
 	if (GetAsyncKeyState('W') & 0x8000)
-		mLastKeyDir = Player::Direction::FORWARD;
+	{mPlayer.ChangeDirection(mLastKeyDir,mCamera.GetLook());mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0,1.5f,0));}
 	else if (GetAsyncKeyState('S') & 0x8000)
 		mLastKeyDir = Player::Direction::BACKWARD;
 	else if (GetAsyncKeyState('A') & 0x8000)
@@ -70,6 +70,6 @@ void Game::CameraFollowPlayer()
 	else if (GetAsyncKeyState('D') & 0x8000)
 		mLastKeyDir = Player::Direction::RIGHT;
 
-	mPlayer.ChangeDirection(mLastKeyDir);
+	
 
 }

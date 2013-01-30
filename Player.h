@@ -1,6 +1,5 @@
 #pragma once
 #include "stdafx.h"
-#include "Camera.h"
 #include "Node.h"
 
 class Player
@@ -36,17 +35,22 @@ public:
 
 	void Update();
 
-	void ChangeDirection(Direction dir);
+	void ChangeDirection(Direction dir,D3DXVECTOR3 look);
 
 private:
 
 	D3DXVECTOR3 mPosition;
+
+	D3DXVECTOR3 mRight;
+	D3DXVECTOR3 mUp;
+	D3DXVECTOR3 mLook;
 
 	Direction		mDirection;
 	PlayerStatus	mStatus;
 
 	bool			mSuperCandy;
 	Node*			mNode;
+	Node*			mNextNode;
 
 	
 	void Move(Direction dir);
