@@ -35,7 +35,16 @@ public:
 	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
 	virtual void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
-	virtual void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	D3DXVECTOR3 mScale;
+	D3DXVECTOR3 mPosition;
+	D3DXVECTOR3 mRotation;
+
+	Shader* mShader;
+	D3DXMATRIX mTexTransform;
+	ID3D11ShaderResourceView* mTexture;
+	Buffer* mVBuffer;
+
+	D3DXMATRIX world, wvp, worldInv, worldInvTranspose,rotation,translation,scaling;
 
 	std::vector<Vertex> mMesh;
 
@@ -44,23 +53,12 @@ protected:
 		mShaderPath,
 		mTexturePath;
 
-	ID3D11ShaderResourceView* mTexture;
-
-	D3DXVECTOR3 mWorldPos;
 
 	Buffer* mVBuffer;
 	Shader* mShader;
 private:
-
 	void LoadModel(const std::string& filename);
-
 	D3DXVECTOR3 mPosition;
-
-	D3DXMATRIX mTexTransform;
-
-	D3DXVECTOR3 mScale;
-	D3DXVECTOR3 mRotation;
-
 	std::vector<std::string> mModelInfo;
 };
 

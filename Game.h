@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Candy.h"
 #include "Map.h"
+#include "Player.h"
 #include "Ghost.h"
 
 class Game : public d3dApp
@@ -17,9 +18,14 @@ public:
 	void Update(float dt);
 	void Draw();
 private:
-	std::vector<Obj3D> ObjListTest;
+
+	std::vector<Obj3D *> ObjListTest;
 	Map m_map;
+	Player mPlayer;
 	Ghost m_ghost;
+	void CameraFollowPlayer();
+
+	Player::Direction mLastKeyDir;
 };
 
 #endif

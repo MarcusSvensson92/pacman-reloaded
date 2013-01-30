@@ -70,10 +70,10 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 			ARRAYSIZE(featureLevelsToTry),
 			D3D11_SDK_VERSION,
 			&swapChainDesc,
-			&g_SwapChain,
-			&g_Device,
+			&m_SwapChain,
+			&m_Device,
 			&initiatedFeatureLevel,
-			&g_DeviceContext);
+			&m_DeviceContext);
 		// Stops when success. If not it will try a new Type
 		if( SUCCEEDED( hr ) )
 			break;
@@ -107,26 +107,19 @@ void d3dApp::InitCamera( int screenWidth, int screenHeight )
 
 void d3dApp::Update(float dt)
 {
-	// calculate WVP matrix
-	//D3DXMatrixIdentity(&g_World);
-	//g_WVP = g_World;// * m_cam.getView() * m_cam.getProj();
  	OnMouseMove();
  	Keyboards();
-	// calculate iWVP matrix
-	//float det = D3DXMatrixDeterminant(&g_World);
-	//D3DXMatrixInverse(&g_iWorld,&det,&g_World);
-	//D3DXMatrixTranspose(&g_iWorld, &g_iWorld);
 }
 void d3dApp::DrawBegin()
 {
 	static float ClearColor[4] = { 0.5f, 0.7f, 1.0f, 1.0f };
-	g_DeviceContext->ClearRenderTargetView( g_RenderTargetView, ClearColor );	
+	m_DeviceContext->ClearRenderTargetView( m_RenderTargetView, ClearColor );	
 
-	g_DeviceContext->ClearDepthStencilView( g_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );
+	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );
 }
 void d3dApp::DrawEnd()
 {
-	g_SwapChain->Present( 1, 0 );
+	m_SwapChain->Present( 1, 0 );
 }
 
 void d3dApp::SetRenderTargetView()
@@ -135,11 +128,11 @@ void d3dApp::SetRenderTargetView()
 	HRESULT hr; 
 
 	ID3D11Texture2D* pBackBuffer;
-	hr = g_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (LPVOID*)&pBackBuffer );
+	hr = m_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (LPVOID*)&pBackBuffer );
 	if( FAILED(hr) )
 		MessageBoxA(0, "Failed GetBuffer", 0, 0);
 
-	hr = g_Device->CreateRenderTargetView( pBackBuffer, 0, &g_RenderTargetView );
+	hr = m_Device->CreateRenderTargetView( pBackBuffer, 0, &m_RenderTargetView );
 	pBackBuffer->Release();
 	if( FAILED(hr) )
 		MessageBoxA(0, "Failed RenderView", 0, 0);
@@ -161,7 +154,7 @@ void d3dApp::SetDepthStencil(int width, int height)
 	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 	descDepth.CPUAccessFlags = 0;
 	descDepth.MiscFlags = 0;
-	hr = g_Device->CreateTexture2D( &descDepth, NULL, &g_DepthStencil );
+	hr = m_Device->CreateTexture2D( &descDepth, NULL, &m_DepthStencil );
 	if( FAILED(hr) )
 		MessageBoxA(0, "Failed CreateTexture2D", 0, 0);
 
@@ -171,11 +164,11 @@ void d3dApp::SetDepthStencil(int width, int height)
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0;
 
-	hr = g_Device->CreateDepthStencilView( g_DepthStencil, 0, &g_DepthStencilView );
+	hr = m_Device->CreateDepthStencilView( m_DepthStencil, 0, &m_DepthStencilView );
 	if( FAILED(hr) )
 		MessageBoxA(0, "Failed CreateDepthStencilView", 0, 0);
 
-	g_DeviceContext->OMSetRenderTargets( 1, &g_RenderTargetView, g_DepthStencilView );
+	m_DeviceContext->OMSetRenderTargets( 1, &m_RenderTargetView, m_DepthStencilView );
 }
 void d3dApp::SetViewPort(float width, float height, float screenDepth, float screenNear)
 {
@@ -186,7 +179,7 @@ void d3dApp::SetViewPort(float width, float height, float screenDepth, float scr
 	vp.MaxDepth = screenDepth;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
-	g_DeviceContext->RSSetViewports( 1, &vp );
+	m_DeviceContext->RSSetViewports( 1, &vp );
 }
 
 void d3dApp::OnMouseMove()
@@ -209,15 +202,6 @@ void d3dApp::OnMouseMove()
 
 void d3dApp::Keyboards()
 {
-	if (GetAsyncKeyState('W') & 0x8000)
-		mCamera.Walk(0.5f);
-	if (GetAsyncKeyState('S') & 0x8000)
-		mCamera.Walk(-0.5f);
-	if (GetAsyncKeyState('A') & 0x8000)
-		mCamera.Strafe(-0.5f,0.001f);
-	if (GetAsyncKeyState('D') & 0x8000)
-		mCamera.Strafe(0.5f, -0.001f);
-
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		PostQuitMessage(0);
 }

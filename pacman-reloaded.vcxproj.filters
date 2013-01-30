@@ -52,8 +52,12 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Ghost.h">
+      <Filter>Objects\AI</Filter><ClCompile Include="Ghost.cpp">
       <Filter>Objects\AI</Filter>
+
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,8 +92,8 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Ghost.cpp">
-      <Filter>Objects\AI</Filter>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Node.cpp" />
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
