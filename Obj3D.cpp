@@ -98,7 +98,7 @@ void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContex
 	}
 }
 
-void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
+void Obj3D::Draw(ID3D11DeviceContext* m_DeviceContext,Camera camera)
 {
 
 	D3DXMatrixScaling(&scaling,mScale.x,mScale.y,mScale.z);
@@ -119,7 +119,7 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 	mShader->SetFloat3("gEyePosW", camera.GetPosition());
 	//mShader->SetRawData("gLight",&light,sizeof(PointLight));
 
-	g_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	mVBuffer->Apply();
 
@@ -127,7 +127,7 @@ void Obj3D::Draw(ID3D11DeviceContext* g_DeviceContext,Camera camera)
 
 	mShader->SetResource("mTexture", mTexture);
 	mShader->Apply(0);
-	g_DeviceContext->Draw(mMesh.size(),0);
+	m_DeviceContext->Draw(mMesh.size(),0);
 	
 }
 
