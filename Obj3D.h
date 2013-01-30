@@ -26,12 +26,11 @@ class Obj3D
 {
 public:
 	Obj3D(void);
-	Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	~Obj3D(void);
 
-	virtual void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
-	virtual void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
-
+	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
+	
+	virtual void Update(const float dt) = 0;
 	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
 	virtual void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
@@ -42,20 +41,15 @@ protected:
 	D3DXVECTOR3 mPosition;
 	D3DXVECTOR3 mRotation;
 
-	std::string 
-		mModelPath,
-		mShaderPath,
-		mTexturePath;
+	std::string mTexturePath;
 
+	Buffer* mVBuffer;
 	Shader* mShader;
+
 	D3DXMATRIX mTexTransform;
 	ID3D11ShaderResourceView* mTexture;
-	Buffer* mVBuffer;
 
 	D3DXMATRIX world, wvp, worldInv, worldInvTranspose,rotation,translation,scaling;
 private:
-	void LoadModel(const std::string& filename);
-
-	std::vector<std::string> mModelInfo;
 };
 

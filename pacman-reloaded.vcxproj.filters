@@ -19,6 +19,9 @@
     <Filter Include="Objects\AI">
       <UniqueIdentifier>{72b4677a-3eb7-440d-9088-e5a6106ae618}</UniqueIdentifier>
     </Filter>
+    <Filter Include="D3D">
+      <UniqueIdentifier>{8d08c649-289f-4f2c-8a28-dc6bf7a5dce8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -36,9 +39,6 @@
     <ClInclude Include="Obj3D.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -48,14 +48,20 @@
     <ClInclude Include="Candy.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Buffer.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Ghost.h">
       <Filter>Objects\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>D3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +77,6 @@
     <ClCompile Include="Obj3D.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -86,14 +89,20 @@
     <ClCompile Include="Candy.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Buffer.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Ghost.cpp">
       <Filter>Objects\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Buffer.cpp">
+      <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>D3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

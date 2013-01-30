@@ -1,16 +1,16 @@
 #include "stdafx.h"
 #include "Candy.h"
 
-
 Candy::Candy(void)
 {
-}
-
-Candy::Candy(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale) : Obj3D(device, deviceContext, pos, scale)
-{
+	LoadModel();
 }
 
 Candy::~Candy(void)
+{
+}
+
+void Candy::Update(const float dt)
 {
 }
 
@@ -58,4 +58,51 @@ void Candy::Draw(ID3D11DeviceContext* m_DeviceContext,Camera camera)
 	mShader->Apply(0);
 	m_DeviceContext->Draw(mMesh.size(),0);
 
+}
+
+void Candy::LoadModel(void)
+{
+	Vertex vx;
+
+	vx.pos = D3DXVECTOR3(-1,-1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(0,0);
+	mMesh.push_back(vx);
+
+	vx.pos = D3DXVECTOR3(1,1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(1,1);
+	mMesh.push_back(vx);
+		
+	vx.pos = D3DXVECTOR3(-1,1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(0,1);
+	mMesh.push_back(vx);
+
+	vx.pos = D3DXVECTOR3(-1,-1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(0,0);
+	mMesh.push_back(vx);
+
+	vx.pos = D3DXVECTOR3(1,-1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(1,0);
+	mMesh.push_back(vx);
+
+	vx.pos = D3DXVECTOR3(1,1,0);
+	vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
+	vx.normal = D3DXVECTOR3(0,0,-1);
+	vx.Tex = D3DXVECTOR2(1,1);
+	mMesh.push_back(vx);
 }

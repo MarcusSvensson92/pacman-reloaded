@@ -32,7 +32,9 @@ public:
 	Map(void);
 	~Map(void);
 
-	std::vector<MapOutput> Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR map, int width, int height);
+	std::vector<MapOutput> Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR map, int width, int height);
+
+	void Update(const float dt);
 private:
 	int						m_elements;
 	int						m_size;

@@ -7,10 +7,10 @@ Obj3D::Obj3D(void)
 
 Obj3D::~Obj3D(void)
 {
-	delete mShader, mVBuffer;
+	delete mVBuffer;
 }
 
-Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
+void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
 {
 	mScale = scale;
 	mPosition = pos;
@@ -18,36 +18,12 @@ Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTO
 
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
 
-	mModelPath = "default";
-	mShaderPath = "Content/Shaders/Basic.fx";
-	mTexturePath = "Content/Img/white.png";
-
-	mShader = new Shader();
-
-	InitGFX(device,deviceContext);
-
-	LoadModel(mModelPath);
-
-	InitBuffers(device, deviceContext);
-}
-
-void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
-{
-	mScale = scale;
-	mPosition = pos;
-	mRotation = D3DXVECTOR3(0,0,0);
-
-	D3DXMatrixScaling(&mTexTransform, 1,1,1);
-
-	if (mShaderPath.empty())
-		mShaderPath = "Content/Shaders/Basic.fx";
 	mTexturePath = texture;
 
-	mShader = new Shader();
-
-	InitGFX(device,deviceContext);
+	mShader = shader;
 
 	InitBuffers(device, deviceContext);
+	InitGFX(device,deviceContext);
 
 	D3DXMatrixIdentity(&world);
 	D3DXMatrixIdentity(&rotation);
@@ -57,30 +33,11 @@ void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCST
 
 void Obj3D::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	D3D11_INPUT_ELEMENT_DESC inputDesc[] = {
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "DIFFUSE", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 32, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "SPECULAR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-
-
-	if(FAILED(mShader->Init(device, deviceContext, mShaderPath, inputDesc, 5)))
-	{
-		MessageBox(0, "Failed to initialize shader in Obj3D.cpp", "Fail!", 0);
-	}
-
 	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, mTexturePath.c_str(), 0, 0, &mTexture, 0 )))
 	{
 		std::string failed = mTexturePath + " Texture Failed";
 		MessageBox(0, failed.c_str(), "Fail!", 0);
 	}
-}
-
-void Obj3D::Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view)
-{
-	
 }
 
 void Obj3D::InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext )
@@ -130,54 +87,4 @@ void Obj3D::Draw(ID3D11DeviceContext* m_DeviceContext,Camera camera)
 	mShader->Apply(0);
 	m_DeviceContext->Draw(mMesh.size(),0);
 	
-}
-
-void Obj3D::LoadModel(const std::string& filename )
-{
-	if(filename == "default")
-	{
-			Vertex vx;
-
-			vx.pos = D3DXVECTOR3(-1,-1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(0,0);
-			mMesh.push_back(vx);
-
-			vx.pos = D3DXVECTOR3(1,1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(1,1);
-			mMesh.push_back(vx);
-		
-			vx.pos = D3DXVECTOR3(-1,1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(0,1);
-			mMesh.push_back(vx);
-
-			vx.pos = D3DXVECTOR3(-1,-1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(0,0);
-			mMesh.push_back(vx);
-
-			vx.pos = D3DXVECTOR3(1,-1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(1,0);
-			mMesh.push_back(vx);
-
-			vx.pos = D3DXVECTOR3(1,1,0);
-			vx.diff = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.spec = D3DXVECTOR4(0.5f,0.5f,0.5f,1);
-			vx.normal = D3DXVECTOR3(0,0,-1);
-			vx.Tex = D3DXVECTOR2(1,1);
-			mMesh.push_back(vx);
-	}
 }
