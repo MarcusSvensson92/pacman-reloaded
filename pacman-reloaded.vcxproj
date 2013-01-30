@@ -68,6 +68,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ExecutablePath>External\Utilities\bin\x86;$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(SolutionDir)Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug - Create PCH|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -153,6 +155,7 @@
     <ClInclude Include="Candy.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="Shader.h" />
@@ -166,6 +169,7 @@
     <ClCompile Include="Candy.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Obj3D.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -199,8 +203,18 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Shaders\Billboard.fx" />
-    <None Include="Content\Shaders\Lightning.fx" />
+    <CustomBuild Include="Content\Shaders\Billboard.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc /Fc /Od /Zi /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc compile for debug: %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">%(Filename).fxo;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Lightning.fx">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc /Fc /Od /Zi /T fx_5_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc compile for debug: %(FullPath)</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">%(Filename).fxo;%(Outputs)</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

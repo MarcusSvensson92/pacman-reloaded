@@ -1,5 +1,3 @@
-#include "Lightning.fx"
-
 cbuffer cbPerFrame
 {
 	matrix gWorld;
@@ -10,8 +8,8 @@ cbuffer cbPerFrame
 cbuffer cbConstants
 {
 	float2 gTexCoords[4] = { float2(0.f, 1.f),
-							 float2(1.f, 1.f),
 							 float2(0.f, 0.f),
+							 float2(1.f, 1.f),
 							 float2(1.f, 0.f) };
 };
 
@@ -20,8 +18,8 @@ Texture2D gTexture;
 SamplerState linearSampler
 {
 	Filter	 = MIN_MAG_MIP_LINEAR;
-	AddressU = WRAP;
-	AddressV = WRAP;
+	AddressU = CLAMP;
+	AddressV = CLAMP;
 };
 
 struct VSIn
@@ -55,26 +53,30 @@ GSIn VS(VSIn input)
 [maxvertexcount(4)]
 void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 {
-	float3 look  = normalize(gCameraPositionW - input[0].positionW);
-	float3 right = normalize(cross(float3(0.f, 1.f, 0.f), look));
-	float3 up	 = cross(look, right);
+	float3 up = float3(0.f, 1.f, 0.f);
+	float3 look = gCameraPositionW - input[0].positionW;
+	look.y = 0.f;
+	look = normalize(look);
+	float3 right = cross(up, look);
 
 	float halfWidth  = 0.5f * input[0].sizeW.x;
 	float halfHeight = 0.5f * input[0].sizeW.y;
 
 	float4 positions[4];
-	positions[0] = float4(input[0].positionW + halfWidth * right - halfHeight * up, 1.0f);
-	positions[1] = float4(input[0].positionW + halfWidth * right + halfHeight * up, 1.0f);
-	positions[2] = float4(input[0].positionW - halfWidth * right - halfHeight * up, 1.0f);
-	positions[3] = float4(input[0].positionW - halfWidth * right + halfHeight * up, 1.0f);
+	positions[0] = float4(input[0].positionW + halfWidth * right - halfHeight * up, 1.f);
+	positions[1] = float4(input[0].positionW + halfWidth * right + halfHeight * up, 1.f);
+	positions[2] = float4(input[0].positionW - halfWidth * right - halfHeight * up, 1.f);
+	positions[3] = float4(input[0].positionW - halfWidth * right + halfHeight * up, 1.f);
 
 	PSIn output;
 	[unroll]
 	for (int i = 0; i < 4; i++)
 	{
-		output.positionH = mul(float4(positions[i], 1.f), gViewProj);
-		output.normalW	 = -look;
+		output.positionH = mul(positions[i], gViewProj);
+		output.positionW = positions[i].xyz;
+		output.normalW	 = look;
 		output.tex0		 = gTexCoords[i];
+
 		stream.Append(output);
 	}
 }

@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Candy.h"
 #include "Map.h"
+#include "Ghost.h"
 
 class Game : public d3dApp
 {
@@ -18,6 +19,7 @@ public:
 private:
 	std::vector<Obj3D> ObjListTest;
 	Map m_map;
+	Ghost m_ghost;
 };
 
 #endif

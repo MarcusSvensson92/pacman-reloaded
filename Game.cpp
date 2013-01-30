@@ -25,7 +25,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjListTest.push_back(Candy(g_Device,g_DeviceContext,ObjectSpawnList[i].Node->Position, D3DXVECTOR3(1,1,1)));
 		}
 	}
-	
+
+	m_ghost.Init(g_Device, g_DeviceContext, "Content/Img/ghost.png", D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(1.f, 1.f, 1.f));
 }
 
 void Game::Update(float dt)
@@ -42,6 +43,7 @@ void Game::Draw()
 		ObjListTest[i].Draw(g_DeviceContext, mCamera);
 	}
 	m_map.Draw(g_DeviceContext, mCamera);
+	m_ghost.Draw(g_DeviceContext, mCamera);
 
 	DrawEnd();
 }

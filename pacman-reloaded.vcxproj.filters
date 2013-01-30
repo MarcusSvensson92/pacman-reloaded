@@ -16,6 +16,9 @@
     <Filter Include="Resource Files\Content\Shaders">
       <UniqueIdentifier>{92b8c40d-da28-467b-9ca4-8671301de163}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\AI">
+      <UniqueIdentifier>{72b4677a-3eb7-440d-9088-e5a6106ae618}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -49,6 +52,9 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Ghost.h">
+      <Filter>Objects\AI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -82,6 +88,9 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Objects\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">
@@ -93,13 +102,11 @@
     <CustomBuild Include="Content\Shaders\RenderStates.fx">
       <Filter>Resource Files\Content\Shaders</Filter>
     </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\Shaders\Lightning.fx">
+    <CustomBuild Include="Content\Shaders\Billboard.fx">
       <Filter>Resource Files\Content\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\Billboard.fx">
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Lightning.fx">
       <Filter>Resource Files\Content\Shaders</Filter>
-    </None>
+    </CustomBuild>
   </ItemGroup>
 </Project>

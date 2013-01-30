@@ -29,20 +29,15 @@ public:
 	Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	~Obj3D(void);
 
-	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
-	void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
+	virtual void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
+	virtual void Update(ID3D11DeviceContext* deviceContext, D3DXMATRIX view);
 
-	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
+	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
+	virtual void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
+	virtual void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+
 	std::vector<Vertex> mMesh;
-
-private:
-
-	void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
-
-	void LoadModel(const std::string& filename);
-
-	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 	std::string 
 		mModelPath,
@@ -51,18 +46,20 @@ private:
 
 	ID3D11ShaderResourceView* mTexture;
 
+	D3DXVECTOR3 mWorldPos;
+
+	Buffer* mVBuffer;
+	Shader* mShader;
+private:
+
+	void LoadModel(const std::string& filename);
+
 	D3DXVECTOR3 mPosition;
-
-
 
 	D3DXMATRIX mTexTransform;
 
 	D3DXVECTOR3 mScale;
-	D3DXVECTOR3 mWorldPos;
 	D3DXVECTOR3 mRotation;
-
-	Shader* mShader;
-	Buffer* mVBuffer;
 
 	std::vector<std::string> mModelInfo;
 };

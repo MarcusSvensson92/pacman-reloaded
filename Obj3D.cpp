@@ -7,7 +7,8 @@ Obj3D::Obj3D(void)
 
 Obj3D::~Obj3D(void)
 {
-	delete mShader;
+	//delete mShader;
+	//delete mVBuffer;
 }
 
 Obj3D::Obj3D(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale)
@@ -39,7 +40,8 @@ void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCST
 
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
 
-	mShaderPath = "Content/Shaders/Basic.fx";
+	if (mShaderPath.empty())
+		mShaderPath = "Content/Shaders/Basic.fx";
 	mTexturePath = texture;
 
 	mShader = new Shader();
