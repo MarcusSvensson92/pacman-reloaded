@@ -49,3 +49,8 @@ void Player::ChangeDirection( Direction dir )
 	}
 	mPosition = mNode->GetPosition();
 }
+
+void Player::Move(Direction dir)
+{
+
+}

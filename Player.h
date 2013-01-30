@@ -49,6 +49,6 @@ private:
 	Node*			mNode;
 
 	
-	void Move();
+	void Move(Direction dir);
 };
 
