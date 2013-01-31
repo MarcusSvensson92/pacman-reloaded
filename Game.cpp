@@ -17,7 +17,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
-	initShaderManager();
+	initShaders();
 
 	// Init Map and fetch ObjectSpawnList
 	std::vector<MapOutput> ObjectSpawnList;
@@ -71,7 +71,7 @@ void Game::Draw()
 	DrawEnd();
 }
 
-void Game::initShaderManager(void)
+void Game::initShaders(void)
 {
 	m_shaders.init(m_Device, m_DeviceContext);
 	
