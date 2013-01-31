@@ -8,6 +8,9 @@ public:
 	Node(D3DXVECTOR3 p);
 	~Node(void);
 
+	bool operator== (D3DXVECTOR3 v);
+	bool operator!= (D3DXVECTOR3 v);
+
 	D3DXVECTOR3		GetPosition();
 
 	Node*			Front;

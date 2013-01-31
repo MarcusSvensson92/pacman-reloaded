@@ -3,6 +3,7 @@
 
 #include "Obj3D.h"
 #include "Node.h"
+#include "PathFinding.h"
 
 class Ghost : public Obj3D
 {
