@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "AudioEngine.h"
 
 
@@ -28,7 +27,7 @@ bool AudioEngine::Initialize(HWND hwnd)
 		return false;
 	
 	//Load the main music into the secondaryBufferMain
-	result = LoadWaveFile("Audio/Music/MainMusic.wav", &m_secondaryBufferMain);
+	result = LoadWaveFile("Content/Audio/Music/MainMusic.wav", &m_secondaryBufferMain);
 	if(!result)
 		return false;
 
@@ -136,7 +135,7 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	HRESULT result;
 	IDirectSoundBuffer* tempBuffer;
 	unsigned char* waveData;
-	unsigned char *bufferPtr;
+	unsigned char* bufferPtr;
 	unsigned long bufferSize;
 
 	//Open wave file in binary and ensure that it is not corrupt
@@ -189,14 +188,14 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	}
 
 	//Check that the file is in 16bit format
-	if(waveFileHeader.audioFormat != WAVE_FORMAT_PCM)
+	if(waveFileHeader.bitsPerSample != 16)
 	{
 		return false;
 	}
 
 	//Check for the data chunk header
 	if((waveFileHeader.dataChunkId[0] != 'd') || (waveFileHeader.dataChunkId[1] != 'a') ||
-	    (waveFileHeader.dataChunkId[0] != 't') || (waveFileHeader.dataChunkId[3] != 'a'))
+	    (waveFileHeader.dataChunkId[2] != 't') || (waveFileHeader.dataChunkId[3] != 'a'))
 	{
 		return false;
 	}
@@ -227,6 +226,7 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	result = tempBuffer->QueryInterface(IID_IDirectSoundBuffer8,(void**)&*secondaryBuffer);
 	if(FAILED(result))
 		return false;
+
 	//Relase the temp buffer
 	tempBuffer->Release();
 	tempBuffer = 0;
@@ -240,7 +240,7 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 		return false;
 
 	//Read from wave file into the temp buffer
-	count = fread(waveData,1,waveFileHeader.dataSize,filePtr);
+	count = fread(waveData, 1, waveFileHeader.dataSize, filePtr);
 	if(count != waveFileHeader.dataSize)
 		return false;
 
@@ -250,7 +250,7 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 		return false;
 
 	//Lock the secound buffer to enable data to be written to it
-	result = (*secondaryBuffer)->Lock(0,waveFileHeader.dataSize,(void**)&bufferPtr,(DWORD*)&bufferSize,NULL,0,0);
+	result = (*secondaryBuffer)->Lock(0, waveFileHeader.dataSize, (void**)&bufferPtr, (DWORD*)&bufferSize, NULL, 0, 0);
 	if(FAILED(result))
 		return false;
 
@@ -294,6 +294,13 @@ bool AudioEngine::PlayWaveFile()
 	result = m_secondaryBufferMain->SetVolume(DSBVOLUME_MAX);
 	if(FAILED(result))
 		return false;
+
+	//Play the file
+	result = m_secondaryBufferMain->Play(0, 0, 0);
+	if(FAILED(result))
+	{
+		return false;
+	}
 
 	//Everything was successfull
 	return true;

@@ -22,6 +22,15 @@
     <Filter Include="D3D">
       <UniqueIdentifier>{8d08c649-289f-4f2c-8a28-dc6bf7a5dce8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Content\Audio">
+      <UniqueIdentifier>{f5db62d5-26f9-4caa-b969-c3755fd8c122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Audio\Sounds">
+      <UniqueIdentifier>{d51fdfe0-bedc-4c45-aeb6-13069c3c0a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Audio\Music">
+      <UniqueIdentifier>{c35aaf2f-0c31-4c16-980b-4a376cba0632}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -127,5 +136,10 @@
     <CustomBuild Include="Content\Shaders\Lightning.fx">
       <Filter>Resource Files\Content\Shaders</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Audio\Music\MainMusic.wav">
+      <Filter>Resource Files\Content\Audio\Music</Filter>
+    </None>
   </ItemGroup>
 </Project>

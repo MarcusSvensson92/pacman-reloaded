@@ -19,6 +19,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	initShaders();
 
+	m_audio.Initialize(hwnd);
+
 	// Init Map and fetch ObjectSpawnList
 	std::vector<MapOutput> ObjectSpawnList;
 	ObjectSpawnList = m_map.Init(m_Device, m_DeviceContext, m_shaders.get("Basic"), "map.RAW", 28, 31);
@@ -53,6 +55,8 @@ void Game::Update(const float dt)
 		mCamera.Strafe(-20.f * dt);
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
+
+	
 
 	d3dApp::Update(dt);
 }

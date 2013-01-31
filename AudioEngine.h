@@ -35,9 +35,10 @@ public:
 	AudioEngine();
 	AudioEngine(const AudioEngine&);
 	~AudioEngine();
-private: //DS = DirectSound
+
 	bool Initialize(HWND);
 	void Shutdown();
+private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
 	void ShutdownDS();
@@ -47,6 +48,7 @@ private: //DS = DirectSound
 
 	bool PlayWaveFile();
 
+private:
 	IDirectSound8* m_DirectSound;
 	IDirectSoundBuffer* m_primaryBuffer;//Mixes the sounds from the secondary buffers and plays them.
 	IDirectSoundBuffer8* m_secondaryBufferMain;//Used for looping the main music

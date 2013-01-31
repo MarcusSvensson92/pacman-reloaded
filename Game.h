@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Ghost.h"
 #include "ShaderManager.h"
+#include "AudioEngine.h"
 
 class Game : public d3dApp
 {
@@ -26,6 +27,7 @@ private:
 	Player mPlayer;
 	Ghost m_ghost;
 	ShaderManager m_shaders;
+	AudioEngine m_audio;
 
 	void CameraFollowPlayer();
 
