@@ -63,6 +63,9 @@
     <ClInclude Include="ShaderManager.h">
       <Filter>D3D</Filter>
     </ClInclude>
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="ShaderManager.cpp">
       <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
