@@ -24,7 +24,6 @@ private:
 	std::vector<Obj3D *> ObjListTest;
 	Map m_map;
 	Player mPlayer;
-	Ghost m_ghost;
 	ShaderManager m_shaders;
 
 	void CameraFollowPlayer();

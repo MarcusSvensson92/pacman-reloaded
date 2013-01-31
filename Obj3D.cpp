@@ -16,6 +16,8 @@ void Obj3D::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shade
 	mPosition = pos;
 	mRotation = D3DXVECTOR3(0,0,0);
 
+	//D3DXMatrixIdentity(&world);
+	//D3DXMatrixIdentity(&translation);
 	D3DXMatrixScaling(&mTexTransform, 1,1,1);
 
 	mTexturePath = texture;
