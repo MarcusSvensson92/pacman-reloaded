@@ -66,12 +66,8 @@ void Game::Update(const float dt)
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
 
-<<<<<<< HEAD
-	
-=======
 	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
 		(*it)->Update(dt);
->>>>>>> 0a26f5bee8aef0857cede20f84691a1a2189d178
 
 	d3dApp::Update(dt);
 }
