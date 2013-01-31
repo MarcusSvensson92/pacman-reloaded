@@ -19,7 +19,7 @@ public:
 	void Update(const float dt);
 	void Draw();
 private:
-	void initShaderManager(void);
+	void initShaders(void);
 
 	std::vector<Obj3D *> ObjListTest;
 	Map m_map;
