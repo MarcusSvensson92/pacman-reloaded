@@ -35,11 +35,21 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjListTest.push_back(candy);
 		}
 
+		if (ObjectSpawnList[i].Type == RED_GHOST)
+		{
+			Ghost* ghost = new Ghost();
+			ghost->Init(m_Device, m_DeviceContext,
+						m_shaders.get("Billboard"),
+						"Content/Img/ghost.png",
+						ObjectSpawnList[i].Node->GetPosition(),
+						D3DXVECTOR3(1.f, 1.f, 1.f));
+			ghost->SetStartNode(ObjectSpawnList[i].Node);
+			ObjListTest.push_back(ghost);
+		}
+
 		/*if ( ObjectSpawnList[i].Type == PACMAN)
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);*/
 	}
-
-	m_ghost.Init(m_Device, m_DeviceContext, m_shaders.get("Billboard"), "Content/Img/ghost.png", D3DXVECTOR3(0.f, 0.f, 0.f), D3DXVECTOR3(1.f, 1.f, 1.f));
 }
 
 void Game::Update(const float dt)
@@ -56,7 +66,12 @@ void Game::Update(const float dt)
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
 
+<<<<<<< HEAD
 	
+=======
+	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+		(*it)->Update(dt);
+>>>>>>> 0a26f5bee8aef0857cede20f84691a1a2189d178
 
 	d3dApp::Update(dt);
 }
@@ -70,7 +85,6 @@ void Game::Draw()
  		ObjListTest[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
-	m_ghost.Draw(m_DeviceContext, mCamera);
 
 	DrawEnd();
 }
