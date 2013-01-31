@@ -8,10 +8,10 @@ Map::Map(void)
 
 Map::~Map(void)
 {
-	delete m_nodes;
+	delete[] m_nodes;
 }
 
-std::vector<MapOutput> Map::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR map, int width, int height)
+std::vector<MapOutput> Map::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR map, int width, int height)
 {
 	std::vector<MapOutput> output;
 	m_size = 10;
@@ -32,8 +32,12 @@ std::vector<MapOutput> Map::Init(ID3D11Device* device, ID3D11DeviceContext* devi
 	output = CreateOutput(ColorMap, width, height);
 
 	// Init d3d
-	Obj3D::Init(device,deviceContext,"Content/Img/mazetexture.png",D3DXVECTOR3(0,0,0),D3DXVECTOR3(1,1,1));
+	Obj3D::Init(device,deviceContext, shader, "Content/Img/mazetexture.png",D3DXVECTOR3(0,0,0),D3DXVECTOR3(1,1,1));
 	return output;
+}
+
+void Map::Update(const float dt)
+{
 }
 
 std::vector<int>		Map::CreateColorMap(LPCSTR Filename, int width, int height)
@@ -174,6 +178,18 @@ std::vector<MapOutput>	Map::CreateOutput(std::vector<int> ColorMap, int width, i
 }
 void					Map::CreateNodes(std::vector<int> ColorMap, int width, int height)
 {
+	//	 NODE STRUCTURE
+	// z
+	// ^
+	// |      Left
+	// |       o				Up		= -x
+	// |       |				Back	= +x
+	// |  Up o-o-o Back			Left	= +z
+	// |       |				Right	= -z
+	// |       o 
+	// |     Right
+	//-|-----------------> x
+
 	m_nodes = new Node[width*height];
 	int z = 0, x = 0;
 	for (int i = 0; i < ColorMap.size(); i++) 

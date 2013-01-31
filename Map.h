@@ -3,21 +3,7 @@
 
 #include "stdafx.h"
 #include "Obj3D.h"
-
-struct Node
-{
-	Node() {}
-	Node(D3DXVECTOR3 p)
-	{
-		Position = p;
-		Front = Back = Left = Right = NULL;
-	}
-	Node*			Front;
-	Node*			Back;
-	Node*			Left;
-	Node*			Right;
-	D3DXVECTOR3		Position;
-};	
+#include "Node.h"
 
 enum ObjectType
 {
@@ -46,7 +32,9 @@ public:
 	Map(void);
 	~Map(void);
 
-	std::vector<MapOutput> Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, LPCSTR map, int width, int height);
+	std::vector<MapOutput> Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR map, int width, int height);
+
+	void Update(const float dt);
 private:
 	int						m_elements;
 	int						m_size;

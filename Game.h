@@ -6,6 +6,8 @@
 #include "Candy.h"
 #include "Map.h"
 #include "Player.h"
+#include "Ghost.h"
+#include "ShaderManager.h"
 
 class Game : public d3dApp
 {
@@ -14,13 +16,17 @@ public:
 	~Game(void);
 
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
-	void Update(float dt);
+	void Update(const float dt);
 	void Draw();
 private:
+	void initShaderManager(void);
 
 	std::vector<Obj3D *> ObjListTest;
 	Map m_map;
 	Player mPlayer;
+	Ghost m_ghost;
+	ShaderManager m_shaders;
+
 	void CameraFollowPlayer();
 
 	Player::Direction mLastKeyDir;

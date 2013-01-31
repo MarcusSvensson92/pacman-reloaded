@@ -1,11 +1,9 @@
 #pragma once
 #include "stdafx.h"
-#include "Camera.h"
+#include "Node.h"
 
 class Player
 {
-
-
 public:
 
 	enum PlayerStatus
@@ -24,32 +22,37 @@ public:
 	};
 
 	Player();
-	Player(D3DXVECTOR3 _pos/*, Node _node*/);
+	Player(D3DXVECTOR3 _pos, Node* _node);
 	~Player(void);
 
 	void Kill();
 	void Eat();
 	
 
-/*	Node		GetNode();*/
+	//Node		GetNode();
 	D3DXVECTOR3 GetPosition();
 	PlayerStatus GetStatus();
 
 	void Update();
 
-	void ChangeDirection(Direction dir);
+	void ChangeDirection(Direction dir,D3DXVECTOR3 look);
 
 private:
 
 	D3DXVECTOR3 mPosition;
 
-	Direction mDirection;
-	PlayerStatus mStatus;
+	D3DXVECTOR3 mRight;
+	D3DXVECTOR3 mUp;
+	D3DXVECTOR3 mLook;
 
-	bool		mSuperCandy;
-/*	Node		mNode;*/
+	Direction		mDirection;
+	PlayerStatus	mStatus;
+
+	bool			mSuperCandy;
+	Node*			mNode;
+	Node*			mNextNode;
 
 	
-	void Move();
+	void Move(Direction dir);
 };
 
