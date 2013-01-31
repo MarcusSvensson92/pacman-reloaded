@@ -83,7 +83,7 @@ technique11 BasicTech
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
 	    
-	    SetRasterizerState( NoCulling );
+	    SetRasterizerState( CullBack );
 
 		SetBlendState( AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
     }  
