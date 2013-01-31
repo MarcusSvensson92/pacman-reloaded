@@ -35,12 +35,21 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjListTest.push_back(candy);
 		}
 
-		if (ObjectSpawnList[i].Type == RED_GHOST)
+		if (ObjectSpawnList[i].Type == PINK_GHOST ||
+			ObjectSpawnList[i].Type == RED_GHOST ||
+			ObjectSpawnList[i].Type == ORANGE_GHOST ||
+			ObjectSpawnList[i].Type == TEAL_GHOST)
 		{
+			std::string textureFilename;
+			if (ObjectSpawnList[i].Type == PINK_GHOST)	 textureFilename = "Content/Img/pinkghost.png";
+			if (ObjectSpawnList[i].Type == RED_GHOST)	 textureFilename = "Content/Img/redghost.png";
+			if (ObjectSpawnList[i].Type == ORANGE_GHOST) textureFilename = "Content/Img/orangeghost.png";
+			if (ObjectSpawnList[i].Type == TEAL_GHOST)   textureFilename = "Content/Img/tealghost.png";
+
 			Ghost* ghost = new Ghost();
 			ghost->Init(m_Device, m_DeviceContext,
 						m_shaders.get("Billboard"),
-						"Content/Img/ghost.png",
+						textureFilename.c_str(),
 						ObjectSpawnList[i].Node->GetPosition(),
 						D3DXVECTOR3(1.f, 1.f, 1.f));
 			ghost->SetStartNode(ObjectSpawnList[i].Node);
