@@ -75,6 +75,7 @@
     <ClInclude Include="AudioEngine.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="PathFinding.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">

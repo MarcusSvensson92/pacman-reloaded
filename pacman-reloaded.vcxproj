@@ -160,6 +160,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Obj3D.h" />
+    <ClInclude Include="PathFinding.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderManager.h" />
