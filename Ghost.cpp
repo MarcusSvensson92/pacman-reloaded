@@ -2,6 +2,7 @@
 #include "Ghost.h"
 #include <time.h>
 #include <cstdlib>
+#include "PathFinding.h"
 
 const D3DXVECTOR2 g_ghostSize  = D3DXVECTOR2(7.f, 7.f);
 const float		  g_ghostSpeed = 20.f;
@@ -98,6 +99,10 @@ void Ghost::ComputeNewNodes(void)
 {
 	if (!m_end)
 		m_end = m_start;
+
+	////testkod
+	//std::vector<Node*> test;
+	//test = findPath(D3DXVECTOR3(10,0,10), m_start);
 
 	std::vector<Node*> possibleNodes;
 	if (m_end->Front && m_end->Front != m_start) possibleNodes.push_back(m_end->Front);
