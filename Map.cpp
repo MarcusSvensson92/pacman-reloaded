@@ -83,7 +83,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 			//Create front wall
 			if ( i-width >= 0 )
 			{
-				if ( ColorMap[i-width] == 0 )
+				if ( ColorMap[i-width] == 0 || ColorMap[i-width] == 118 || ColorMap[i-width] == 119 || ColorMap[i-width] == 120 || ColorMap[i-width] == 121 )
 				{
 					output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 					output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
@@ -96,7 +96,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 			//Create back wall
 			if (i+width < width*height)
 			{
-				if ( ColorMap[i+width] == 0 )
+				if ( ColorMap[i+width] == 0 || ColorMap[i+width] == 118 || ColorMap[i+width] == 119 || ColorMap[i+width] == 120 || ColorMap[i+width] == 121 )
 				{
 					output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 					output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
@@ -107,7 +107,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 				}
 			}
 			//Create left wall
-			if ( ColorMap[i-1] == 0 )
+			if ( ColorMap[i-1] == 0 || ColorMap[i-1] == 118 || ColorMap[i-1] == 119 || ColorMap[i-1] == 120 || ColorMap[i-1] == 121 )
 			{
 				output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 				output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
@@ -117,7 +117,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 				output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), -(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.95f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			}
 			//Create right wall
-			if ( ColorMap[i+1] == 0 )
+			if ( ColorMap[i+1] == 0 || ColorMap[i+1] == 118 || ColorMap[i+1] == 119 || ColorMap[i+1] == 120 || ColorMap[i+1] == 121 )
 			{
 				output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 				output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.70f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
@@ -214,8 +214,7 @@ void					Map::ConnectNodes(std::vector<int> ColorMap, int width, int height)
 	int z = 0, x = 0;
 	for (int i = 0; i < ColorMap.size(); i++) 
 	{
-		// Add node
-		if ( ColorMap[i] != 0 )
+		if ( ColorMap[i] != 0 && ColorMap[i-width] != 118 && ColorMap[i-width] != 119 && ColorMap[i-width] != 120 && ColorMap[i-width] != 121 )
 		{
 			// Connect back node
 			if (i+width < width*height)

@@ -32,23 +32,31 @@ namespace Pathfinding
 	{
 		int h;
 		Node* temp;
-		temp = startNode->Front; // Om startNode->Front är NULL...
-		h = hValue(endPosition, temp->GetPosition()); // ...så får man runtime-error här!
-		if (h > hValue(endPosition, startNode->Back->GetPosition()))
+		std::vector<Node*> tempList;
+		if (startNode->Front != NULL)
+			tempList.push_back(startNode->Front);
+		if (startNode->Back != NULL)
+			tempList.push_back(startNode->Back);
+		if (startNode->Left != NULL)
+			tempList.push_back(startNode->Left);
+		if (startNode->Right != NULL)
+			tempList.push_back(startNode->Right);
+
+		if (tempList.size() == 1)
+			return tempList[0];
+
+		temp = tempList.back();
+		tempList.pop_back();
+
+		for (int i = 0; i < tempList.size(); i++) 
 		{
-			temp = startNode->Back;
-			h = hValue(endPosition, temp->GetPosition());
+			if (hValue(temp->GetPosition(), endPosition) >= hValue(tempList.back()->GetPosition(), endPosition))
+			{
+				temp = tempList.back();
+				tempList.pop_back();
+			}
 		}
-		if (h > hValue(endPosition, startNode->Left->GetPosition()))
-		{
-			temp = startNode->Left;
-			h = hValue(endPosition, temp->GetPosition());
-		}
-		if (h > hValue(endPosition, startNode->Right->GetPosition()))
-		{
-			temp = startNode->Right;
-			h = hValue(endPosition, temp->GetPosition());
-		}
+
 		return temp;
 	}
 	Node* ClosestNeighbor(Node* endNode, Node* startNode)
