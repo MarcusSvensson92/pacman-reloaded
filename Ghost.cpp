@@ -77,7 +77,6 @@ void Ghost::UpdateVelocity(const float dt)
 
 	if (IsEndNodePassed())
 	{
-		mPosition = m_end->GetPosition();
 		ComputeNewNodes();
 	}
 }
@@ -100,10 +99,6 @@ void Ghost::ComputeNewNodes(void)
 	if (!m_end)
 		m_end = m_start;
 
-	////testkod
-	//std::vector<Node*> test;
-	//test = findPath(D3DXVECTOR3(10,0,10), m_start);
-
 	std::vector<Node*> possibleNodes;
 	if (m_end->Front && m_end->Front != m_start) possibleNodes.push_back(m_end->Front);
 	if (m_end->Back  && m_end->Back  != m_start) possibleNodes.push_back(m_end->Back);
@@ -119,7 +114,10 @@ void Ghost::ComputeNewNodes(void)
 	}
 	else
 	{
-		// AI behaviour
-		m_end = possibleNodes[rand() % n];
+		// Random AI behaviour
+		// m_end = possibleNodes[rand() % n];
+
+		// Smart AI behaviour
+		m_end = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
 	}
 }

@@ -25,17 +25,15 @@ namespace Pathfinding
 		return xDistance + zDistance;
 	}
 
-
-	Node* ClosestNeighbor(Node* endNode, Node* startNode)
-	{
-		return ClosestNeighbor(endNode->GetPosition(), startNode);
-	}
+	// ----- READ THIS!!!!!
+	// Returns startNode's Neightbor that is closest to the endNode
+	//	(Stupid pathfinding)
 	Node* ClosestNeighbor(D3DXVECTOR3 endPosition, Node* startNode)
 	{
 		int h;
 		Node* temp;
-		temp = startNode->Front;
-		h = hValue(endPosition, temp->GetPosition());
+		temp = startNode->Front; // Om startNode->Front är NULL...
+		h = hValue(endPosition, temp->GetPosition()); // ...så får man runtime-error här!
 		if (h > hValue(endPosition, startNode->Back->GetPosition()))
 		{
 			temp = startNode->Back;
@@ -53,11 +51,14 @@ namespace Pathfinding
 		}
 		return temp;
 	}
-
-	std::vector<Node*> findPath(Node* endNode, Node* startNode)
+	Node* ClosestNeighbor(Node* endNode, Node* startNode)
 	{
-		return findPath(endNode->GetPosition(), startNode);
+		return ClosestNeighbor(endNode->GetPosition(), startNode);
 	}
+
+	// ----- READ THIS!!!!!
+	// Use pop_back to this output to get the Nodes in right order.
+	//	(Smart pathfinding)
 	std::vector<Node*> findPath(D3DXVECTOR3 endPosition, Node* startNode)
 	{
 		std::vector<pathNode> openList, usedList;
@@ -165,6 +166,15 @@ namespace Pathfinding
 			output.push_back(temp->n);
 			temp = temp->p;
 		}
+
+		// Deallocating closed list
+		for(std::vector<pathNode*>::iterator it = closedList.begin(); it != closedList.end(); it++)
+			delete (*it);
+
 		return output;
+	}
+	std::vector<Node*> findPath(Node* endNode, Node* startNode)
+	{
+		return findPath(endNode->GetPosition(), startNode);
 	}
 }

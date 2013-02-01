@@ -120,6 +120,7 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Pathfinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">

@@ -19,7 +19,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	initShaders();
 
-	m_audio.Initialize(hwnd);
+	//m_audio.Initialize(hwnd);
 
 	// Init Map and fetch ObjectSpawnList
 	std::vector<MapOutput> ObjectSpawnList;
