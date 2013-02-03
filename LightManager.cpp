@@ -28,7 +28,7 @@ std::vector<PointLight> LightManager::SetCandyLights()
 	standardLight.Diffuse =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
 	standardLight.Specular =	D3DXVECTOR4(0.001f, 0.001f, 0.001f, 1.0f);
 	standardLight.Att =			D3DXVECTOR3(0.0f,0.3f, 0.0f);
-	standardLight.Range =		100;
+	standardLight.Range =		10;
 
 	for(int i = 0; i < Lights.size(); i++)
 	{

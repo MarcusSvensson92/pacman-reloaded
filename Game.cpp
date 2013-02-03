@@ -38,7 +38,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
 
-			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
+			m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
@@ -90,8 +90,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	}
 
 	// Send all candy lights to Shader
-	//std::vector<PointLight> tempLights = m_lights.SetCandyLights();
-	//m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*250);
+	std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*241);
 	
 }
 
