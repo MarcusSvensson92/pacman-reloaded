@@ -31,7 +31,11 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		if ( ObjectSpawnList[i].Type == CANDY )
 		{	
 			Candy* candy = new Candy();
-			candy->Init(m_Device, m_DeviceContext, m_shaders.get("Basic"), "Content/Img/white.png", ObjectSpawnList[i].Node->GetPosition(), D3DXVECTOR3(1,1,1));
+			candy->Init(m_Device, m_DeviceContext,
+				m_shaders.get("Billboard"),
+				"Content/Img/white.png",
+				ObjectSpawnList[i].Node->GetPosition(),
+				D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
 
 			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);

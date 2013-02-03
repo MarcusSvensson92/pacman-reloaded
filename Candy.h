@@ -5,14 +5,17 @@ class Candy :
 {
 public:
 	Candy(void);
-	Candy(ID3D11Device* device, ID3D11DeviceContext* deviceContext, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	~Candy(void);
+
+	bool IsEaten(void) { return eaten; }
+
+	void Eat() { eaten=true; }
+
 	void Update(const float dt);
 	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
-	void Eat(){eaten=true;};
+private:
+	void InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 	bool eaten;
-private:
-	void LoadModel(void);
 };
 
