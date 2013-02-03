@@ -80,6 +80,9 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 		/*if ( ObjectSpawnList[i].Type == PACMAN)
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);*/
+
+			//m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
+		
 	}
 
 	// Send all candy lights to Shader
@@ -111,9 +114,9 @@ void Game::Draw()
 {
 	DrawBegin();
 
-	// Update ghost lights
-	std::vector<PointLight> tempLights = m_lights.SetGhostLights();
-	m_shaders.get("Basic")->SetRawData("gGhostLights", &tempLights[0], sizeof(PointLight)*4);
+	// Update moving lights
+	std::vector<PointLight> tempLights = m_lights.SetMovingLights();
+	m_shaders.get("Basic")->SetRawData("gMovingLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 
 	// Loop to draw Objects
  	for (int i = 0; i < ObjListTest.size(); i++) 

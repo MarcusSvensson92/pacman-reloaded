@@ -94,9 +94,9 @@ float4 PSSceneLights(PSSceneIn input) : SV_Target
 	}
 
 	[loop]
-	for( uint i = 0;i < GHOSTLIGHTS; i++ )
+	for( uint i = 0;i < MOVINGLIGHTS; i++ )
 	{
-		ComputePointLight(gMaterial, gGhostLights[i], input.posW, input.normalW, toEyeW, A, D, S);
+		ComputePointLight(gMaterial, gMovingLights[i], input.posW, input.normalW, toEyeW, A, D, S);
 		ambient += A;
 		diffuse += D;
 		specular += S;

@@ -9,6 +9,7 @@ enum LightType
 	GHOSTLIGHT_ORANGE,
 	GHOSTLIGHT_PINK,
 	GHOSTLIGHT_TEAL,
+	PACMANLIGHT,
 };
 
 struct Light
@@ -40,7 +41,7 @@ public:
 	void Init();
 	void AddLight(D3DXVECTOR3* position, LightType type);
 	std::vector<PointLight> SetCandyLights();
-	std::vector<PointLight> SetGhostLights();
+	std::vector<PointLight> SetMovingLights();
 private:
 	std::vector<Light> Lights;
 };

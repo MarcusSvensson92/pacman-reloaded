@@ -57,7 +57,7 @@ std::vector<PointLight> LightManager::SetCandyLights()
 	return tempList;
 }
 
-std::vector<PointLight> LightManager::SetGhostLights()
+std::vector<PointLight> LightManager::SetMovingLights()
 {
 	std::vector<PointLight> tempList;
 	PointLight standardLight;
@@ -98,6 +98,13 @@ std::vector<PointLight> LightManager::SetGhostLights()
 
 			standardLight.Ambient =		D3DXVECTOR4(0.0f, 1.0f, 1.0f, 1.0f);
 			standardLight.Diffuse =		D3DXVECTOR4(0.0f, 1.0f, 1.0f, 1.0f);
+			tempList.push_back(standardLight);
+			break;
+
+		case PACMANLIGHT:
+
+			standardLight.Ambient =		D3DXVECTOR4(1.0f, 1.0f, 0.0f, 1.0f);
+			standardLight.Diffuse =		D3DXVECTOR4(1.0f, 1.0f, 0.0f, 1.0f);
 			tempList.push_back(standardLight);
 			break;
 

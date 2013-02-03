@@ -1,5 +1,5 @@
 #define CANDYLIGHTS 1
-#define GHOSTLIGHTS 4
+#define MOVINGLIGHTS 5
 
 
 struct DirectionalLight
@@ -54,7 +54,7 @@ cbuffer EveryFrame
 	matrix gWorld;
 	matrix gWVP;
 
-	PointLight2 gGhostLights[GHOSTLIGHTS];
+	PointLight2 gMovingLights[MOVINGLIGHTS];
 };
 
 struct Material
