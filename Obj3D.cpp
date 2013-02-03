@@ -90,3 +90,8 @@ void Obj3D::Draw(ID3D11DeviceContext* m_DeviceContext,Camera camera)
 	m_DeviceContext->Draw(mMesh.size(),0);
 	
 }
+
+D3DXVECTOR3* Obj3D::GetPositionPtr()
+{
+	return &mPosition;
+}

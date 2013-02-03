@@ -32,6 +32,9 @@ public:
 	
 	virtual void Update(const float dt) = 0;
 	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
+
+	D3DXVECTOR3* GetPositionPtr();
+
 protected:
 	virtual void InitBuffers( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
 	virtual void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);

@@ -42,7 +42,7 @@ PSSceneIn VSScene(VSIn input)
 
 	output.spec = input.spec;
 	output.diffuse = input.diffuse;
-		
+	
 	return output;
 }
 
@@ -71,6 +71,49 @@ float4 PSScene(PSSceneIn input) : SV_Target
 }
 
 
+float4 PSSceneLights(PSSceneIn input) : SV_Target
+{	
+	Material gMaterial;
+	gMaterial.Ambient = float4(0.5f, 0.5f, 0.5f, 1.0f);
+	gMaterial.Diffuse = float4(0.5f, 0.5f, 0.5f, 1.0f);
+	gMaterial.Specular = float4(0.2f, 0.2f, 0.2f, 1.0f);
+
+	input.normalW = normalize(input.normalW);
+
+	float3 toEyeW = normalize(gEyePos - input.posW);
+	
+	float4 A,D,S,ambient,diffuse,specular;
+
+	[loop]
+	for( uint i = 0;i < CANDYLIGHTS; i++ )
+	{
+		ComputePointLight(gMaterial, gCandyLights[i], input.posW, input.normalW, toEyeW, A, D, S);
+		ambient += A;
+		diffuse += D;
+		specular += S;
+	}
+
+	[loop]
+	for( uint i = 0;i < GHOSTLIGHTS; i++ )
+	{
+		ComputePointLight(gMaterial, gGhostLights[i], input.posW, input.normalW, toEyeW, A, D, S);
+		ambient += A;
+		diffuse += D;
+		specular += S;
+	}
+
+	float4 texColor = mTexture.Sample(linearSampler, input.Tex);
+
+	float4 litColor = texColor*((ambient + diffuse) + specular);
+
+	litColor.a = gMaterial.Diffuse.a;
+
+	return litColor;
+}
+
+
+
+
 //-----------------------------------------------------------------------------------------
 // Technique: RenderTextured  
 //-----------------------------------------------------------------------------------------
@@ -81,7 +124,7 @@ technique11 BasicTech
 		// Set VS, GS, and PS
         SetVertexShader( CompileShader( vs_4_0, VSScene() ) );
         SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
+        SetPixelShader( CompileShader( ps_4_0, PSSceneLights() ) );
 	    
 	    SetRasterizerState( CullBack );
 

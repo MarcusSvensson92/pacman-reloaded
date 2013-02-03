@@ -33,6 +33,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			Candy* candy = new Candy();
 			candy->Init(m_Device, m_DeviceContext, m_shaders.get("Basic"), "Content/Img/white.png", ObjectSpawnList[i].Node->GetPosition(), D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
+
+			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
@@ -40,13 +42,33 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjectSpawnList[i].Type == ORANGE_GHOST ||
 			ObjectSpawnList[i].Type == TEAL_GHOST)
 		{
-			std::string textureFilename;
-			if (ObjectSpawnList[i].Type == PINK_GHOST)	 textureFilename = "Content/Img/pinkghost.png";
-			if (ObjectSpawnList[i].Type == RED_GHOST)	 textureFilename = "Content/Img/redghost.png";
-			if (ObjectSpawnList[i].Type == ORANGE_GHOST) textureFilename = "Content/Img/orangeghost.png";
-			if (ObjectSpawnList[i].Type == TEAL_GHOST)   textureFilename = "Content/Img/tealghost.png";
-
 			Ghost* ghost = new Ghost();
+
+			std::string textureFilename;
+			if (ObjectSpawnList[i].Type == PINK_GHOST)
+			{	 
+				textureFilename = "Content/Img/pinkghost.png"; 
+				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_PINK);
+			}
+
+			if (ObjectSpawnList[i].Type == RED_GHOST)
+			{	 
+				textureFilename = "Content/Img/redghost.png"; 
+				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_RED);
+			}
+
+			if (ObjectSpawnList[i].Type == ORANGE_GHOST)
+			{ 
+				textureFilename = "Content/Img/orangeghost.png"; 
+				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_ORANGE);
+			}
+
+			if (ObjectSpawnList[i].Type == TEAL_GHOST)
+			{  
+				textureFilename = "Content/Img/tealghost.png"; 
+				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_TEAL);
+			}
+			
 			ghost->Init(m_Device, m_DeviceContext,
 						m_shaders.get("Billboard"),
 						textureFilename.c_str(),
@@ -59,6 +81,11 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		/*if ( ObjectSpawnList[i].Type == PACMAN)
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);*/
 	}
+
+	// Send all candy lights to Shader
+	//std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+	//m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*250);
+	
 }
 
 void Game::Update(const float dt)
@@ -83,6 +110,10 @@ void Game::Update(const float dt)
 void Game::Draw()
 {
 	DrawBegin();
+
+	// Update ghost lights
+	std::vector<PointLight> tempLights = m_lights.SetGhostLights();
+	m_shaders.get("Basic")->SetRawData("gGhostLights", &tempLights[0], sizeof(PointLight)*4);
 
 	// Loop to draw Objects
  	for (int i = 0; i < ObjListTest.size(); i++) 

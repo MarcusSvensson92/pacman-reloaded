@@ -76,6 +76,7 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="PathFinding.h" />
+    <ClInclude Include="LightManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -121,6 +122,7 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Pathfinding.cpp" />
+    <ClCompile Include="LightManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">
