@@ -102,14 +102,16 @@ void Ghost::UpdateVelocity(const float dt)
 
 void Ghost::UpdateTexture(void)
 {
-	const float eatableBlueTime	 = 5.f;
-	const float totalEatableTime = 8.f;
+	const float eatableBlueTime	 = 3.f;
+	const float totalEatableTime = 5.f;
 
 	if (m_eatable)
 	{
 		if (m_elapsedTime >= eatableBlueTime)
 		{
-			if (m_elapsedTime - (int)m_elapsedTime > 0.5f)
+			const float t = m_elapsedTime - (int)m_elapsedTime;
+			if (t > 0.25f && t < 0.5f ||
+				t > 0.75f && t < 1.f)
 				mShader->SetResource("gTexture", m_eatableTexture1);
 			else
 				mShader->SetResource("gTexture", m_eatableTexture2);
