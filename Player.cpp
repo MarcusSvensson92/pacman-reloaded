@@ -14,6 +14,12 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 	mPosition = _pos;
 	mNode = _node;
 	mNextNode = _node;
+	mPosition = mNode->GetPosition();
+	mDirection = PAUSE;
+	mMoveIterations = 0;
+	mMaxIterations = 10;
+	mMoveVector = D3DXVECTOR3(0,0,0);
+	
 }
 
 
@@ -22,101 +28,75 @@ Player::~Player(void)
 
 }
 
-//inte klart
-void Player::Update()
+void Player::Update(D3DXVECTOR3 look)
 {
-	D3DXVECTOR3 distance;
-	distance = mNextNode->GetPosition() - mNode->GetPosition();
-
-	mPosition += distance/100;
-
-	if(mNextNode->GetPosition() == mPosition)
-		mNextNode = mNode;
+	Move();
+	ChangeDirection(look);
 }
 
-//jävligt oklart, håller på å fatta hur det ska gå ihop.
-void Player::ChangeDirection( Direction dir ,D3DXVECTOR3 look)
+void Player::InputDirection(D3DXVECTOR3 look)
 {
-	mDirection = dir;
-// 	switch (dir)
-// 	{
-// 	case FORWARD:
-// 		if (mNode->Front != NULL)
-// 			mNode = mNode->Front;
-// 		break;
-// 	case BACKWARD:
-// 		if (mNode->Back != NULL)
-// 			mNode = mNode->Back;
-// 		break;
-// 	case LEFT:
-// 		if (mNode->Left != NULL)
-// 			mNode = mNode->Left;
-// 		break;
-// 	case RIGHT:
-// 		if (mNode->Right != NULL)
-// 			mNode = mNode->Right;
-// 		break;
-// 	}
+	//	 NODE STRUCTURE			-- skiljer sig mot deklarationen i Map. z är motsatt?
+	// z
+	// ^
+	// |      Right
+	// |       o				Up		= -x 
+	// |       |				Back	= +x 
+	// |  Up o-o-o Back			Right	= +z 
+	// |       |				Left	= -z 
+	// |       o 
+	// |     Left
+	//-|-----------------> x
 
-	D3DXVec3Normalize(&look,&look);
+	if(look.x < 0 && look.z > -0.5f && look.z < 0.5f)
+		mDirection = FORWARD;
+	else if (look.x > 0 && look.z < 0.5f && look.z > -0.5f)
+		mDirection = BACKWARD;
 
-	D3DXVECTOR3 lookingAt;//,a,b,c,d,e;
+	else if(look.z < 0 && look.x < 0.5f && look.x > -0.5f)
+		mDirection = LEFT;
+	else if(look.z > 0 && look.x > -0.5f && look.x < 0.5f)
+		mDirection = RIGHT;
+}
 
-		float a,b,c,d,e;
-
-	if (mNode->Front != NULL)
-	{lookingAt = D3DXVECTOR3(-1,0,0)+ look;
-	D3DXVec3Normalize(&lookingAt,&lookingAt);
-	a = D3DXVec3Dot(&lookingAt,&look);}
-	else a = 255;
-
-	if (mNode->Back != NULL)
-	{lookingAt = D3DXVECTOR3(1,0,0)+ look;
-	D3DXVec3Normalize(&lookingAt,&lookingAt);
-	b = D3DXVec3Dot(&lookingAt,&look);}
-	else b = 255;
-
-	if (mNode->Left != NULL)
-	{lookingAt = D3DXVECTOR3(0,0,1)+ look;
-	D3DXVec3Normalize(&lookingAt,&lookingAt);
-	c = D3DXVec3Dot(&lookingAt,&look);}
-	else c = 255;
-
-	if (mNode->Right != NULL)
-	{lookingAt = D3DXVECTOR3(0,0,-1) + look;
-	D3DXVec3Normalize(&lookingAt,&lookingAt);
-	d = D3DXVec3Dot(&lookingAt,&look);}
-	else d = 255;
-
-	std::vector<float> numbers;
-
-	numbers.push_back(a);
-	numbers.push_back(b);
-	numbers.push_back(c);
-	numbers.push_back(d);
-
-	std::sort(numbers.begin(),numbers.end());
-
-	if(a == numbers[0])
+void Player::ChangeDirection(D3DXVECTOR3 look)
+{
+	//PAUSE innebär att man nått en ny nod, då kan man byta
+	if(mDirection == PAUSE)
 	{
-		mNextNode = mNode->Front;
+		D3DXVec3Normalize(&look,&look);
+
+		InputDirection(look);
+
+		if (mDirection == FORWARD		&& mNode->Front!=NULL)
+		{mNextNode = mNode->Front;	mMoveVector = mNextNode->GetPosition() - mPosition;}
+		else if (mDirection == BACKWARD	&& mNode->Back!=NULL)
+		{mNextNode = mNode->Back;	mMoveVector = mNextNode->GetPosition() - mPosition;}
+		else if (mDirection == LEFT		&& mNode->Left!=NULL)
+		{mNextNode = mNode->Left;	mMoveVector = mNextNode->GetPosition() - mPosition;}
+		else if (mDirection == RIGHT	&& mNode->Right!=NULL)
+		{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;}
+		else mDirection = PAUSE;
 	}
-	else if(b == numbers[0])
-	{
-		mNextNode = mNode->Back;
-	}
-	else if(c == numbers[0])
-	{
-		mNextNode = mNode->Left;
-	}
-	else if(d == numbers[0])
-	{
-		mNextNode = mNode->Right;
-	}
+	
 }
 
 
-void Player::Move(Direction dir)
+void Player::Move()
 {
+	//kör iterationerna så länge man inte nått noden -> != PAUSE.
+	if(mDirection != PAUSE)
+	{
+		mPosition += mMoveVector/mMaxIterations;
 
+		mNode = mNextNode; 
+
+		mMoveIterations++;
+
+		if(mMoveIterations > mMaxIterations)
+		{
+			mDirection = PAUSE;
+			mMoveIterations =0;
+		}
+	}
 }

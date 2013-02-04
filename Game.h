@@ -31,7 +31,7 @@ private:
 	LightManager m_lights;
 
 	void CameraFollowPlayer();
-
+	void DebugCam(const float dt );
 	Player::Direction mLastKeyDir;
 };
 

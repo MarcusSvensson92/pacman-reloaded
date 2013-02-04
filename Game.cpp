@@ -82,8 +82,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjListTest.push_back(ghost);
 		}
 
-		/*if ( ObjectSpawnList[i].Type == PACMAN)
-			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);*/
+		if ( ObjectSpawnList[i].Type == PACMAN)
+			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
 
 			//m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
 		
@@ -97,17 +97,13 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 void Game::Update(const float dt)
 {
-	/*if(mPlayer.GetStatus() == Player::ALIVE)
-	{CameraFollowPlayer(); mPlayer.Update();}*/
+	if(mPlayer.GetStatus() == Player::ALIVE)
+	{
+		CameraFollowPlayer(); 
+		mPlayer.Update(mCamera.GetLook());
+	}
 
-	if (GetAsyncKeyState('W') & 0x8000)
-		mCamera.Walk(20.f * dt);
-	if (GetAsyncKeyState('S') & 0x8000)
-		mCamera.Walk(-20.f * dt);
-	if (GetAsyncKeyState('A') & 0x8000)
-		mCamera.Strafe(-20.f * dt);
-	if (GetAsyncKeyState('D') & 0x8000)
-		mCamera.Strafe(20.f * dt);
+	//DebugCam(dt);
 
 	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
 		(*it)->Update(dt);
@@ -154,18 +150,17 @@ void Game::initShaders(void)
 
 void Game::CameraFollowPlayer()
 {
-	
+	mCamera.SetPosition(mPlayer.GetPosition());
+}
 
-
+void Game::DebugCam(const float dt )
+{
 	if (GetAsyncKeyState('W') & 0x8000)
-	{mPlayer.ChangeDirection(mLastKeyDir,mCamera.GetLook());mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0,1.5f,0));}
-	else if (GetAsyncKeyState('S') & 0x8000)
-		mLastKeyDir = Player::Direction::BACKWARD;
-	else if (GetAsyncKeyState('A') & 0x8000)
-		mLastKeyDir = Player::Direction::LEFT;
-	else if (GetAsyncKeyState('D') & 0x8000)
-		mLastKeyDir = Player::Direction::RIGHT;
-
-	
-
+		mCamera.Walk(20.f * dt);
+	if (GetAsyncKeyState('S') & 0x8000)
+		mCamera.Walk(-20.f * dt);
+	if (GetAsyncKeyState('A') & 0x8000)
+		mCamera.Strafe(-20.f * dt);
+	if (GetAsyncKeyState('D') & 0x8000)
+		mCamera.Strafe(20.f * dt);
 }

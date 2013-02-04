@@ -15,10 +15,11 @@ public:
 
 	enum Direction
 	{
-		FORWARD,
-		BACKWARD,
-		LEFT,
-		RIGHT,
+		PAUSE = 0,
+		FORWARD = 1,
+		BACKWARD = 2,
+		LEFT = 3,
+		RIGHT = 4,
 	};
 
 	Player();
@@ -33,26 +34,27 @@ public:
 	D3DXVECTOR3 GetPosition();
 	PlayerStatus GetStatus();
 
-	void Update();
-
-	void ChangeDirection(Direction dir,D3DXVECTOR3 look);
+	void Update(D3DXVECTOR3 look);
 
 private:
 
-	D3DXVECTOR3 mPosition;
-
-	D3DXVECTOR3 mRight;
-	D3DXVECTOR3 mUp;
-	D3DXVECTOR3 mLook;
+	D3DXVECTOR3		mMoveVector;
+	D3DXVECTOR3		mPosition;
 
 	Direction		mDirection;
 	PlayerStatus	mStatus;
 
 	bool			mSuperCandy;
+
 	Node*			mNode;
 	Node*			mNextNode;
 
+	UINT			mMoveIterations;
+	UINT			mMaxIterations;
+
 	
-	void Move(Direction dir);
+	void Move();
+	void InputDirection(D3DXVECTOR3 look);
+	void ChangeDirection(D3DXVECTOR3 look);
 };
 
