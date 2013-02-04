@@ -117,7 +117,10 @@ void Ghost::UpdateTexture(void)
 				mShader->SetResource("gTexture", m_eatableTexture2);
 
 			if (m_elapsedTime >= totalEatableTime)
+			{
 				m_eatable = false;
+				mShader->SetResource("gTexture", mTexture);
+			}
 		}
 		else
 			mShader->SetResource("gTexture", m_eatableTexture1);
