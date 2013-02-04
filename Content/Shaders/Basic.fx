@@ -66,8 +66,8 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	lightColor = CalcPointLight(sfi,gLight,gEyePos) + CalcDirectionalLight(sfi,input.normalW, gEyePos);
 
-	return color;
-	//return float4(lightColor,color.a);
+	//return color;
+	return float4(lightColor,color.a);
 }
 
 
@@ -128,6 +128,6 @@ technique11 BasicTech
 	    
 	    SetRasterizerState( CullBack );
 
-		SetBlendState( AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+		SetBlendState( AlphaBlending1, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
     }  
 }
