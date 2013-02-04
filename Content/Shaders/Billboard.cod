@@ -20,7 +20,7 @@ cbuffer cbConstants
 // 2 local object(s)
 //
 Texture2D gTexture;
-SamplerState linearSampler
+SamplerState linSampler
 {
     Filter   = uint(MIN_MAG_MIP_LINEAR /* 21 */);
     AddressU = uint(CLAMP /* 3 */);

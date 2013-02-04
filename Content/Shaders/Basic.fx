@@ -104,7 +104,7 @@ float4 PSSceneLights(PSSceneIn input) : SV_Target
 
 	float4 texColor = mTexture.Sample(linearSampler, input.Tex);
 
-	float4 litColor = texColor*((ambient + diffuse) + specular);
+	float4 litColor = texColor*(ambient + diffuse) + specular;
 
 	litColor.a = gMaterial.Diffuse.a;
 

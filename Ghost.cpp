@@ -12,6 +12,10 @@ Ghost::Ghost(void)
 	m_start = NULL;
 	m_end   = NULL;
 
+	m_eatable = false;
+
+	m_elapsedTime = 0.f;
+
 	srand(time(NULL));
 }
 
@@ -22,6 +26,9 @@ Ghost::~Ghost(void)
 void Ghost::Update(const float dt)
 {
 	UpdateVelocity(dt);
+
+	if (m_eatable)
+		m_elapsedTime += dt;
 }
 
 void Ghost::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
@@ -34,7 +41,8 @@ void Ghost::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
 	mShader->SetMatrix("gWorld", world);
 	mShader->SetMatrix("gViewProj", camera.ViewProj());
 	mShader->SetFloat3("gCameraPositionW", camera.GetPosition());
-	mShader->SetResource("gTexture", mTexture);
+
+	UpdateTexture();
 
 	mVBuffer->Apply();
 	mShader->Apply(0);
@@ -68,6 +76,17 @@ void Ghost::InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext
 	}
 }
 
+void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+{
+	const std::string eatableTexture1Filename = "Content/Img/eatableghost1.png";
+	const std::string eatableTexture2Filename = "Content/Img/eatableghost2.png";
+	
+	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture1Filename.c_str(), NULL, NULL, &m_eatableTexture1, NULL);
+	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture2Filename.c_str(), NULL, NULL, &m_eatableTexture2, NULL);
+
+	Obj3D::InitGFX(device, deviceContext);
+}
+
 void Ghost::UpdateVelocity(const float dt)
 {
 	D3DXVECTOR3 direction = m_end->GetPosition() - m_start->GetPosition();
@@ -79,6 +98,30 @@ void Ghost::UpdateVelocity(const float dt)
 	{
 		ComputeNewNodes();
 	}
+}
+
+void Ghost::UpdateTexture(void)
+{
+	const float eatableBlueTime	 = 5.f;
+	const float totalEatableTime = 8.f;
+
+	if (m_eatable)
+	{
+		if (m_elapsedTime >= eatableBlueTime)
+		{
+			if (m_elapsedTime - (int)m_elapsedTime > 0.5f)
+				mShader->SetResource("gTexture", m_eatableTexture1);
+			else
+				mShader->SetResource("gTexture", m_eatableTexture2);
+
+			if (m_elapsedTime >= totalEatableTime)
+				m_eatable = false;
+		}
+		else
+			mShader->SetResource("gTexture", m_eatableTexture1);
+	}
+	else
+		mShader->SetResource("gTexture", mTexture);
 }
 
 bool Ghost::IsEndNodePassed(void)
@@ -114,10 +157,27 @@ void Ghost::ComputeNewNodes(void)
 	}
 	else
 	{
-		// Random AI behaviour
-		// m_end = possibleNodes[rand() % n];
+		if (m_eatable)
+			// Random AI behaviour
+			m_end = possibleNodes[rand() % n];
+		else
+		{
+			// Smart AI behaviour
+			Node* pathNode = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
 
-		// Smart AI behaviour
-		m_end = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
+			bool found = false;
+			for (std::vector<Node*>::iterator it = possibleNodes.begin(); it != possibleNodes.end(); it++)
+			{
+				if (pathNode == (*it))
+				{
+					m_end = pathNode;
+					found = true;
+					break;
+				}
+			}
+			if (!found)
+				// Random AI behaviour
+				m_end = possibleNodes[rand() % n];
+		}
 	}
 }

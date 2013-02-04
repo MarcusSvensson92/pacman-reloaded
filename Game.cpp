@@ -38,7 +38,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
 
-			m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
+			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
@@ -90,9 +90,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	}
 
 	// Send all candy lights to Shader
-	std::vector<PointLight> tempLights = m_lights.SetCandyLights();
-	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*241);
-	
+	//std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+	//m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*241);
 }
 
 void Game::Update(const float dt)
@@ -108,6 +107,18 @@ void Game::Update(const float dt)
 		mCamera.Strafe(-20.f * dt);
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
+
+	if (GetAsyncKeyState('B') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+		{
+			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
+			{
+				if (!ghost->IsEatable())
+					ghost->ActivateEatable();
+			}
+		}
+	}
 
 	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
 		(*it)->Update(dt);

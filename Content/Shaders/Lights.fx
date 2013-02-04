@@ -1,4 +1,4 @@
-#define CANDYLIGHTS 241
+#define CANDYLIGHTS 1
 #define MOVINGLIGHTS 5
 
 

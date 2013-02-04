@@ -15,7 +15,7 @@ cbuffer cbConstants
 
 Texture2D gTexture;
 
-SamplerState linearSampler
+SamplerState linSampler
 {
 	Filter	 = MIN_MAG_MIP_LINEAR;
 	AddressU = CLAMP;
@@ -83,7 +83,7 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 
 float4 PS(PSIn input) : SV_TARGET
 {
-	float4 texColor = gTexture.Sample(linearSampler, float3(input.tex0, 0.f));
+	float4 texColor = gTexture.Sample(linSampler, float3(input.tex0, 0.f));
 	return texColor;
 }
 
