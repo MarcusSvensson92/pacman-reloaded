@@ -20,6 +20,8 @@ public:
 	Node*			Right;
 
 	Candy*			Item;
+
+	bool			GhostNode;
 private:
 	D3DXVECTOR3		Position;
 };

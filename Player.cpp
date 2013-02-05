@@ -134,14 +134,26 @@ void Player::Move()
 
 void Player::CheckDirections()
 {
-	if (mDirection == FORWARD		&& mNode->Front!=NULL)
-	{mNextNode = mNode->Front;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	if (mDirection == FORWARD		&& mNode->Front!=NULL) 
+	{
+		if (!mNode->Front->GhostNode)
+		{mNextNode = mNode->Front;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	}
 	else if (mDirection == BACKWARD	&& mNode->Back!=NULL)
-	{mNextNode = mNode->Back;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	{
+		if (!mNode->Back->GhostNode)
+		{mNextNode = mNode->Back;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	}
 	else if (mDirection == LEFT		&& mNode->Left!=NULL)
-	{mNextNode = mNode->Left;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	{
+		if (!mNode->Left->GhostNode)
+		{mNextNode = mNode->Left;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	}
 	else if (mDirection == RIGHT	&& mNode->Right!=NULL)
-	{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	{
+		if (!mNode->Right->GhostNode)
+		{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	}
 	else mDirection = PAUSE;
 }
 
