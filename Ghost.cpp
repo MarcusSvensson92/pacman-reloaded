@@ -203,7 +203,7 @@ void Ghost::ComputeNewNodes(void)
 		else
 		{
 			m_start = m_end;
-			m_end = m_currentPath.back();
+			m_end   = m_currentPath.back();
 			m_currentPath.pop_back();
 		}
 	}
@@ -213,10 +213,10 @@ void Ghost::ComputeNewNodes(void)
 			m_end = m_start;
 
 		std::vector<Node*> possibleNodes;
-		if (m_end->Front && m_end->Front != m_start) possibleNodes.push_back(m_end->Front);
-		if (m_end->Back  && m_end->Back  != m_start) possibleNodes.push_back(m_end->Back);
-		if (m_end->Left  && m_end->Left  != m_start) possibleNodes.push_back(m_end->Left);
-		if (m_end->Right && m_end->Right != m_start) possibleNodes.push_back(m_end->Right);
+		if (m_end->Front && m_end->Front != m_start && !m_end->Front->GhostNode) possibleNodes.push_back(m_end->Front);
+		if (m_end->Back  && m_end->Back  != m_start && !m_end->Back->GhostNode)  possibleNodes.push_back(m_end->Back);
+		if (m_end->Left  && m_end->Left  != m_start && !m_end->Left->GhostNode)  possibleNodes.push_back(m_end->Left);
+		if (m_end->Right && m_end->Right != m_start && !m_end->Right->GhostNode) possibleNodes.push_back(m_end->Right);
 
 		m_start = m_end;
 
