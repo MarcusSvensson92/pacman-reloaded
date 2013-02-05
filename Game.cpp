@@ -104,7 +104,10 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		}
 
 		if ( ObjectSpawnList[i].Type == PACMAN)
+		{
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
+			m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
+		}
 
 			//m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
 		
@@ -239,4 +242,6 @@ void Game::OldSchool()
 		mPlayer.OldSchoolControl("LEFT");
 	else if (GetAsyncKeyState('D') & 0x8000)
 		mPlayer.OldSchoolControl("RIGHT");
+	else 
+		mPlayer.OldSchoolControl("");
 }

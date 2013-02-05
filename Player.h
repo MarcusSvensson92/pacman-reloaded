@@ -29,6 +29,7 @@ public:
 	void Kill();
 	void Eat();
 	
+	D3DXVECTOR3* GetPositionPtr();
 
 	//Node		GetNode();
 	D3DXVECTOR3 GetPosition();

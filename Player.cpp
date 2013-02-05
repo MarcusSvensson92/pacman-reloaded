@@ -144,3 +144,8 @@ void Player::CheckDirections()
 	{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
 	else mDirection = PAUSE;
 }
+
+D3DXVECTOR3* Player::GetPositionPtr()
+{
+	return &mPosition;
+}
