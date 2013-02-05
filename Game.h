@@ -23,7 +23,7 @@ public:
 private:
 	void initShaders(void);
 
-	std::vector<Obj3D *> ObjListTest;
+	std::vector<Obj3D *> mObjList;
 	Map m_map;
 	Player mPlayer;
 	ShaderManager m_shaders;
@@ -32,7 +32,6 @@ private:
 
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );
-	Player::Direction mLastKeyDir;
 };
 
 #endif
