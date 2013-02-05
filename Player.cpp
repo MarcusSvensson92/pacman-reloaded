@@ -17,7 +17,7 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mMoveIterations = 0;
-	mMaxIterations = 10;
+	mMaxIterations = 15;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	
 }
@@ -61,6 +61,8 @@ void Player::InputDirection(D3DXVECTOR3 look)
 
 void Player::ChangeDirection(D3DXVECTOR3 look)
 {
+	bool found;
+
 	//PAUSE innebär att man nått en ny nod, då kan man byta
 	if(mDirection == PAUSE)
 	{
@@ -68,15 +70,14 @@ void Player::ChangeDirection(D3DXVECTOR3 look)
 
 		InputDirection(look);
 
-		if (mDirection == FORWARD		&& mNode->Front!=NULL)
-		{mNextNode = mNode->Front;	mMoveVector = mNextNode->GetPosition() - mPosition;}
-		else if (mDirection == BACKWARD	&& mNode->Back!=NULL)
-		{mNextNode = mNode->Back;	mMoveVector = mNextNode->GetPosition() - mPosition;}
-		else if (mDirection == LEFT		&& mNode->Left!=NULL)
-		{mNextNode = mNode->Left;	mMoveVector = mNextNode->GetPosition() - mPosition;}
-		else if (mDirection == RIGHT	&& mNode->Right!=NULL)
-		{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;}
-		else mDirection = PAUSE;
+		CheckDirections();
+		
+		//testa  igen om gamla riktningen fungerar
+		if (mDirection == PAUSE); 
+		{
+			mDirection = mLastDirection;
+			CheckDirections();
+		}
 	}
 	
 }
@@ -97,6 +98,20 @@ void Player::Move()
 		{
 			mDirection = PAUSE;
 			mMoveIterations =0;
+			mPosition = mNode->GetPosition();
 		}
 	}
+}
+
+void Player::CheckDirections()
+{
+	if (mDirection == FORWARD		&& mNode->Front!=NULL)
+	{mNextNode = mNode->Front;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	else if (mDirection == BACKWARD	&& mNode->Back!=NULL)
+	{mNextNode = mNode->Back;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	else if (mDirection == LEFT		&& mNode->Left!=NULL)
+	{mNextNode = mNode->Left;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	else if (mDirection == RIGHT	&& mNode->Right!=NULL)
+	{mNextNode = mNode->Right;	mMoveVector = mNextNode->GetPosition() - mPosition;mLastDirection = mDirection;}
+	else mDirection = PAUSE;
 }

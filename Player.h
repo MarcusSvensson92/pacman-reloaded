@@ -41,7 +41,7 @@ private:
 	D3DXVECTOR3		mMoveVector;
 	D3DXVECTOR3		mPosition;
 
-	Direction		mDirection;
+	Direction		mDirection,mLastDirection;
 	PlayerStatus	mStatus;
 
 	bool			mSuperCandy;
@@ -56,5 +56,8 @@ private:
 	void Move();
 	void InputDirection(D3DXVECTOR3 look);
 	void ChangeDirection(D3DXVECTOR3 look);
+
+	void CheckDirections();
+
 };
 
