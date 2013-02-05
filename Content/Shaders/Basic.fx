@@ -84,6 +84,8 @@ float4 PSSceneLights(PSSceneIn input) : SV_Target
 	
 	float4 A,D,S,ambient,diffuse,specular;
 
+	ComputeDirectionalLight( gMaterial, input.normalW, toEyeW, ambient, diffuse, specular );
+
 	[loop]
 	for( uint i = 0;i < CANDYLIGHTS; i++ )
 	{
