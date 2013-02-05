@@ -28,12 +28,13 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	// Loop to spawn Objects
 	for (int i = 0; i < ObjectSpawnList.size(); i++) 
 	{
+		// Add candy
 		if ( ObjectSpawnList[i].Type == CANDY )
 		{	
 			Candy* candy = new Candy();
 			candy->Init(m_Device, m_DeviceContext,
 				m_shaders.get("Billboard"),
-				"Content/Img/white.png",
+				"Content/Img/candy.png",
 				ObjectSpawnList[i].Node->GetPosition(),
 				D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
@@ -43,6 +44,23 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
+		// Add candy that looks like supercandy (temp fix)
+		if ( ObjectSpawnList[i].Type == SUPER_CANDY )
+		{	
+			Candy* candy = new Candy();
+			candy->Init(m_Device, m_DeviceContext,
+				m_shaders.get("Billboard"),
+				"Content/Img/supercandy.png",
+				ObjectSpawnList[i].Node->GetPosition(),
+				D3DXVECTOR3(1,1,1));
+			ObjListTest.push_back(candy);
+
+			// Set node item to current candy.
+			ObjectSpawnList[i].Node->Item = candy;
+
+			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
+		}
+
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
 			ObjectSpawnList[i].Type == RED_GHOST ||
