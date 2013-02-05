@@ -58,7 +58,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
 
-			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
+			//m_lights.AddLight(candy->GetPositionPtr(), SUPERCANDYLIGHT);
 		}
 
 
@@ -108,9 +108,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
 			m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
 		}
-
-			//m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
-		
 	}
 
 	// Send all candy lights to Shader
