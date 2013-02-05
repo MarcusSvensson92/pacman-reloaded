@@ -36,6 +36,8 @@ public:
 
 	void Update(D3DXVECTOR3 look);
 
+	void OldSchoolControl(LPCSTR dir);
+
 private:
 
 	D3DXVECTOR3		mMoveVector;

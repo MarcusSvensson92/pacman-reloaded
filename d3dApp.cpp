@@ -96,7 +96,7 @@ void d3dApp::InitCamera( int screenWidth, int screenHeight )
 {
 	mCamera.SetLens(0.25f*D3DX_PI, (float)screenWidth / (float)screenHeight, 1.0f, 1000.0f);
 
-	mCamera.LookAt(D3DXVECTOR3(0, 0,-5), D3DXVECTOR3(0,0,0), D3DXVECTOR3(0,1,0));
+	mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
 	SetCursorPos(600,500);
 	GetCursorPos(&mLastMousePos);
 
@@ -112,7 +112,7 @@ void d3dApp::Update(float dt)
 }
 void d3dApp::DrawBegin()
 {
-	static float ClearColor[4] = { 0.5f, 0.7f, 1.0f, 1.0f };
+	static float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	m_DeviceContext->ClearRenderTargetView( m_RenderTargetView, ClearColor );	
 
 	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );

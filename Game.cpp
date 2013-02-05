@@ -3,6 +3,7 @@
 
 Game::Game(void)
 {
+	gameType = NO_CLIP;
 }
 
 Game::~Game(void)
@@ -116,13 +117,36 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 void Game::Update(const float dt)
 {
-	/*if(mPlayer.GetStatus() == Player::ALIVE)
+	switch (gameType)
 	{
-		CameraFollowPlayer(); 
-		mPlayer.Update(mCamera.GetLook());
-	}*/
+		case FIRST_PERSON :
+			if(mPlayer.GetStatus() == Player::ALIVE)
+			{
+				CameraFollowPlayer(); 
+				mPlayer.Update(mCamera.GetLook());
+			}
+			break;
+		case OLD_SCHOOL :
+			OldSchool();
+			mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
+			break;
+		case NO_CLIP :
+			DebugCam(dt);
+			break;
+	}
 
-	DebugCam(dt);
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		gameType = FIRST_PERSON;
+	}
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		gameType = OLD_SCHOOL;
+	}
+	if (GetAsyncKeyState('3') & 0x8000)
+	{
+		gameType = NO_CLIP;
+	}
 
 	if (GetAsyncKeyState('B') & 0x8000)
 	{
@@ -203,4 +227,16 @@ void Game::DebugCam(const float dt )
 		mCamera.Strafe(-20.f * dt);
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
+}
+
+void Game::OldSchool()
+{
+	if (GetAsyncKeyState('W') & 0x8000)
+		mPlayer.OldSchoolControl("UP");
+	else if (GetAsyncKeyState('S') & 0x8000)
+		mPlayer.OldSchoolControl("DOWN");
+	else if (GetAsyncKeyState('A') & 0x8000)
+		mPlayer.OldSchoolControl("LEFT");
+	else if (GetAsyncKeyState('D') & 0x8000)
+		mPlayer.OldSchoolControl("RIGHT");
 }

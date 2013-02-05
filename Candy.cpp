@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Candy.h"
 
-const D3DXVECTOR2 g_candySize = D3DXVECTOR2(2.f, 2.f);
+const D3DXVECTOR2 g_candySize = D3DXVECTOR2(4.f, 4.f);
 
 Candy::Candy(void)
 {

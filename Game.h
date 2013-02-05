@@ -14,6 +14,15 @@
 class Game : public d3dApp
 {
 public:
+	enum GameType
+	{
+		FIRST_PERSON,
+		OLD_SCHOOL,
+		NO_CLIP,
+	};
+	GameType gameType;
+
+
 	Game(void);
 	~Game(void);
 
@@ -32,6 +41,7 @@ private:
 
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );
+	void OldSchool();
 };
 
 #endif

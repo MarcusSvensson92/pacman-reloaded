@@ -34,6 +34,31 @@ void Player::Update(D3DXVECTOR3 look)
 	ChangeDirection(look);
 }
 
+void Player::OldSchoolControl(LPCSTR dir)
+{
+	Move();
+	if(mDirection == PAUSE)
+	{
+		if (dir == "UP")
+			mDirection = FORWARD;
+		else if (dir == "DOWN")
+			mDirection = BACKWARD;
+		else if	(dir == "LEFT")
+			mDirection = LEFT;
+		else if (dir == "RIGHT")
+			mDirection = RIGHT;
+
+		CheckDirections();
+		
+		//testa  igen om gamla riktningen fungerar
+		if (mDirection == PAUSE); 
+		{
+			mDirection = mLastDirection;
+			CheckDirections();
+		}
+	}
+}
+
 void Player::InputDirection(D3DXVECTOR3 look)
 {
 	//	 NODE STRUCTURE			-- skiljer sig mot deklarationen i Map. z är motsatt?
