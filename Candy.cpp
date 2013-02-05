@@ -31,6 +31,7 @@ void Candy::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
 	mShader->SetMatrix("gWorld", world);
 	mShader->SetMatrix("gViewProj", camera.ViewProj());
 	mShader->SetFloat3("gCameraPositionW", camera.GetPosition());
+	mShader->SetFloat("gAlphaValue", 1.f);
 	mShader->SetResource("gTexture", mTexture);
 
 	mVBuffer->Apply();

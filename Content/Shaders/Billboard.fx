@@ -7,6 +7,11 @@ cbuffer cbPerFrame
 	float3 gCameraPositionW;
 };
 
+cbuffer cbPerObject
+{
+	float gAlphaValue;
+};
+
 cbuffer cbConstants
 {
 	float2 gTexCoords[4] = { float2(0.f, 1.f),
@@ -86,7 +91,7 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 float4 PS(PSIn input) : SV_TARGET
 {
 	float4 texColor = gTexture.Sample(linSampler, float3(input.tex0, 0.f));
-	return texColor;
+	return float4(texColor.xyz, texColor.w * gAlphaValue);
 }
 
 technique11 BillboardTech
