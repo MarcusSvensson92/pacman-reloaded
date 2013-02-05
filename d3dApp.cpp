@@ -100,7 +100,7 @@ void d3dApp::InitCamera( int screenWidth, int screenHeight )
 }
 
 
-void d3dApp::Update(const float dt)
+void d3dApp::Update(float dt)
 {
  	Keyboards();
 }

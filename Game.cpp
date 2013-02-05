@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 
-const float g_mouseSpeed = 1.f;
+const float g_mouseSpeed = 0.25f;
 
 Game::Game(void)
 {
@@ -187,6 +187,8 @@ void Game::Update(const float dt)
 				mObjList.erase(mObjList.begin() + i);
 	}
 
+	mCamera.UpdateMatrix();
+
 	d3dApp::Update(dt);
 }
 void Game::Draw()
@@ -234,8 +236,8 @@ void Game::CameraFollowPlayer()
 
 void Game::OnMouseMove(const float dx, const float dy)
 {
-	mCamera.Pitch(D3DXToRadian(dx * g_mouseSpeed));
-	mCamera.RotateY(D3DXToRadian(dy * g_mouseSpeed));
+	mCamera.Pitch(D3DXToRadian(dy * g_mouseSpeed));
+	mCamera.RotateY(D3DXToRadian(dx * g_mouseSpeed));
 }
 
 void Game::DebugCam(const float dt )
