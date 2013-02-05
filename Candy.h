@@ -9,7 +9,7 @@ public:
 
 	bool IsEaten(void) { return eaten; }
 
-	void Eat() { eaten=true; }
+	void Eat();
 
 	void Update(const float dt);
 	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);

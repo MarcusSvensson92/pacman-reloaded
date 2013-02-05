@@ -1,5 +1,6 @@
 #ifndef _NODE_H_
 #define _NODE_H_
+#include "Candy.h"
 
 class Node
 {
@@ -17,6 +18,8 @@ public:
 	Node*			Back;
 	Node*			Left;
 	Node*			Right;
+
+	Candy*			Item;
 private:
 	D3DXVECTOR3		Position;
 };

@@ -38,6 +38,9 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				D3DXVECTOR3(1,1,1));
 			ObjListTest.push_back(candy);
 
+			// Set node item to current candy.
+			ObjectSpawnList[i].Node->Item = candy;
+
 			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
 
@@ -118,6 +121,15 @@ void Game::Update(const float dt)
 
 	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
 		(*it)->Update(dt);
+
+	// Remove eaten candy
+	for ( int i = ObjListTest.size() - 1; i >= 0; i--)
+	{
+		Candy* x = dynamic_cast<Candy*>(ObjListTest[i]);
+		if (x != NULL)
+			if (x->IsEaten())
+				ObjListTest.erase(ObjListTest.begin() + i);
+	}
 
 	d3dApp::Update(dt);
 }

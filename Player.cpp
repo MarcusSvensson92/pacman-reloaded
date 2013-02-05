@@ -84,6 +84,12 @@ void Player::ChangeDirection(D3DXVECTOR3 look)
 
 void Player::Move()
 {
+	// Äter Godis
+	if (mNode != mNextNode && mNode->Item != NULL)
+	{
+		mNode->Item->Eat();
+	}
+
 	//kör iterationerna så länge man inte nått noden -> != PAUSE.
 	if(mDirection != PAUSE)
 	{

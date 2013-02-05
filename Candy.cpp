@@ -5,6 +5,7 @@ const D3DXVECTOR2 g_candySize = D3DXVECTOR2(2.f, 2.f);
 
 Candy::Candy(void)
 {
+	eaten = false;
 }
 
 Candy::~Candy(void)
@@ -13,6 +14,11 @@ Candy::~Candy(void)
 
 void Candy::Update(const float dt)
 {
+}
+
+void Candy::Eat() 
+{ 
+	eaten=true; 
 }
 
 void Candy::Draw(ID3D11DeviceContext* deviceContext, Camera camera) 

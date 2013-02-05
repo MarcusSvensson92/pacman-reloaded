@@ -31,6 +31,9 @@
     <Filter Include="Resource Files\Content\Audio\Music">
       <UniqueIdentifier>{c35aaf2f-0c31-4c16-980b-4a376cba0632}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Maze">
+      <UniqueIdentifier>{e6d6052c-0488-419a-b5aa-709e9c12c0eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -57,9 +60,7 @@
     <ClInclude Include="Candy.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Node.h" />
     <ClInclude Include="Ghost.h">
       <Filter>Objects\AI</Filter>
     </ClInclude>
@@ -75,8 +76,16 @@
     <ClInclude Include="AudioEngine.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="PathFinding.h" />
     <ClInclude Include="LightManager.h" />
+    <ClInclude Include="Map.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -103,9 +112,7 @@
     <ClCompile Include="Candy.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Node.cpp" />
     <ClCompile Include="Ghost.cpp">
       <Filter>Objects\AI</Filter>
     </ClCompile>
@@ -121,8 +128,16 @@
     <ClCompile Include="AudioEngine.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="Map.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">
