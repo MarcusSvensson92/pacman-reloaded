@@ -64,7 +64,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 	for (int i = 0; i < ColorMap.size(); i++) 
 	{
 		//
-		if ( ColorMap[i] != 0 )
+		if ( ColorMap[i] != 0 && ColorMap[i] != 118 && ColorMap[i] != 119 && ColorMap[i] != 120 && ColorMap[i] != 121 )
 		{
 			//Create floor
 			output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), -(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(0, 0.35f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
@@ -75,7 +75,7 @@ std::vector<Vertex>		Map::CreateMesh(std::vector<int> ColorMap, int width, int h
 			output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), -(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, +1, 0), D3DXVECTOR2(1, 0.60f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			//Create ceiling
 			output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.05f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
-			output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1,	0.05f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
+			output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1, 0.05f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.30f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			output.push_back(Vertex(D3DXVECTOR3(x-(m_size*0.5), +(m_size*0.5), z-(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(0, 0.30f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
 			output.push_back(Vertex(D3DXVECTOR3(x+(m_size*0.5), +(m_size*0.5), z+(m_size*0.5)), D3DXVECTOR3(0, -1, 0), D3DXVECTOR2(1, 0.05f), D3DXVECTOR4(0.5f,0.5f,0.5f,1), D3DXVECTOR4(0.5f,0.5f,0.5f,1)));
