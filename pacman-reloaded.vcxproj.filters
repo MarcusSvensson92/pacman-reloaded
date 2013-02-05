@@ -39,9 +39,6 @@
     <ClInclude Include="WinApp.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="d3dApp.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
@@ -86,12 +83,12 @@
     <ClInclude Include="PathFinding.h">
       <Filter>Maze</Filter>
     </ClInclude>
+    <ClInclude Include="d3dApp.h">
+      <Filter>D3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="d3dApp.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
@@ -137,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="Pathfinding.cpp">
       <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dApp.cpp">
+      <Filter>D3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
