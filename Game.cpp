@@ -81,7 +81,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 						textureFilename.c_str(),
 						ObjectSpawnList[i].Node->GetPosition(),
 						D3DXVECTOR3(1.f, 1.f, 1.f));
-			ghost->SetStartNode(ObjectSpawnList[i].Node);
+			ghost->SetSpawnNode(ObjectSpawnList[i].Node);
 			ObjListTest.push_back(ghost);
 		}
 
@@ -99,13 +99,13 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 void Game::Update(const float dt)
 {
-	if(mPlayer.GetStatus() == Player::ALIVE)
+	/*if(mPlayer.GetStatus() == Player::ALIVE)
 	{
 		CameraFollowPlayer(); 
 		mPlayer.Update(mCamera.GetLook());
-	}
+	}*/
 
-	//DebugCam(dt);
+	DebugCam(dt);
 
 	if (GetAsyncKeyState('B') & 0x8000)
 	{

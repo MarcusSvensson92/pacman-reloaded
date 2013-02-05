@@ -4,15 +4,18 @@
 #include <cstdlib>
 #include "PathFinding.h"
 
-const D3DXVECTOR2 g_ghostSize  = D3DXVECTOR2(7.f, 7.f);
-const float		  g_ghostSpeed = 20.f;
+const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(7.f, 7.f);
+const float		  g_ghostSpeed				   = 20.f;
+const float		  g_ghostEatableBlueTime	   = 3.f;
+const float		  g_ghostEatableTotalTime	   = 5.f;
+const float		  g_ghostEatableSpeedReduction = 0.5f;
 
 Ghost::Ghost(void)
 {
 	m_start = NULL;
 	m_end   = NULL;
 
-	m_eatable = false;
+	m_state = Roaming;
 
 	m_elapsedTime = 0.f;
 
@@ -23,11 +26,28 @@ Ghost::~Ghost(void)
 {
 }
 
+void Ghost::SetSpawnNode(Node* node)
+{
+	m_spawn = node;
+	m_start = node;
+	m_end	= NULL;
+
+	ComputeNewNodes();
+}
+
+void Ghost::ActivateEatable(void)
+{
+	if (!m_state)
+		std::swap(m_start, m_end);
+	m_elapsedTime = 0.f;
+	m_state = Eatable;
+}
+
 void Ghost::Update(const float dt)
 {
 	UpdateVelocity(dt);
 
-	if (m_eatable)
+	if (m_state == Eatable)
 		m_elapsedTime += dt;
 }
 
@@ -102,12 +122,9 @@ void Ghost::UpdateVelocity(const float dt)
 
 void Ghost::UpdateTexture(void)
 {
-	const float eatableBlueTime	 = 3.f;
-	const float totalEatableTime = 5.f;
-
-	if (m_eatable)
+	if (m_state == Eatable)
 	{
-		if (m_elapsedTime >= eatableBlueTime)
+		if (m_elapsedTime >= g_ghostEatableBlueTime)
 		{
 			const float t = m_elapsedTime - (int)m_elapsedTime;
 			if (t > 0.25f && t < 0.5f ||
@@ -116,9 +133,9 @@ void Ghost::UpdateTexture(void)
 			else
 				mShader->SetResource("gTexture", m_eatableTexture2);
 
-			if (m_elapsedTime >= totalEatableTime)
+			if (m_elapsedTime >= g_ghostEatableTotalTime)
 			{
-				m_eatable = false;
+				m_state = Roaming;
 				mShader->SetResource("gTexture", mTexture);
 			}
 		}
@@ -162,7 +179,7 @@ void Ghost::ComputeNewNodes(void)
 	}
 	else
 	{
-		if (m_eatable)
+		if (m_state == Eatable)
 			// Random AI behaviour
 			m_end = possibleNodes[rand() % n];
 		else
