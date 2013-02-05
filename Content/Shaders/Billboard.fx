@@ -1,3 +1,5 @@
+#include "RenderStates.fx"
+
 cbuffer cbPerFrame
 {
 	matrix gWorld;
@@ -94,5 +96,7 @@ technique11 BillboardTech
 		SetVertexShader(CompileShader(vs_4_0, VS()));
 		SetGeometryShader(CompileShader(gs_4_0, GS()));
 		SetPixelShader(CompileShader(ps_4_0, PS()));
+
+		SetBlendState(AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF);
 	}
 }

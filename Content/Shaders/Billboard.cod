@@ -17,8 +17,48 @@ cbuffer cbConstants
 }
 
 //
-// 2 local object(s)
+// 7 local object(s)
 //
+SamplerState linearSampler
+{
+    Filter   = uint(ANISOTROPIC /* 85 */);
+    AddressU = uint(WRAP /* 1 */);
+    AddressV = uint(WRAP /* 1 */);
+};
+BlendState AlphaBlending1
+{
+    AlphaToCoverageEnable = bool(FALSE /* 0 */);
+    BlendEnable[0] = bool(TRUE /* 1 */);
+    SrcBlend[0] = uint(SRC_ALPHA /* 5 */);
+    DestBlend[0] = uint(INV_SRC_ALPHA /* 6 */);
+    BlendOp[0] = uint(ADD /* 1 */);
+    SrcBlendAlpha[0] = uint(SRC_ALPHA /* 5 */);
+    DestBlendAlpha[0] = uint(INV_SRC_ALPHA /* 6 */);
+    BlendOpAlpha[0] = uint(ADD /* 1 */);
+    RenderTargetWriteMask[0] = byte(0x0f);
+};
+BlendState AlphaBlending2
+{
+    AlphaToCoverageEnable = bool(TRUE /* 1 */);
+    BlendEnable[0] = bool(TRUE /* 1 */);
+    SrcBlend[0] = uint(SRC_ALPHA /* 5 */);
+    DestBlend[0] = uint(INV_SRC_ALPHA /* 6 */);
+    BlendOp[0] = uint(ADD /* 1 */);
+    SrcBlendAlpha[0] = uint(SRC_ALPHA /* 5 */);
+    DestBlendAlpha[0] = uint(INV_SRC_ALPHA /* 6 */);
+    BlendOpAlpha[0] = uint(ADD /* 1 */);
+    RenderTargetWriteMask[0] = byte(0x0f);
+};
+RasterizerState NoCulling
+{
+    CullMode = uint(NONE /* 1 */);
+    FillMode = uint(SOLID /* 3 */);
+};
+RasterizerState CullBack
+{
+    CullMode = uint(BACK /* 3 */);
+    FillMode = uint(SOLID /* 3 */);
+};
 Texture2D gTexture;
 SamplerState linSampler
 {
