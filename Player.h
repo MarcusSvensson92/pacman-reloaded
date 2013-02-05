@@ -29,12 +29,15 @@ public:
 	void Kill();
 	void Eat();
 	
+	D3DXVECTOR3* GetPositionPtr();
 
 	//Node		GetNode();
 	D3DXVECTOR3 GetPosition();
 	PlayerStatus GetStatus();
 
 	void Update(D3DXVECTOR3 look);
+
+	void OldSchoolControl(LPCSTR dir);
 
 private:
 

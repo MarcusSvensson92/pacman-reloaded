@@ -198,6 +198,8 @@ void					Map::CreateNodes(std::vector<int> ColorMap, int width, int height)
 		if ( ColorMap[i] != 0 )
 		{
 			m_nodes[i] = Node(D3DXVECTOR3(x, 0, z));
+			if ( ColorMap[i] == 118 || ColorMap[i] == 119 || ColorMap[i] == 120 || ColorMap[i] == 121 )
+				m_nodes[i].GhostNode = true;
 		}
 
 		// Keeping track of position
@@ -214,7 +216,7 @@ void					Map::ConnectNodes(std::vector<int> ColorMap, int width, int height)
 	int z = 0, x = 0;
 	for (int i = 0; i < ColorMap.size(); i++) 
 	{
-		if ( ColorMap[i] != 0 && ColorMap[i-width] != 118 && ColorMap[i-width] != 119 && ColorMap[i-width] != 120 && ColorMap[i-width] != 121 )
+		if ( ColorMap[i] != 0 && ColorMap[i] != 118 && ColorMap[i] != 119 && ColorMap[i] != 120 && ColorMap[i] != 121 )
 		{
 			// Connect back node
 			if (i+width < width*height)

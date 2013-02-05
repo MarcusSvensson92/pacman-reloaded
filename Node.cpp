@@ -11,6 +11,7 @@ Node::Node(D3DXVECTOR3 p)
 	Position = p;
 	Front = Back = Left = Right = NULL;
 	Item = NULL;
+	GhostNode = false;
 }
 
 Node::~Node(void)
