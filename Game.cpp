@@ -7,13 +7,12 @@ Game::Game(void)
 
 Game::~Game(void)
 {
-	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		delete (*it);
 }
 
 void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, float screenDepth, float screenNear)
 {
-	//mLastKeyDir = Player::Direction::FORWARD;
 
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
@@ -37,7 +36,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				"Content/Img/candy.png",
 				ObjectSpawnList[i].Node->GetPosition(),
 				D3DXVECTOR3(1,1,1));
-			ObjListTest.push_back(candy);
+			mObjList.push_back(candy);
 
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
@@ -53,7 +52,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				"Content/Img/supercandy.png",
 				ObjectSpawnList[i].Node->GetPosition(),
 				D3DXVECTOR3(1,1,1));
-			ObjListTest.push_back(candy);
+			mObjList.push_back(candy);
 
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
@@ -100,7 +99,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 						ObjectSpawnList[i].Node->GetPosition(),
 						D3DXVECTOR3(1.f, 1.f, 1.f));
 			ghost->SetSpawnNode(ObjectSpawnList[i].Node);
-			ObjListTest.push_back(ghost);
+			mObjList.push_back(ghost);
 		}
 
 		if ( ObjectSpawnList[i].Type == PACMAN)
@@ -127,7 +126,7 @@ void Game::Update(const float dt)
 
 	if (GetAsyncKeyState('Q') & 0x8000)
 	{
-		for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
@@ -146,16 +145,16 @@ void Game::Update(const float dt)
 		}
 	}
 
-	for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		(*it)->Update(dt);
 
 	// Remove eaten candy
-	for ( int i = ObjListTest.size() - 1; i >= 0; i--)
+	for ( int i = mObjList.size() - 1; i >= 0; i--)
 	{
-		Candy* x = dynamic_cast<Candy*>(ObjListTest[i]);
+		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
 		if (x != NULL)
 			if (x->IsEaten())
-				ObjListTest.erase(ObjListTest.begin() + i);
+				mObjList.erase(mObjList.begin() + i);
 	}
 
 	d3dApp::Update(dt);
@@ -169,9 +168,9 @@ void Game::Draw()
 	m_shaders.get("Basic")->SetRawData("gMovingLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 
 	// Loop to draw Objects
- 	for (int i = 0; i < ObjListTest.size(); i++) 
+ 	for (int i = 0; i < mObjList.size(); i++) 
  	{
- 		ObjListTest[i]->Draw(m_DeviceContext, mCamera);
+ 		mObjList[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
 

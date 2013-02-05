@@ -61,8 +61,6 @@ void Player::InputDirection(D3DXVECTOR3 look)
 
 void Player::ChangeDirection(D3DXVECTOR3 look)
 {
-	bool found;
-
 	//PAUSE innebär att man nått en ny nod, då kan man byta
 	if(mDirection == PAUSE)
 	{
