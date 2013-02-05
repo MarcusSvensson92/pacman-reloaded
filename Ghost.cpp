@@ -9,6 +9,8 @@ const float		  g_ghostSpeed				   = 20.f;
 const float		  g_ghostEatableBlueTime	   = 3.f;
 const float		  g_ghostEatableTotalTime	   = 5.f;
 const float		  g_ghostEatableSpeedReduction = 0.5f;
+const float		  g_ghostEatedAlphaValue	   = 0.51f;
+const float		  g_ghostEatedSpeedIncrease	   = 3.f;
 
 Ghost::Ghost(void)
 {
@@ -37,10 +39,17 @@ void Ghost::SetSpawnNode(Node* node)
 
 void Ghost::ActivateEatable(void)
 {
-	if (!m_state)
+	if (m_state == Roaming)
 		std::swap(m_start, m_end);
 	m_elapsedTime = 0.f;
 	m_state = Eatable;
+}
+
+void Ghost::ActivateEated(void)
+{
+	m_state = Eated;
+
+	ComputeNewNodes();
 }
 
 void Ghost::Update(const float dt)
@@ -61,6 +70,9 @@ void Ghost::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
 	mShader->SetMatrix("gWorld", world);
 	mShader->SetMatrix("gViewProj", camera.ViewProj());
 	mShader->SetFloat3("gCameraPositionW", camera.GetPosition());
+
+	if (m_state == Eated) mShader->SetFloat("gAlphaValue", g_ghostEatedAlphaValue);
+	else				  mShader->SetFloat("gAlphaValue", 1.f);
 
 	UpdateTexture();
 
@@ -112,10 +124,20 @@ void Ghost::UpdateVelocity(const float dt)
 	D3DXVECTOR3 direction = m_end->GetPosition() - m_start->GetPosition();
 	D3DXVec3Normalize(&direction, &direction);
 
-	mPosition += direction * g_ghostSpeed * dt;
+	D3DXVECTOR3 velocity = direction * g_ghostSpeed * dt;
+	if (m_state == Eatable) velocity *= g_ghostEatableSpeedReduction;
+	if (m_state == Eated)	velocity *= g_ghostEatedSpeedIncrease;
+
+	mPosition += velocity;
 
 	if (IsEndNodePassed())
 	{
+		if (m_end == m_spawn && m_state == Eated)
+		{
+			m_currentPath.clear();
+			m_state = Roaming;
+		}
+
 		ComputeNewNodes();
 	}
 }
@@ -161,45 +183,74 @@ bool Ghost::IsEndNodePassed(void)
 
 void Ghost::ComputeNewNodes(void)
 {
-	if (!m_end)
-		m_end = m_start;
-
-	std::vector<Node*> possibleNodes;
-	if (m_end->Front && m_end->Front != m_start) possibleNodes.push_back(m_end->Front);
-	if (m_end->Back  && m_end->Back  != m_start) possibleNodes.push_back(m_end->Back);
-	if (m_end->Left  && m_end->Left  != m_start) possibleNodes.push_back(m_end->Left);
-	if (m_end->Right && m_end->Right != m_start) possibleNodes.push_back(m_end->Right);
-
-	m_start = m_end;
-
-	UINT n = (UINT)possibleNodes.size();
-	if (n == 1)
+	if (m_state == Eated)
 	{
-		m_end = possibleNodes[0];
+		if (m_currentPath.empty())
+		{
+			std::vector<Node*> startPath = Pathfinding::findPath(m_spawn, m_start);
+			std::vector<Node*> endPath	 = Pathfinding::findPath(m_spawn, m_end);
+
+			if ((UINT)startPath.size() < (UINT)endPath.size())
+			{
+				m_currentPath = startPath;
+				std::swap(m_start, m_end);
+			}
+			else
+			{
+				m_currentPath = endPath;
+			}
+		}
+		else
+		{
+			m_start = m_end;
+			m_end   = m_currentPath.back();
+			m_currentPath.pop_back();
+		}
 	}
 	else
 	{
-		if (m_state == Eatable)
-			// Random AI behaviour
-			m_end = possibleNodes[rand() % n];
-		else
-		{
-			// Smart AI behaviour
-			Node* pathNode = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
+		if (!m_end)
+			m_end = m_start;
 
-			bool found = false;
-			for (std::vector<Node*>::iterator it = possibleNodes.begin(); it != possibleNodes.end(); it++)
+		std::vector<Node*> possibleNodes;
+		if (m_end->Front && m_end->Front != m_start && !m_end->Front->GhostNode) possibleNodes.push_back(m_end->Front);
+		if (m_end->Back  && m_end->Back  != m_start && !m_end->Back->GhostNode)  possibleNodes.push_back(m_end->Back);
+		if (m_end->Left  && m_end->Left  != m_start && !m_end->Left->GhostNode)  possibleNodes.push_back(m_end->Left);
+		if (m_end->Right && m_end->Right != m_start && !m_end->Right->GhostNode) possibleNodes.push_back(m_end->Right);
+
+		m_start = m_end;
+
+		UINT n = (UINT)possibleNodes.size();
+		if (n == 1)
+		{
+			m_end = possibleNodes[0];
+		}
+		else if (n > 1)
+		{
+			if (m_state == Eatable)
 			{
-				if (pathNode == (*it))
-				{
-					m_end = pathNode;
-					found = true;
-					break;
-				}
-			}
-			if (!found)
 				// Random AI behaviour
 				m_end = possibleNodes[rand() % n];
+			}
+			else
+			{
+				// Smart AI behaviour
+				Node* pathNode = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
+
+				bool found = false;
+				for (std::vector<Node*>::iterator it = possibleNodes.begin(); it != possibleNodes.end(); it++)
+				{
+					if (pathNode == (*it))
+					{
+						m_end = pathNode;
+						found = true;
+						break;
+					}
+				}
+				if (!found)
+					// Random AI behaviour
+					m_end = possibleNodes[rand() % n];
+			}
 		}
 	}
 }

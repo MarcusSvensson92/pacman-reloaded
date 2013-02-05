@@ -151,14 +151,24 @@ void Game::Update(const float dt)
 		gameType = NO_CLIP;
 	}
 
-	if (GetAsyncKeyState('B') & 0x8000)
+	if (GetAsyncKeyState('Q') & 0x8000)
 	{
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				if (!ghost->IsEatable())
-					ghost->ActivateEatable();
+				ghost->ActivateEatable();
+			}
+		}
+	}
+	if (GetAsyncKeyState('E') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
+			{
+				if (!ghost->IsEated())
+					ghost->ActivateEated();
 			}
 		}
 	}

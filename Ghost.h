@@ -16,6 +16,7 @@ public:
 	bool IsEated(void)	 const { return m_state == Eated;   }
 
 	void ActivateEatable(void);
+	void ActivateEated(void);
 
 	void Update(const float dt);
 	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
@@ -40,6 +41,8 @@ private:
 	Node* m_spawn;
 	Node* m_start;
 	Node* m_end;
+
+	std::vector<Node*> m_currentPath;
 
 	ID3D11ShaderResourceView* m_eatableTexture1;
 	ID3D11ShaderResourceView* m_eatableTexture2;
