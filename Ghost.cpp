@@ -121,10 +121,7 @@ void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 
 void Ghost::UpdateVelocity(const float dt)
 {
-	D3DXVECTOR3 direction = m_end->GetPosition() - m_start->GetPosition();
-	D3DXVec3Normalize(&direction, &direction);
-
-	D3DXVECTOR3 velocity = direction * g_ghostSpeed * dt;
+	D3DXVECTOR3 velocity = GetCurrentDirection() * g_ghostSpeed * dt;
 	if (m_state == Eatable) velocity *= g_ghostEatableSpeedReduction;
 	if (m_state == Eated)	velocity *= g_ghostEatedSpeedIncrease;
 
@@ -139,6 +136,11 @@ void Ghost::UpdateVelocity(const float dt)
 		}
 
 		ComputeNewNodes();
+
+		const float offset = D3DXVec3Length(&(m_start->GetPosition() - mPosition));
+
+		mPosition = m_start->GetPosition();
+		mPosition += GetCurrentDirection() * offset;
 	}
 }
 
@@ -253,4 +255,11 @@ void Ghost::ComputeNewNodes(void)
 			}
 		}
 	}
+}
+
+D3DXVECTOR3 Ghost::GetCurrentDirection(void) const
+{
+	D3DXVECTOR3 direction = m_end->GetPosition() - m_start->GetPosition();
+	D3DXVec3Normalize(&direction, &direction);
+	return direction;
 }

@@ -38,6 +38,8 @@ private:
 	bool IsEndNodePassed(void);
 	void ComputeNewNodes(void);
 
+	D3DXVECTOR3 GetCurrentDirection(void) const;
+
 	Node* m_spawn;
 	Node* m_start;
 	Node* m_end;
