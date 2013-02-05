@@ -136,11 +136,12 @@ void Game::Update(const float dt)
 	}
 	if (GetAsyncKeyState('E') & 0x8000)
 	{
-		for (std::vector<Obj3D*>::iterator it = ObjListTest.begin(); it != ObjListTest.end(); it++)
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				ghost->ActivateEated();
+				if (!ghost->IsEated())
+					ghost->ActivateEated();
 			}
 		}
 	}

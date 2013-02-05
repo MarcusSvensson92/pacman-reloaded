@@ -42,6 +42,8 @@ private:
 	Node* m_start;
 	Node* m_end;
 
+	std::vector<Node*> m_currentPath;
+
 	ID3D11ShaderResourceView* m_eatableTexture1;
 	ID3D11ShaderResourceView* m_eatableTexture2;
 
