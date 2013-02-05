@@ -29,6 +29,8 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
 	void Draw();
+
+	void OnMouseMove(const float dx, const float dy);
 private:
 	void initShaders(void);
 

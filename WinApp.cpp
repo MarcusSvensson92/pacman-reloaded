@@ -69,6 +69,14 @@ bool WinApp::init(int cmdShow)
 	ShowWindow(m_hWnd, cmdShow);
 	UpdateWindow(m_hWnd);
 
+	// Register input device (mouse)
+	RAWINPUTDEVICE rawInputDevice[1];
+    rawInputDevice[0].usUsagePage = (USHORT)0x01;
+    rawInputDevice[0].usUsage	  = (USHORT)0x02;
+    rawInputDevice[0].dwFlags	  = RIDEV_INPUTSINK;
+    rawInputDevice[0].hwndTarget  = m_hWnd;
+    RegisterRawInputDevices(rawInputDevice, 1, sizeof(rawInputDevice[0]));
+
 	// Init D3D
 	m_game.Init(m_hInstance, m_hWnd, true, false, 1.0f, 0.0f); 
 
@@ -110,6 +118,22 @@ LRESULT WinApp::wndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_EXITSIZEMOVE:
 		m_timer.start();
 		break;
+
+	case WM_INPUT:
+	{
+		UINT dwSize = 40;
+		BYTE lpb[40];
+		GetRawInputData((HRAWINPUT)lParam, RID_INPUT, 
+						lpb, &dwSize, sizeof(RAWINPUTHEADER));
+		RAWINPUT* raw = (RAWINPUT*)lpb;
+		if (raw->header.dwType == RIM_TYPEMOUSE) 
+		{
+			const float dx = (float)raw->data.mouse.lLastX;
+			const float dy = (float)raw->data.mouse.lLastY;
+			m_game.OnMouseMove(dx, dy);
+		}
+		break;
+	}
 
 	case WM_DESTROY:
 		PostQuitMessage(0);

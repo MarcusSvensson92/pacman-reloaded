@@ -97,17 +97,11 @@ void d3dApp::InitCamera( int screenWidth, int screenHeight )
 	mCamera.SetLens(0.25f*D3DX_PI, (float)screenWidth / (float)screenHeight, 1.0f, 1000.0f);
 
 	mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
-	SetCursorPos(600,500);
-	GetCursorPos(&mLastMousePos);
-
-	mCamRotP = 0;
-	mCamRotY = 0;
 }
 
 
-void d3dApp::Update(float dt)
+void d3dApp::Update(const float dt)
 {
- 	OnMouseMove();
  	Keyboards();
 }
 void d3dApp::DrawBegin()
@@ -180,24 +174,6 @@ void d3dApp::SetViewPort(float width, float height, float screenDepth, float scr
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	m_DeviceContext->RSSetViewports( 1, &vp );
-}
-
-void d3dApp::OnMouseMove()
-{
-	GetCursorPos(&mMousePos);
-	float dx = D3DX_PI/180*0.25f*(mMousePos.x - mLastMousePos.x);
-	float dy = D3DX_PI/180*0.25f*(mMousePos.y - mLastMousePos.y);
-
-	mCamRotY += dx;
-
-	mCamRotP += dy;
-	mCamera.Pitch(mCamRotP);
-	mCamera.RotateY(mCamRotY);
-	
-	mCamera.UpdateMatrix();
-
-	SetCursorPos(600, 500);
-	mLastMousePos = mMousePos;
 }
 
 void d3dApp::Keyboards()

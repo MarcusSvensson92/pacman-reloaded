@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 
+const float g_mouseSpeed = 1.f;
+
 Game::Game(void)
 {
 	gameType = NO_CLIP;
@@ -228,6 +230,12 @@ void Game::initShaders(void)
 void Game::CameraFollowPlayer()
 {
 	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0, 1.5f, 0));
+}
+
+void Game::OnMouseMove(const float dx, const float dy)
+{
+	mCamera.Pitch(D3DXToRadian(dx * g_mouseSpeed));
+	mCamera.RotateY(D3DXToRadian(dy * g_mouseSpeed));
 }
 
 void Game::DebugCam(const float dt )

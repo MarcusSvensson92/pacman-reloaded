@@ -11,8 +11,10 @@ public:
 	~d3dApp(void);
 
 	virtual void Init(HINSTANCE, HWND, bool, bool, float, float);
-	virtual void Update(float dt);
+	virtual void Update(const float dt);
 	virtual void Draw() = 0;
+
+	virtual void OnMouseMove(const float dx, const float dy) = 0;
 protected:
 	void DrawBegin();
 	void DrawEnd();
@@ -30,20 +32,11 @@ private:
 
 	// inte i kamera classen? Update(dt); som kör dessa inne från kameran? Alternativt game?
 	void Keyboards();
-	void OnMouseMove();
 	
 	IDXGISwapChain*         m_SwapChain;
 	ID3D11RenderTargetView* m_RenderTargetView;
 	ID3D11Texture2D*        m_DepthStencil;
 	ID3D11DepthStencilView* m_DepthStencilView;
-
-	// inte i kamera classen? Update(dt); som kör dessa inne från kameran? Alternativt game?
-	POINT mLastMousePos;
-	POINT mMousePos;
-
-	// Varför ligger detta inte i kameraklassen?
-	float mCamRotP;
-	float mCamRotY;
 };
 
 #endif
