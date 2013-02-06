@@ -159,19 +159,19 @@ std::vector<MapOutput>	Map::CreateOutput(std::vector<int> ColorMap, int width, i
 		}
 		else if ( ColorMap[i] == 118 )
 		{
-			output.push_back(MapOutput(PINK_GHOST,		&m_nodes[i]));
+			output.push_back(MapOutput(RED_GHOST,		&m_nodes[i]));
 		}
 		else if ( ColorMap[i] == 119 )
 		{
-			output.push_back(MapOutput(RED_GHOST,		&m_nodes[i]));
+			output.push_back(MapOutput(TEAL_GHOST,		&m_nodes[i]));
 		}
 		else if ( ColorMap[i] == 120 )
 		{
-			output.push_back(MapOutput(ORANGE_GHOST,	&m_nodes[i]));
+			output.push_back(MapOutput(PINK_GHOST,		&m_nodes[i]));
 		}
 		else if ( ColorMap[i] == 121 )
 		{
-			output.push_back(MapOutput(TEAL_GHOST,		&m_nodes[i]));
+			output.push_back(MapOutput(ORANGE_GHOST,	&m_nodes[i]));
 		}
 	}
 	return output;
