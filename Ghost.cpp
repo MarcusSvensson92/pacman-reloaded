@@ -12,15 +12,12 @@ const float		  g_ghostEatableSpeedReduction = 0.5f;
 const float		  g_ghostDeadAlphaValue		   = 0.51f;
 const float		  g_ghostDeadSpeedIncrease	   = 3.f;
 
-Ghost::Ghost(void)
+Ghost::Ghost(GhostAI* ai)
 {
 	m_objectSize = g_ghostSize;
 	m_alphaValue = 1.f;
 
-	m_start = NULL;
-	m_end   = NULL;
-
-	m_state = Roaming;
+	m_ai = ai;
 
 	m_elapsedTime = 0.f;
 
@@ -29,44 +26,30 @@ Ghost::Ghost(void)
 
 Ghost::~Ghost(void)
 {
+	delete m_ai;
 }
 
-void Ghost::SetSpawnNode(Node* node)
+void Ghost::SetSpawnNode(Node* spawn)
 {
-	m_spawn = node;
-	m_start = node;
-	m_end	= NULL;
-
-	ComputeNewNodes();
+	m_ai->SetSpawnNode(spawn);
 }
 
-void Ghost::ActivateEatable(void)
+void Ghost::MakeEatable(void)
 {
-	if (m_state != Dead)
-	{
-		if (m_state == Roaming)
-			std::swap(m_start, m_end);
+	if (m_ai->SetState(Eatable))
 		m_elapsedTime = 0.f;
-		m_alphaValue = 1.f;
-		m_state = Eatable;
-	}
 }
 
 void Ghost::Kill(void)
 {
-	if (m_state == Eatable)
-	{
-		m_state	= Dead;
-		m_alphaValue = g_ghostDeadAlphaValue;
-
-		ComputeNewNodes();
-	}
+	m_ai->SetState(Dead);
 }
 
 void Ghost::Update(const float dt)
 {
 	UpdateVelocity(dt);
 	UpdateTexture(dt);
+	UpdateAlphaValue();
 }
 
 void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -84,33 +67,25 @@ void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 
 void Ghost::UpdateVelocity(const float dt)
 {
-	D3DXVECTOR3 velocity = GetCurrentDirection() * g_ghostSpeed * dt;
-	if (m_state == Eatable) velocity *= g_ghostEatableSpeedReduction;
-	if (m_state == Dead)	velocity *= g_ghostDeadSpeedIncrease;
+	D3DXVECTOR3 velocity = m_ai->ComputeDirection() * g_ghostSpeed * dt;
+	if (m_ai->GetState() == Eatable) velocity *= g_ghostEatableSpeedReduction;
+	if (m_ai->GetState() == Dead)	 velocity *= g_ghostDeadSpeedIncrease;
 
 	mPosition += velocity;
 
-	if (IsEndNodePassed())
+	if (const float offset = m_ai->ComputeNodeOffset(mPosition) >= 0.f)
 	{
-		if (m_end == m_spawn && m_state == Dead)
-		{
-			m_currentPath.clear();
-			m_alphaValue = 1.f;
-			m_state = Roaming;
-		}
+		m_ai->UpdateDirection();
 
-		ComputeNewNodes();
-
-		const float offset = D3DXVec3Length(&(m_start->GetPosition() - mPosition));
-
-		mPosition = m_start->GetPosition();
-		mPosition += GetCurrentDirection() * offset;
+		const float l = D3DXVec3Length(&(m_ai->GetStartNodePosition() - mPosition));
+		mPosition = m_ai->GetStartNodePosition();
+		mPosition += m_ai->ComputeDirection() * l;
 	}
 }
 
 void Ghost::UpdateTexture(const float dt)
 {
-	if (m_state == Eatable)
+	if (m_ai->GetState() == Eatable)
 	{
 		m_elapsedTime += dt;
 
@@ -125,7 +100,7 @@ void Ghost::UpdateTexture(const float dt)
 
 			if (m_elapsedTime >= g_ghostEatableTotalTime)
 			{
-				m_state = Roaming;
+				m_ai->SetState(Roaming);
 				mTexture = m_roamingTexture;
 			}
 		}
@@ -136,96 +111,21 @@ void Ghost::UpdateTexture(const float dt)
 		mTexture = m_roamingTexture;
 }
 
-bool Ghost::IsEndNodePassed(void)
+void Ghost::UpdateAlphaValue(void)
 {
-	const D3DXVECTOR3 nodeVector = m_end->GetPosition() - m_start->GetPosition();
-	const float nodeDistance = D3DXVec3Length(&nodeVector);
-	const D3DXVECTOR3 playerVector = mPosition - m_start->GetPosition();
-	const float playerDistance = D3DXVec3Length(&playerVector);
-
-	if (playerDistance >= nodeDistance)
-		return true;
-	else
-		return false;
-}
-
-void Ghost::ComputeNewNodes(void)
-{
-	if (m_state == Dead)
+	switch (m_ai->GetState())
 	{
-		if (m_currentPath.empty())
-		{
-			std::vector<Node*> startPath = Pathfinding::findPath(m_spawn, m_start);
-			std::vector<Node*> endPath	 = Pathfinding::findPath(m_spawn, m_end);
-
-			if ((UINT)startPath.size() < (UINT)endPath.size())
-			{
-				m_currentPath = startPath;
-				std::swap(m_start, m_end);
-			}
-			else
-			{
-				m_currentPath = endPath;
-			}
-		}
-		else
-		{
-			m_start = m_end;
-			m_end   = m_currentPath.back();
-			m_currentPath.pop_back();
-		}
+	case Roaming:
+		m_alphaValue = 1.f;
+		break;
+	case Eatable:
+		m_alphaValue = 1.f;
+		break;
+	case Dead:
+		m_alphaValue = g_ghostDeadAlphaValue;
+		break;
+	default:
+		m_alphaValue = 1.f;
+		break;
 	}
-	else
-	{
-		if (!m_end)
-			m_end = m_start;
-
-		std::vector<Node*> possibleNodes;
-		if (m_end->Front && m_end->Front != m_start && !m_end->Front->GhostNode) possibleNodes.push_back(m_end->Front);
-		if (m_end->Back  && m_end->Back  != m_start && !m_end->Back->GhostNode)  possibleNodes.push_back(m_end->Back);
-		if (m_end->Left  && m_end->Left  != m_start && !m_end->Left->GhostNode)  possibleNodes.push_back(m_end->Left);
-		if (m_end->Right && m_end->Right != m_start && !m_end->Right->GhostNode) possibleNodes.push_back(m_end->Right);
-
-		m_start = m_end;
-
-		UINT n = (UINT)possibleNodes.size();
-		if (n == 1)
-		{
-			m_end = possibleNodes[0];
-		}
-		else if (n > 1)
-		{
-			if (m_state == Eatable)
-			{
-				// Random AI behaviour
-				m_end = possibleNodes[rand() % n];
-			}
-			else
-			{
-				// Smart AI behaviour
-				Node* pathNode = Pathfinding::findPath(D3DXVECTOR3(10.f, 0.f, 10.f), m_start).back();
-
-				bool found = false;
-				for (std::vector<Node*>::iterator it = possibleNodes.begin(); it != possibleNodes.end(); it++)
-				{
-					if (pathNode == (*it))
-					{
-						m_end = pathNode;
-						found = true;
-						break;
-					}
-				}
-				if (!found)
-					// Random AI behaviour
-					m_end = possibleNodes[rand() % n];
-			}
-		}
-	}
-}
-
-D3DXVECTOR3 Ghost::GetCurrentDirection(void) const
-{
-	D3DXVECTOR3 direction = m_end->GetPosition() - m_start->GetPosition();
-	D3DXVec3Normalize(&direction, &direction);
-	return direction;
 }

@@ -2,47 +2,32 @@
 #define GHOST_H
 
 #include "Billboard.h"
-#include "Node.h"
+#include "GhostAI.h"
 
 class Ghost : public Billboard
 {
 public:
-	Ghost(void);
+	Ghost(GhostAI* ai);
 	~Ghost(void);
 
-	void SetSpawnNode(Node* node);
+	void SetSpawnNode(Node* spawn);
 
-	bool IsEatable(void) const { return m_state == Eatable; }
-	bool IsDead(void)	 const { return m_state == Dead;    }
+	bool IsEatable(void) const { return m_ai->GetState() == Eatable; }
+	bool IsDead(void)	 const { return m_ai->GetState() == Dead;    }
 
-	void ActivateEatable(void);
+	void MakeEatable(void);
 	void Kill(void);
 
 	void Update(const float dt);
 protected:
 	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 private:
-	enum State
-	{
-		Roaming,
-		Eatable,
-		Dead
-	} m_state;
 
 	void UpdateVelocity(const float dt);
 	void UpdateTexture(const float dt);
+	void UpdateAlphaValue(void);
 
-	// AI Stuff
-	bool IsEndNodePassed(void);
-	void ComputeNewNodes(void);
-
-	D3DXVECTOR3 GetCurrentDirection(void) const;
-
-	Node* m_spawn;
-	Node* m_start;
-	Node* m_end;
-
-	std::vector<Node*> m_currentPath;
+	GhostAI* m_ai;
 
 	ID3D11ShaderResourceView* m_roamingTexture;
 	ID3D11ShaderResourceView* m_eatableTexture1;

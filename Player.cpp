@@ -2,7 +2,8 @@
 #include "Player.h"
 #include <algorithm>
 
-/*Node		GetNode()		{return mNode;}*/
+Node*					Player::GetNode()		{return mNode;}
+Node*					Player::GetNextNode()	{return mNextNode;}
 D3DXVECTOR3				Player::GetPosition()	{return mPosition;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
 

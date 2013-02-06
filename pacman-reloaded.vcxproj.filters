@@ -34,6 +34,15 @@
     <Filter Include="Objects\Billboard">
       <UniqueIdentifier>{58dcc83e-1d5f-4edc-b59c-674e3eafdad6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Billboard\Ghost">
+      <UniqueIdentifier>{dae9c7d0-4f20-440c-b28c-905c16fb5f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Consumables">
+      <UniqueIdentifier>{7d3d29e8-0d57-4b87-a862-c1218e26da43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Ghost\AI">
+      <UniqueIdentifier>{d0792dae-bc38-4b8b-a26a-131ccd8ce304}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -84,10 +93,25 @@
       <Filter>Objects\Billboard</Filter>
     </ClInclude>
     <ClInclude Include="Ghost.h">
-      <Filter>Objects\Billboard</Filter>
+      <Filter>Objects\Billboard\Ghost</Filter>
     </ClInclude>
     <ClInclude Include="Candy.h">
-      <Filter>Objects\Billboard</Filter>
+      <Filter>Objects\Billboard\Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostAI.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Blinky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Pinky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Clyde.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -139,10 +163,25 @@
       <Filter>Objects\Billboard</Filter>
     </ClCompile>
     <ClCompile Include="Ghost.cpp">
-      <Filter>Objects\Billboard</Filter>
+      <Filter>Objects\Billboard\Ghost</Filter>
     </ClCompile>
     <ClCompile Include="Candy.cpp">
-      <Filter>Objects\Billboard</Filter>
+      <Filter>Objects\Billboard\Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostAI.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Blinky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Pinky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Inky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Clyde.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

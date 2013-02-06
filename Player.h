@@ -31,7 +31,8 @@ public:
 	
 	D3DXVECTOR3* GetPositionPtr();
 
-	//Node		GetNode();
+	Node*		GetNode();
+	Node*		GetNextNode();
 	D3DXVECTOR3 GetPosition();
 	PlayerStatus GetStatus();
 

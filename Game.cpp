@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "Blinky.h"
+#include "Pinky.h"
+#include "Inky.h"
+#include "Clyde.h"
 
 Game::Game(void)
 {
@@ -25,7 +29,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	std::vector<MapOutput> ObjectSpawnList;
 	ObjectSpawnList = m_map.Init(m_Device, m_DeviceContext, m_shaders.get("Basic"), "map.RAW", 28, 31);
 
-	// Loop to spawn Objects
 	for (int i = 0; i < ObjectSpawnList.size(); i++) 
 	{
 		// Add candy
@@ -67,29 +70,33 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			ObjectSpawnList[i].Type == ORANGE_GHOST ||
 			ObjectSpawnList[i].Type == TEAL_GHOST)
 		{
-			Ghost* ghost = new Ghost();
+			Ghost* ghost;
 
 			std::string textureFilename;
 			if (ObjectSpawnList[i].Type == PINK_GHOST)
 			{	 
+				ghost = new Ghost(new Pinky(&mPlayer));
 				textureFilename = "Content/Img/pinkghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_PINK);
 			}
 
 			if (ObjectSpawnList[i].Type == RED_GHOST)
 			{	 
+				ghost = new Ghost(new Blinky(&mPlayer));
 				textureFilename = "Content/Img/redghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_RED);
 			}
 
 			if (ObjectSpawnList[i].Type == ORANGE_GHOST)
 			{ 
+				ghost = new Ghost(new Clyde());
 				textureFilename = "Content/Img/orangeghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_ORANGE);
 			}
 
 			if (ObjectSpawnList[i].Type == TEAL_GHOST)
 			{  
+				ghost = new Ghost(new Inky(&mPlayer));
 				textureFilename = "Content/Img/tealghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_TEAL);
 			}
@@ -103,7 +110,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			mObjList.push_back(ghost);
 		}
 
-		if ( ObjectSpawnList[i].Type == PACMAN)
+		if (ObjectSpawnList[i].Type == PACMAN)
 		{
 			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
 			m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
@@ -154,7 +161,7 @@ void Game::Update(const float dt)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				ghost->ActivateEatable();
+				ghost->MakeEatable();
 			}
 		}
 	}
@@ -164,8 +171,7 @@ void Game::Update(const float dt)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				if (!ghost->IsDead())
-					ghost->Kill();
+				ghost->Kill();
 			}
 		}
 	}
