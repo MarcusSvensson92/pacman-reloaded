@@ -16,9 +16,6 @@
     <Filter Include="Resource Files\Content\Shaders">
       <UniqueIdentifier>{92b8c40d-da28-467b-9ca4-8671301de163}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\AI">
-      <UniqueIdentifier>{72b4677a-3eb7-440d-9088-e5a6106ae618}</UniqueIdentifier>
-    </Filter>
     <Filter Include="D3D">
       <UniqueIdentifier>{8d08c649-289f-4f2c-8a28-dc6bf7a5dce8}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,9 @@
     </Filter>
     <Filter Include="Maze">
       <UniqueIdentifier>{e6d6052c-0488-419a-b5aa-709e9c12c0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard">
+      <UniqueIdentifier>{58dcc83e-1d5f-4edc-b59c-674e3eafdad6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -54,13 +54,7 @@
     <ClInclude Include="Game.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Candy.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Ghost.h">
-      <Filter>Objects\AI</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>D3D</Filter>
     </ClInclude>
@@ -86,6 +80,15 @@
     <ClInclude Include="d3dApp.h">
       <Filter>D3D</Filter>
     </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Objects\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Objects\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Candy.h">
+      <Filter>Objects\Billboard</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -106,13 +109,7 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Candy.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Ghost.cpp">
-      <Filter>Objects\AI</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>D3D</Filter>
     </ClCompile>
@@ -137,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="d3dApp.cpp">
       <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Objects\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Objects\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Candy.cpp">
+      <Filter>Objects\Billboard</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

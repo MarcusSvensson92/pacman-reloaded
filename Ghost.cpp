@@ -9,11 +9,14 @@ const float		  g_ghostSpeed				   = 20.f;
 const float		  g_ghostEatableBlueTime	   = 3.f;
 const float		  g_ghostEatableTotalTime	   = 5.f;
 const float		  g_ghostEatableSpeedReduction = 0.5f;
-const float		  g_ghostEatedAlphaValue	   = 0.51f;
-const float		  g_ghostEatedSpeedIncrease	   = 3.f;
+const float		  g_ghostDeadAlphaValue		   = 0.51f;
+const float		  g_ghostDeadSpeedIncrease	   = 3.f;
 
 Ghost::Ghost(void)
 {
+	m_objectSize = g_ghostSize;
+	m_alphaValue = 1.f;
+
 	m_start = NULL;
 	m_end   = NULL;
 
@@ -39,73 +42,31 @@ void Ghost::SetSpawnNode(Node* node)
 
 void Ghost::ActivateEatable(void)
 {
-	if (m_state == Roaming)
-		std::swap(m_start, m_end);
-	m_elapsedTime = 0.f;
-	m_state = Eatable;
+	if (m_state != Dead)
+	{
+		if (m_state == Roaming)
+			std::swap(m_start, m_end);
+		m_elapsedTime = 0.f;
+		m_alphaValue = 1.f;
+		m_state = Eatable;
+	}
 }
 
-void Ghost::ActivateEated(void)
+void Ghost::Kill(void)
 {
-	m_state = Eated;
+	if (m_state == Eatable)
+	{
+		m_state	= Dead;
+		m_alphaValue = g_ghostDeadAlphaValue;
 
-	ComputeNewNodes();
+		ComputeNewNodes();
+	}
 }
 
 void Ghost::Update(const float dt)
 {
 	UpdateVelocity(dt);
-
-	if (m_state == Eatable)
-		m_elapsedTime += dt;
-}
-
-void Ghost::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
-{
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-
-	D3DXMatrixTranslation(&translation, mPosition.x, mPosition.y, mPosition.z);
-	world = translation;
-
-	mShader->SetMatrix("gWorld", world);
-	mShader->SetMatrix("gViewProj", camera.ViewProj());
-	mShader->SetFloat3("gCameraPositionW", camera.GetPosition());
-
-	if (m_state == Eated) mShader->SetFloat("gAlphaValue", g_ghostEatedAlphaValue);
-	else				  mShader->SetFloat("gAlphaValue", 1.f);
-
-	UpdateTexture();
-
-	mVBuffer->Apply();
-	mShader->Apply(0);
-
-	deviceContext->Draw(1, 0);
-}
-
-void Ghost::InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
-{
-	struct BillboardVertex
-	{
-		D3DXVECTOR3 position;
-		D3DXVECTOR2 size;
-	};
-
-	BillboardVertex vertex;
-	vertex.position = D3DXVECTOR3(0.f, 0.f, 0.f);
-	vertex.size		= g_ghostSize;
-
-	BUFFER_INIT_DESC initDesc;
-	initDesc.ElementSize = sizeof(BillboardVertex);
-	initDesc.InitData	 = &vertex;
-	initDesc.NumElements = 1;
-	initDesc.Type		 = VERTEX_BUFFER;
-	initDesc.Usage		 = BUFFER_DEFAULT;
-
-	mVBuffer = new Buffer();
-	if(FAILED(mVBuffer->Init(device, deviceContext, initDesc)))
-	{
-		MessageBox(0, "Failed to initialize vertex buffer in Obj3D.cpp", "Fail!", 0);
-	}
+	UpdateTexture(dt);
 }
 
 void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -117,21 +78,24 @@ void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture2Filename.c_str(), NULL, NULL, &m_eatableTexture2, NULL);
 
 	Obj3D::InitGFX(device, deviceContext);
+
+	m_roamingTexture = mTexture;
 }
 
 void Ghost::UpdateVelocity(const float dt)
 {
 	D3DXVECTOR3 velocity = GetCurrentDirection() * g_ghostSpeed * dt;
 	if (m_state == Eatable) velocity *= g_ghostEatableSpeedReduction;
-	if (m_state == Eated)	velocity *= g_ghostEatedSpeedIncrease;
+	if (m_state == Dead)	velocity *= g_ghostDeadSpeedIncrease;
 
 	mPosition += velocity;
 
 	if (IsEndNodePassed())
 	{
-		if (m_end == m_spawn && m_state == Eated)
+		if (m_end == m_spawn && m_state == Dead)
 		{
 			m_currentPath.clear();
+			m_alphaValue = 1.f;
 			m_state = Roaming;
 		}
 
@@ -144,30 +108,32 @@ void Ghost::UpdateVelocity(const float dt)
 	}
 }
 
-void Ghost::UpdateTexture(void)
+void Ghost::UpdateTexture(const float dt)
 {
 	if (m_state == Eatable)
 	{
+		m_elapsedTime += dt;
+
 		if (m_elapsedTime >= g_ghostEatableBlueTime)
 		{
 			const float t = m_elapsedTime - (int)m_elapsedTime;
 			if (t > 0.25f && t < 0.5f ||
 				t > 0.75f && t < 1.f)
-				mShader->SetResource("gTexture", m_eatableTexture1);
+				mTexture = m_eatableTexture1;
 			else
-				mShader->SetResource("gTexture", m_eatableTexture2);
+				mTexture = m_eatableTexture2;
 
 			if (m_elapsedTime >= g_ghostEatableTotalTime)
 			{
 				m_state = Roaming;
-				mShader->SetResource("gTexture", mTexture);
+				mTexture = m_roamingTexture;
 			}
 		}
 		else
-			mShader->SetResource("gTexture", m_eatableTexture1);
+			mTexture = m_eatableTexture1;
 	}
 	else
-		mShader->SetResource("gTexture", mTexture);
+		mTexture = m_roamingTexture;
 }
 
 bool Ghost::IsEndNodePassed(void)
@@ -185,7 +151,7 @@ bool Ghost::IsEndNodePassed(void)
 
 void Ghost::ComputeNewNodes(void)
 {
-	if (m_state == Eated)
+	if (m_state == Dead)
 	{
 		if (m_currentPath.empty())
 		{

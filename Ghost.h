@@ -1,10 +1,10 @@
 #ifndef GHOST_H
 #define GHOST_H
 
-#include "Obj3D.h"
+#include "Billboard.h"
 #include "Node.h"
 
-class Ghost : public Obj3D
+class Ghost : public Billboard
 {
 public:
 	Ghost(void);
@@ -13,26 +13,24 @@ public:
 	void SetSpawnNode(Node* node);
 
 	bool IsEatable(void) const { return m_state == Eatable; }
-	bool IsEated(void)	 const { return m_state == Eated;   }
+	bool IsDead(void)	 const { return m_state == Dead;    }
 
 	void ActivateEatable(void);
-	void ActivateEated(void);
+	void Kill(void);
 
 	void Update(const float dt);
-	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
-	void InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 private:
 	enum State
 	{
 		Roaming,
 		Eatable,
-		Eated
+		Dead
 	} m_state;
 
 	void UpdateVelocity(const float dt);
-	void UpdateTexture(void);
+	void UpdateTexture(const float dt);
 
 	// AI Stuff
 	bool IsEndNodePassed(void);
@@ -46,6 +44,7 @@ private:
 
 	std::vector<Node*> m_currentPath;
 
+	ID3D11ShaderResourceView* m_roamingTexture;
 	ID3D11ShaderResourceView* m_eatableTexture1;
 	ID3D11ShaderResourceView* m_eatableTexture2;
 

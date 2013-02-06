@@ -1,7 +1,9 @@
-#pragma once
-#include "obj3d.h"
-class Candy :
-	public Obj3D
+#ifndef CANDY_H
+#define CANDY_H
+
+#include "Billboard.h"
+
+class Candy : public Billboard
 {
 public:
 	Candy(void);
@@ -12,10 +14,8 @@ public:
 	void Eat();
 
 	void Update(const float dt);
-	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 private:
-	void InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
-
 	bool eaten;
 };
 
+#endif

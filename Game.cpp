@@ -164,8 +164,8 @@ void Game::Update(const float dt)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				if (!ghost->IsEated())
-					ghost->ActivateEated();
+				if (!ghost->IsDead())
+					ghost->Kill();
 			}
 		}
 	}
