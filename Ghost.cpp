@@ -73,13 +73,13 @@ void Ghost::UpdateVelocity(const float dt)
 
 	mPosition += velocity;
 
-	if (const float offset = m_ai->ComputeNodeOffset(mPosition) >= 0.f)
+	const float offset = m_ai->ComputeNodeOffset(mPosition);
+	if (offset >= 0.f)
 	{
 		m_ai->UpdateDirection();
 
-		const float l = D3DXVec3Length(&(m_ai->GetStartNodePosition() - mPosition));
 		mPosition = m_ai->GetStartNodePosition();
-		mPosition += m_ai->ComputeDirection() * l;
+		mPosition += m_ai->ComputeDirection() * offset;
 	}
 }
 
