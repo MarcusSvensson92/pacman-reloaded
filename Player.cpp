@@ -5,6 +5,7 @@
 Node*					Player::GetNode()		{return mNode;}
 Node*					Player::GetNextNode()	{return mNextNode;}
 D3DXVECTOR3				Player::GetPosition()	{return mPosition;}
+D3DXVECTOR3				Player::GetMoveVector() {return mMoveVector;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
 
 Player::Player(){}

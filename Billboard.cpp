@@ -1,7 +1,11 @@
 #include "stdafx.h"
 #include "Billboard.h"
 
-Billboard::Billboard(void) { }
+Billboard::Billboard(const D3DXVECTOR2& size, const float alphaValue)
+{
+	m_size		 = size;
+	m_alphaValue = alphaValue;
+}
 
 Billboard::~Billboard(void) { }
 
@@ -34,7 +38,7 @@ void Billboard::InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 
 	BillboardVertex vertex;
 	vertex.position = D3DXVECTOR3(0.f, 0.f, 0.f);
-	vertex.size		= m_objectSize;
+	vertex.size		= m_size;
 
 	BUFFER_INIT_DESC initDesc;
 	initDesc.ElementSize = sizeof(BillboardVertex);

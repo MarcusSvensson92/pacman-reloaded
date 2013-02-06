@@ -4,6 +4,7 @@
 #include "Pinky.h"
 #include "Inky.h"
 #include "Clyde.h"
+#include "PinkElephant.h"
 
 Game::Game(void)
 {
@@ -117,6 +118,14 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		}
 	}
 
+	PinkElephant* pinkElephant = new PinkElephant(&mPlayer);
+	pinkElephant->Init(m_Device, m_DeviceContext,
+					   m_shaders.get("Billboard"),
+					   "Content/Img/pinkelephant.png",
+					   D3DXVECTOR3(0.f, 0.f, 0.f),
+					   D3DXVECTOR3(1.f, 1.f, 1.f));
+	mObjList.push_back(pinkElephant);
+
 	// Send all candy lights to Shader
 	//std::vector<PointLight> tempLights = m_lights.SetCandyLights();
 	//m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*241);
@@ -124,6 +133,9 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 void Game::Update(const float dt)
 {
+	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		(*it)->Update(dt);
+
 	switch (gameType)
 	{
 		case FIRST_PERSON :
@@ -175,9 +187,6 @@ void Game::Update(const float dt)
 			}
 		}
 	}
-
-	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		(*it)->Update(dt);
 
 	// Remove eaten candy
 	for ( int i = mObjList.size() - 1; i >= 0; i--)

@@ -1,10 +1,7 @@
 #include "stdafx.h"
 #include "Ghost.h"
-#include <time.h>
-#include <cstdlib>
-#include "PathFinding.h"
 
-const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(7.f, 7.f);
+const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(5.50667f, 7.f);
 const float		  g_ghostSpeed				   = 20.f;
 const float		  g_ghostEatableBlueTime	   = 3.f;
 const float		  g_ghostEatableTotalTime	   = 5.f;
@@ -13,15 +10,11 @@ const float		  g_ghostDeadAlphaValue		   = 0.51f;
 const float		  g_ghostDeadSpeedIncrease	   = 3.f;
 
 Ghost::Ghost(GhostAI* ai)
+	: Billboard(g_ghostSize, 1.f)
 {
-	m_objectSize = g_ghostSize;
-	m_alphaValue = 1.f;
-
 	m_ai = ai;
 
 	m_elapsedTime = 0.f;
-
-	srand(time(NULL));
 }
 
 Ghost::~Ghost(void)

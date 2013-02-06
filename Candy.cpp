@@ -2,10 +2,8 @@
 #include "Candy.h"
 
 Candy::Candy(void)
+	: Billboard(D3DXVECTOR2(4.f, 4.f), 1.f)
 {
-	m_objectSize = D3DXVECTOR2(4.f, 4.f);
-	m_alphaValue = 1.f;
-
 	eaten = false;
 }
 

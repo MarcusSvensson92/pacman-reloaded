@@ -6,14 +6,14 @@
 class Billboard : public Obj3D
 {
 public:
-	Billboard(void);
+	Billboard(const D3DXVECTOR2& size, const float alphaValue);
 	~Billboard(void);
 
 	void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:
 	void InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-	D3DXVECTOR2 m_objectSize;
+	D3DXVECTOR2 m_size;
 	float		m_alphaValue;
 };
 

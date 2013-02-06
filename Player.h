@@ -34,6 +34,7 @@ public:
 	Node*		GetNode();
 	Node*		GetNextNode();
 	D3DXVECTOR3 GetPosition();
+	D3DXVECTOR3 GetMoveVector();
 	PlayerStatus GetStatus();
 
 	void Update(D3DXVECTOR3 look);
