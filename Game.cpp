@@ -323,7 +323,7 @@ void Game::SwitchGameType( const float dt )
 	}
 }
 
-bool Game::PlayerCollisionGhost()
+void Game::PlayerCollisionGhost()
 {
 	for ( int i = 0; i < mObjList.size(); i++)
 	{
@@ -347,6 +347,26 @@ bool Game::PlayerCollisionGhost()
 					// Spöke dör
 					x->Kill();
 				}
+			}
+		}
+	}
+	return false;
+}
+
+void Game::PlayerCollisionFruit()
+{
+	for ( int i = 0; i < mObjList.size(); i++)
+	{
+		Fruit* x = dynamic_cast<Fruit*>(mObjList[i]);
+		// Kollar ifall det är en Fruit
+		if (x != NULL)
+		{
+			// Kollar ifall pacman kolliderar med det
+			D3DXVECTOR3 v;
+			v = mPlayer.GetPosition() - *x->GetPositionPtr();
+			if (D3DXVec3Length(&v) < 5) // 5 = distance
+			{
+				// Kod för att äta frukten
 			}
 		}
 	}

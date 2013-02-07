@@ -54,7 +54,8 @@ private:
 	void DebugCam(const float dt );
 	void OldSchool();
 
-	bool PlayerCollisionGhost();
+	void PlayerCollisionGhost();
+	void PlayerCollisionFruit();
 
 	LPCTSTR mLastKey;
 };
