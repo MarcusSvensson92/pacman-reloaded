@@ -22,10 +22,7 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 	mDistanceCovered = 0;
 	mSpeed = 3;
 	mMoveVector = D3DXVECTOR3(0,0,0);
-
-	mImmortalityTimer = 0;
-	mImmortalityMax = 100;
-	
+	mSuperCandy = false;
 }
 
 
@@ -42,10 +39,6 @@ void Player::Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR d
 		ChangeDirection(look);
 	else
 		OldSchoolControl(dir);
-
-	if(mStatus == IMMORTAL)
-	Immortality(dt);
-	
 }
 
 void Player::OldSchoolControl(LPCSTR dir)
@@ -118,9 +111,20 @@ void Player::ChangeDirection(D3DXVECTOR3 look)
 	
 }
 
+bool Player::HasEatenSuperCandy()
+{
+	if (mSuperCandy)
+	{
+		mSuperCandy = false;
+		return true;
+	}
+	else
+		return false;
+}
+
 void Player::SuperCandy()
 {
-	mStatus = IMMORTAL;
+	mSuperCandy = true;
 }
 
 void Player::Collision(Node* node)
@@ -128,7 +132,7 @@ void Player::Collision(Node* node)
 	node->Item->Eat();
 
 	if(node->Item->IsSuperCandy())
-	SuperCandy();
+		SuperCandy();
 }
 
 void Player::Move( const float dt)
@@ -181,17 +185,6 @@ void Player::CheckDirections()
 		{NewDirection(mNode->Right);}
 	}
 	else mDirection = PAUSE;
-}
-
-void Player::Immortality( const float dt )
-{
-	mImmortalityTimer+= dt;
-
-	if(mImmortalityTimer > mImmortalityMax)
-	{
-		mImmortalityTimer =0;
-		mStatus = ALIVE;
-	}
 }
 
 void Player::Kill()

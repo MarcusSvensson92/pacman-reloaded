@@ -10,7 +10,6 @@ public:
 	{
 		ALIVE,
 		DEAD,
-		IMMORTAL,
 	};
 
 	enum Direction
@@ -37,8 +36,9 @@ public:
 	D3DXVECTOR3 GetMoveVector();
 	PlayerStatus GetStatus();
 
+	bool HasEatenSuperCandy();
+
 	void Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir );
-	void Immortality( const float dt );
 
 	void OldSchoolControl(LPCSTR dir);
 

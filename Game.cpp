@@ -259,7 +259,7 @@ void Game::RemoveEatenCandy()
 
 void Game::PacManRampage()
 {
-	if (mPlayer.GetStatus() == Player::PlayerStatus::IMMORTAL)
+	if (mPlayer.HasEatenSuperCandy())
 	{
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
@@ -332,7 +332,7 @@ void Game::PlayerCollisionGhost()
 					if (x->IsRoaming())
 					{
 						// Pacman dör
-						PostQuitMessage(0);
+						mPlayer.Kill();
 					}
 					// Kollar ifall spöket är ätbart
 					else if (x->IsEatable())
