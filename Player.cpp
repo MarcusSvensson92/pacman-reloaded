@@ -7,6 +7,7 @@ Node*					Player::GetNextNode()	{return mNextNode;}
 D3DXVECTOR3				Player::GetPosition()	{return mPosition;}
 D3DXVECTOR3				Player::GetMoveVector() {return mMoveVector;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
+D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
 
 Player::Player(){}
 
@@ -21,6 +22,9 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 	mMoveIterations = 0;
 	mMaxIterations = 15;
 	mMoveVector = D3DXVECTOR3(0,0,0);
+
+	mImmortalityTimer = 0;
+	mImmortalityMax = 100;
 	
 }
 
@@ -30,10 +34,14 @@ Player::~Player(void)
 
 }
 
-void Player::Update(D3DXVECTOR3 look)
+void Player::Update(D3DXVECTOR3 look, const float dt )
 {
 	Move();
 	ChangeDirection(look);
+
+	if(mStatus == IMMORTAL)
+	Immortality(dt);
+	
 }
 
 void Player::OldSchoolControl(LPCSTR dir)
@@ -107,13 +115,25 @@ void Player::ChangeDirection(D3DXVECTOR3 look)
 	
 }
 
+void Player::SuperCandy()
+{
+	mStatus = IMMORTAL;
+}
+
+void Player::Collision(Node* node)
+{
+	node->Item->Eat();
+
+	if(node->Item->IsSuperCandy())
+	SuperCandy();
+}
 
 void Player::Move()
 {
 	// Äter Godis
 	if (mNode != mNextNode && mNode->Item != NULL)
 	{
-		mNode->Item->Eat();
+		Collision(mNode);
 	}
 
 	//kör iterationerna så länge man inte nått noden -> != PAUSE.
@@ -159,7 +179,21 @@ void Player::CheckDirections()
 	else mDirection = PAUSE;
 }
 
-D3DXVECTOR3* Player::GetPositionPtr()
+void Player::Immortality( const float dt )
 {
-	return &mPosition;
+	mMaxIterations = 10;
+	mImmortalityTimer+= dt;
+
+	if(mImmortalityTimer > mImmortalityMax)
+	{
+		mImmortalityTimer =0;
+		mStatus = ALIVE;
+		mMaxIterations = 15;
+	}
 }
+
+void Player::Kill()
+{
+	mStatus = DEAD;
+}
+

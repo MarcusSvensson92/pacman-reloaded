@@ -28,6 +28,17 @@ public:
 
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
+
+	void SwitchGameType( const float dt );
+
+	void ChangeView();
+
+	void PacManRampage();
+
+	void RemoveEatenCandy();
+
+	void Trams();
+
 	void Draw();
 private:
 	void initShaders(void);
@@ -42,6 +53,8 @@ private:
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );
 	void OldSchool();
+
+	bool PlayerCollisionGhost();
 };
 
 #endif

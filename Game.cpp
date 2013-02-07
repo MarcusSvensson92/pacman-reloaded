@@ -8,7 +8,7 @@
 
 Game::Game(void)
 {
-	gameType = NO_CLIP;
+	gameType = OLD_SCHOOL;
 }
 
 Game::~Game(void)
@@ -40,7 +40,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				m_shaders.get("Billboard"),
 				"Content/Img/candy.png",
 				ObjectSpawnList[i].Node->GetPosition(),
-				D3DXVECTOR3(1,1,1));
+				D3DXVECTOR3(1,1,1),false);
 			mObjList.push_back(candy);
 
 			// Set node item to current candy.
@@ -56,7 +56,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 				m_shaders.get("Billboard"),
 				"Content/Img/supercandy.png",
 				ObjectSpawnList[i].Node->GetPosition(),
-				D3DXVECTOR3(1,1,1));
+				D3DXVECTOR3(1,1,1),true);
 			mObjList.push_back(candy);
 
 			// Set node item to current candy.
@@ -136,87 +136,18 @@ void Game::Update(const float dt)
 	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		(*it)->Update(dt);
 
-	switch (gameType)
-	{
-		case FIRST_PERSON :
-			if(mPlayer.GetStatus() == Player::ALIVE)
-			{
-				CameraFollowPlayer(); 
-				mPlayer.Update(mCamera.GetLook());
-			}
-			break;
-		case OLD_SCHOOL :
-			OldSchool();
-			mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
-			break;
-		case NO_CLIP :
-			DebugCam(dt);
-			break;
-	}
+	SwitchGameType(dt);
 
-	if (GetAsyncKeyState('1') & 0x8000)
-	{
-		gameType = FIRST_PERSON;
-	}
-	if (GetAsyncKeyState('2') & 0x8000)
-	{
-		gameType = OLD_SCHOOL;
-	}
-	if (GetAsyncKeyState('3') & 0x8000)
-	{
-		gameType = NO_CLIP;
-	}
+	ChangeView();
 
-	if (GetAsyncKeyState('Q') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
-			{
-				ghost->MakeEatable();
-			}
-		}
-	}
-	if (GetAsyncKeyState('E') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
-			{
-				ghost->Kill();
-			}
-		}
-	}
+	PacManRampage();
 
-	if (GetAsyncKeyState('P') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
-			{
-				pinkElephant->Activate();
-			}
-		}
-	}
-	if (GetAsyncKeyState('L') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
-			{
-				pinkElephant->Deactivate();
-			}
-		}
-	}
+	Trams();
 
-	// Remove eaten candy
-	for ( int i = mObjList.size() - 1; i >= 0; i--)
-	{
-		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
-		if (x != NULL)
-			if (x->IsEaten())
-				mObjList.erase(mObjList.begin() + i);
-	}
+	RemoveEatenCandy();
+
+	if(PlayerCollisionGhost() && mPlayer.GetStatus() != Player::PlayerStatus::IMMORTAL)
+	mPlayer.Kill();
 
 	d3dApp::Update(dt);
 }
@@ -287,4 +218,109 @@ void Game::OldSchool()
 		mPlayer.OldSchoolControl("RIGHT");
 	else 
 		mPlayer.OldSchoolControl("");
+}
+
+void Game::Trams()
+{
+	if (GetAsyncKeyState('P') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
+			{
+				pinkElephant->Activate();
+			}
+		}
+	}
+	if (GetAsyncKeyState('L') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
+			{
+				pinkElephant->Deactivate();
+			}
+		}
+	}
+}
+
+void Game::RemoveEatenCandy()
+{
+	for ( int i = mObjList.size() - 1; i >= 0; i--)
+	{
+		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
+		if (x != NULL)
+			if (x->IsEaten())
+				mObjList.erase(mObjList.begin() + i);
+	}
+}
+
+void Game::PacManRampage()
+{
+	if (mPlayer.GetStatus() == Player::PlayerStatus::IMMORTAL)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
+			{
+				ghost->MakeEatable();
+			}
+		}
+
+		if(PlayerCollisionGhost())
+		{
+			for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+			{
+				if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
+				{
+					ghost->Kill();
+				}
+			}
+		}
+	}
+}
+
+void Game::ChangeView()
+{
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		gameType = FIRST_PERSON;
+	}
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		gameType = OLD_SCHOOL;
+	}
+	if (GetAsyncKeyState('3') & 0x8000)
+	{
+		gameType = NO_CLIP;
+	}
+}
+
+void Game::SwitchGameType( const float dt )
+{
+	switch (gameType)
+	{
+	case FIRST_PERSON :
+		if(!mPlayer.GetStatus() == Player::DEAD)
+		{
+			CameraFollowPlayer(); 
+			mPlayer.Update(mCamera.GetLook(),dt);
+		}
+		break;
+	case OLD_SCHOOL :
+		OldSchool();
+		mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
+		break;
+	case NO_CLIP :
+		DebugCam(dt);
+		break;
+	}
+}
+
+bool Game::PlayerCollisionGhost()
+{
+
+	/*COLLISION*/
+
+	return false;
 }

@@ -28,7 +28,7 @@ public:
 	Obj3D(void);
 	~Obj3D(void);
 
-	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
+	virtual void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale);
 	
 	virtual void Update(const float dt) = 0;
 	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
