@@ -146,8 +146,10 @@ void Game::Update(const float dt)
 
 	RemoveEatenCandy();
 
-	if(PlayerCollisionGhost() && mPlayer.GetStatus() != Player::PlayerStatus::IMMORTAL)
-	mPlayer.Kill();
+	PlayerCollisionGhost();
+
+	//if(PlayerCollisionGhost() && mPlayer.GetStatus() != Player::PlayerStatus::IMMORTAL)
+	//mPlayer.Kill();
 
 	d3dApp::Update(dt);
 }
@@ -323,8 +325,30 @@ void Game::SwitchGameType( const float dt )
 
 bool Game::PlayerCollisionGhost()
 {
-
-	/*COLLISION*/
-
+	for ( int i = 0; i < mObjList.size(); i++)
+	{
+		Ghost* x = dynamic_cast<Ghost*>(mObjList[i]);
+		// Kollar ifall det är ett spöke
+		if (x != NULL)
+		{
+			// Kollar ifall pacman kolliderar med det
+			D3DXVECTOR3 v;
+			v = mPlayer.GetPosition() - *x->GetPositionPtr();
+			if (D3DXVec3Length(&v) < 5) // 5 = distance
+			{
+				// Kollar ifall spöket är farligt
+				if (x->IsRoaming())
+				{
+					// Pacman dör
+					PostQuitMessage(0);
+				}
+				else
+				{
+					// Spöke dör
+					x->Kill();
+				}
+			}
+		}
+	}
 	return false;
 }
