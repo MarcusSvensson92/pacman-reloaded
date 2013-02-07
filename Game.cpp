@@ -325,16 +325,21 @@ void Game::PlayerCollisionGhost()
 			v = mPlayer.GetPosition() - *x->GetPositionPtr();
 			if (D3DXVec3Length(&v) < 5) // 5 = distance
 			{
-				// Kollar ifall spöket är farligt
-				if (x->IsRoaming())
+				// Kollar så att spöket inte är dött
+				if (!x->IsDead())
 				{
-					// Pacman dör
-					PostQuitMessage(0);
-				}
-				else
-				{
-					// Spöke dör
-					x->Kill();
+					// Kollar ifall spöket är farligt
+					if (x->IsRoaming())
+					{
+						// Pacman dör
+						PostQuitMessage(0);
+					}
+					// Kollar ifall spöket är ätbart
+					else if (x->IsEatable())
+					{
+						// Spöke dör
+						x->Kill();
+					}
 				}
 			}
 		}
