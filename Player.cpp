@@ -20,7 +20,7 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mDistanceCovered = 0;
-	mSpeed = 6;
+	mSpeed = 3;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 
 	mImmortalityTimer = 0;

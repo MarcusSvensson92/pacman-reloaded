@@ -12,6 +12,7 @@ public:
 
 	void SetSpawnNode(Node* spawn);
 
+	bool IsRoaming(void) const { return m_ai->GetState() == Roaming; }
 	bool IsEatable(void) const { return m_ai->GetState() == Eatable; }
 	bool IsDead(void)	 const { return m_ai->GetState() == Dead;    }
 
