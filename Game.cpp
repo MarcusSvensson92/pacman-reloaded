@@ -209,15 +209,15 @@ void Game::DebugCam(const float dt )
 void Game::OldSchool()
 {
 	if (GetAsyncKeyState('W') & 0x8000)
-		mPlayer.OldSchoolControl("UP");
+		mLastKey = "W";
 	else if (GetAsyncKeyState('S') & 0x8000)
-		mPlayer.OldSchoolControl("DOWN");
+		mLastKey = "S";
 	else if (GetAsyncKeyState('A') & 0x8000)
-		mPlayer.OldSchoolControl("LEFT");
+		mLastKey = "A";
 	else if (GetAsyncKeyState('D') & 0x8000)
-		mPlayer.OldSchoolControl("RIGHT");
+		mLastKey = "D";
 	else 
-		mPlayer.OldSchoolControl("");
+		mLastKey = "";
 }
 
 void Game::Trams()
@@ -301,15 +301,19 @@ void Game::SwitchGameType( const float dt )
 	switch (gameType)
 	{
 	case FIRST_PERSON :
-		if(!mPlayer.GetStatus() == Player::DEAD)
-		{
+ 		if(!(mPlayer.GetStatus() == Player::DEAD))
+ 		{
 			CameraFollowPlayer(); 
-			mPlayer.Update(mCamera.GetLook(),dt);
+			mPlayer.Update(mCamera.GetLook(),dt,false,"");
 		}
 		break;
 	case OLD_SCHOOL :
-		OldSchool();
-		mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
+		if(!(mPlayer.GetStatus() == Player::DEAD))
+		{
+			OldSchool();
+			mPlayer.Update(mCamera.GetLook(),dt,true,mLastKey);
+			mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
+		}
 		break;
 	case NO_CLIP :
 		DebugCam(dt);

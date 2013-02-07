@@ -37,8 +37,7 @@ public:
 	D3DXVECTOR3 GetMoveVector();
 	PlayerStatus GetStatus();
 
-	void Update(D3DXVECTOR3 look, const float dt );
-
+	void Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir );
 	void Immortality( const float dt );
 
 	void OldSchoolControl(LPCSTR dir);
@@ -56,18 +55,21 @@ private:
 	Node*			mNode;
 	Node*			mNextNode;
 
-	UINT			mMoveIterations;
-	UINT			mMaxIterations;
+	float			mSpeed;
+	float			mDistance;
+	float			mDistanceCovered;
+
 	UINT			mImmortalityTimer;
 	UINT			mImmortalityMax;
 
 	
-	void Move();
+	void Move( const float dt);
 	void InputDirection(D3DXVECTOR3 look);
 	void ChangeDirection(D3DXVECTOR3 look);
 
 	void CheckDirections();
 
+	void NewDirection(Node* node);
 	void Collision(Node* node);
 	void SuperCandy();
 };

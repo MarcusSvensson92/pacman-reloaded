@@ -55,6 +55,8 @@ private:
 	void OldSchool();
 
 	bool PlayerCollisionGhost();
+
+	LPCTSTR mLastKey;
 };
 
 #endif
