@@ -188,6 +188,27 @@ void Game::Update(const float dt)
 		}
 	}
 
+	if (GetAsyncKeyState('P') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
+			{
+				pinkElephant->Activate();
+			}
+		}
+	}
+	if (GetAsyncKeyState('L') & 0x8000)
+	{
+		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		{
+			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
+			{
+				pinkElephant->Deactivate();
+			}
+		}
+	}
+
 	// Remove eaten candy
 	for ( int i = mObjList.size() - 1; i >= 0; i--)
 	{
