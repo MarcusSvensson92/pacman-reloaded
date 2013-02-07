@@ -268,17 +268,6 @@ void Game::PacManRampage()
 				ghost->MakeEatable();
 			}
 		}
-
-		if(PlayerCollisionGhost())
-		{
-			for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-			{
-				if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
-				{
-					ghost->Kill();
-				}
-			}
-		}
 	}
 }
 
@@ -350,25 +339,23 @@ void Game::PlayerCollisionGhost()
 			}
 		}
 	}
-	return false;
 }
 
 void Game::PlayerCollisionFruit()
 {
-	for ( int i = 0; i < mObjList.size(); i++)
-	{
-		Fruit* x = dynamic_cast<Fruit*>(mObjList[i]);
-		// Kollar ifall det är en Fruit
-		if (x != NULL)
-		{
-			// Kollar ifall pacman kolliderar med det
-			D3DXVECTOR3 v;
-			v = mPlayer.GetPosition() - *x->GetPositionPtr();
-			if (D3DXVec3Length(&v) < 5) // 5 = distance
-			{
-				// Kod för att äta frukten
-			}
-		}
-	}
-	return false;
+	//for ( int i = 0; i < mObjList.size(); i++)
+	//{
+	//	Fruit* x = dynamic_cast<Fruit*>(mObjList[i]);
+	//	// Kollar ifall det är en Fruit
+	//	if (x != NULL)
+	//	{
+	//		// Kollar ifall pacman kolliderar med det
+	//		D3DXVECTOR3 v;
+	//		v = mPlayer.GetPosition() - *x->GetPositionPtr();
+	//		if (D3DXVec3Length(&v) < 5) // 5 = distance
+	//		{
+	//			// Kod för att äta frukten
+	//		}
+	//	}
+	//}
 }
