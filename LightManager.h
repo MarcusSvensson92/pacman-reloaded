@@ -42,6 +42,7 @@ public:
 	void AddLight(D3DXVECTOR3* position, LightType type);
 	std::vector<PointLight> SetCandyLights();
 	std::vector<PointLight> SetMovingLights();
+	void RemoveLight( D3DXVECTOR3* position, LightType type );
 private:
 	std::vector<Light> Lights;
 };

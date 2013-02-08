@@ -20,6 +20,17 @@ void LightManager::AddLight( D3DXVECTOR3* position, LightType type )
 	Lights.push_back(temp);
 }
 
+void LightManager::RemoveLight( D3DXVECTOR3* position, LightType type )
+{
+	for(int i = 0; i < Lights.size(); i++)
+	{
+		if (Lights[i].lightType == type)
+			if (position == Lights[i].position)
+				Lights.erase(Lights.begin()+i);
+	}
+}
+
+
 std::vector<PointLight> LightManager::SetCandyLights()
 {
 	std::vector<PointLight> tempList;
@@ -38,17 +49,20 @@ std::vector<PointLight> LightManager::SetCandyLights()
 		switch (Lights[i].lightType)
 		{
 		case CANDYLIGHT:
-
+			standardLight.Ambient =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
+			standardLight.Diffuse =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
 			tempList.push_back(standardLight);
 			break;
 
 		case FRUITLIGHT:
-
+			standardLight.Ambient =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
+			standardLight.Diffuse =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
 			tempList.push_back(standardLight);
 			break;
 
 		case SUPERCANDYLIGHT:
-
+			standardLight.Ambient =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
+			standardLight.Diffuse =		D3DXVECTOR4(0.5f, 0.5f, 0.5f, 1.0f);
 			tempList.push_back(standardLight);
 			break;
 		}

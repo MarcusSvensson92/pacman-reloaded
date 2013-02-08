@@ -22,10 +22,6 @@ struct PSSceneIn
 	float4 spec			: SPECULAR;
 };
 
-
-
-
-
 //-----------------------------------------------------------------------------------------
 // VertexShader: VSScene
 //-----------------------------------------------------------------------------------------
@@ -39,39 +35,16 @@ PSSceneIn VSScene(VSIn input)
 
 	output.Tex = mul(float4(input.Tex.x,input.Tex.y, 0.0f, 1.0f), gTextureTransform);
 
-
 	output.spec = input.spec;
 	output.diffuse = input.diffuse;
 	
 	return output;
 }
 
-
-
-
 //-----------------------------------------------------------------------------------------
 // PixelShader: PSSceneMain
 //-----------------------------------------------------------------------------------------
 float4 PSScene(PSSceneIn input) : SV_Target
-{	
-	input.normalW = normalize(input.normalW);
-
-	float4 color = float4(0,0,0,0);
-
-	color = mTexture.Sample(linearSampler,input.Tex);
-
-	SurfaceInfo sfi = {input.posW,input.normalW,color,input.diffuse};
-
-	float3 lightColor;
-
-	lightColor = CalcPointLight(sfi,gLight,gEyePos) + CalcDirectionalLight(sfi,input.normalW, gEyePos);
-
-	//return color;
-	return float4(lightColor,color.a);
-}
-
-
-float4 PSSceneLights(PSSceneIn input) : SV_Target
 {	
 	Material gMaterial;
 	gMaterial.Ambient = float4(0.5f, 0.5f, 0.5f, 1.0f);
@@ -113,9 +86,6 @@ float4 PSSceneLights(PSSceneIn input) : SV_Target
 	return litColor;
 }
 
-
-
-
 //-----------------------------------------------------------------------------------------
 // Technique: RenderTextured  
 //-----------------------------------------------------------------------------------------
@@ -126,7 +96,7 @@ technique11 BasicTech
 		// Set VS, GS, and PS
         SetVertexShader( CompileShader( vs_4_0, VSScene() ) );
         SetGeometryShader( NULL );
-        SetPixelShader( CompileShader( ps_4_0, PSSceneLights() ) );
+        SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
 	    
 	    SetRasterizerState( CullBack );
 
