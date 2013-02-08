@@ -46,7 +46,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
 
-			//m_lights.AddLight(candy->GetPositionPtr(), CANDYLIGHT);
 		}
 		// Add candy that looks like supercandy (temp fix)
 		if ( ObjectSpawnList[i].Type == SUPER_CANDY )
@@ -126,9 +125,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 					   D3DXVECTOR3(1.f, 1.f, 1.f));
 	mObjList.push_back(pinkElephant);
 
-	// Send all candy lights to Shader
-	//std::vector<PointLight> tempLights = m_lights.SetCandyLights();
-	//m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*241);
 }
 
 void Game::Update(const float dt)
