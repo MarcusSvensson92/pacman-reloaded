@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "Node.h"
 
-class Player
+class Player: public Billboard
 {
 public:
 
@@ -22,7 +22,6 @@ public:
 	};
 
 	Player();
-	Player(D3DXVECTOR3 _pos, Node* _node);
 	~Player(void);
 
 	void Kill();
@@ -40,12 +39,15 @@ public:
 
 	void Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir );
 
+	void Update(const float dt);
+
 	void OldSchoolControl(LPCSTR dir);
+
+	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node);
 
 private:
 
 	D3DXVECTOR3		mMoveVector;
-	D3DXVECTOR3		mPosition;
 
 	Direction		mDirection,mLastDirection;
 	PlayerStatus	mStatus;
@@ -72,5 +74,6 @@ private:
 	void NewDirection(Node* node);
 	void Collision(Node* node);
 	void SuperCandy();
+	
 };
 

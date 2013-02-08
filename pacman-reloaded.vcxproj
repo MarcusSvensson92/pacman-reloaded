@@ -234,6 +234,8 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc /Fc /Od /Zi /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">fxc compile for debug: %(FullPath)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug - Use PCH|Win32'">%(Filename).fxo;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug - Create PCH|Win32'">"$(DXSDK_DIR)Utilities\bin\x86\"fxc.exe  /T fx_4_0 /Fo "%(Filename).fxo" "%(FullPath)"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug - Create PCH|Win32'">$(filename).fxo</Outputs>
     </CustomBuild>
     <CustomBuild Include="Content\Shaders\Lightning.fx">
       <FileType>Document</FileType>

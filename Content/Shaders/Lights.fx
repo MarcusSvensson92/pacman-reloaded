@@ -36,6 +36,8 @@ cbuffer EveryFrame
 	matrix gWorld;
 	matrix gWVP;
 
+	float3 gPlayerPos;
+
 	PointLight gMovingLights[MOVINGLIGHTS];
 };
 

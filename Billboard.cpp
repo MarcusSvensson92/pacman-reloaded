@@ -50,6 +50,6 @@ void Billboard::InitBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceCon
 	mVBuffer = new Buffer();
 	if(FAILED(mVBuffer->Init(device, deviceContext, initDesc)))
 	{
-		MessageBox(0, "Failed to initialize vertex buffer in Obj3D.cpp", "Fail!", 0);
+		MessageBox(0, "Failed to initialize vertex buffer in Billboard.cpp", "Fail!", 0);
 	}
 }

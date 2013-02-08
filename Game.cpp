@@ -112,7 +112,12 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 		if (ObjectSpawnList[i].Type == PACMAN)
 		{
-			mPlayer = Player(ObjectSpawnList[i].Node->GetPosition(), ObjectSpawnList[i].Node);
+			mPlayer.Init(m_Device, m_DeviceContext,
+				m_shaders.get("Billboard"),
+				"Content/Img/Pacman.png",
+				ObjectSpawnList[i].Node->GetPosition(),
+				ObjectSpawnList[i].Node);
+
 			m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
 		}
 	}
@@ -144,6 +149,14 @@ void Game::Update(const float dt)
 
 	PlayerCollisionGhost();
 
+	
+
+// 		D3D11_BLEND SrcBlend.;
+// 
+// 		D3D10_BLEND_OP BlendOp.;
+
+
+
 	//if(PlayerCollisionGhost() && mPlayer.GetStatus() != Player::PlayerStatus::IMMORTAL)
 	//mPlayer.Kill();
 
@@ -157,12 +170,18 @@ void Game::Draw()
 	std::vector<PointLight> tempLights = m_lights.SetMovingLights();
 	m_shaders.get("Basic")->SetRawData("gMovingLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 
+	m_shaders.get("Basic")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
+	m_shaders.get("Billboard")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
+
 	// Loop to draw Objects
  	for (int i = 0; i < mObjList.size(); i++) 
  	{
  		mObjList[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
+
+	if(gameType == OLD_SCHOOL)
+		mPlayer.Draw(m_DeviceContext, mCamera);
 
 	DrawEnd();
 }

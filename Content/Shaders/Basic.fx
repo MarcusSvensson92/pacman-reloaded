@@ -79,7 +79,7 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	float4 texColor = mTexture.Sample(linearSampler, input.Tex);
 
-	float4 litColor = texColor*(ambient + diffuse) + specular;
+	float4 litColor = (texColor*(ambient + diffuse) + specular)*Fog(gPlayerPos,input.posW);
 
 	litColor.a = gMaterial.Diffuse.a;
 
@@ -98,7 +98,7 @@ technique11 BasicTech
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
 	    
-	    SetRasterizerState( CullBack );
+	    //SetRasterizerState( NoCulling );
 
 		SetBlendState( AlphaBlending1, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
     }  

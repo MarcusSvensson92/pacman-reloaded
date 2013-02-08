@@ -76,7 +76,7 @@ void Obj3D::Draw(ID3D11DeviceContext* m_DeviceContext,Camera camera)
 	mShader->SetMatrix("gWVP", wvp);
 	mShader->SetMatrix("gWorld", world);
 	mShader->SetMatrix("gWorldInvTranspose", worldInvTranspose);
-	mShader->SetFloat3("gEyePosW", camera.GetPosition());
+	mShader->SetFloat3("gEyePos", camera.GetPosition());
 	//mShader->SetRawData("gLight",&light,sizeof(PointLight));
 
 	m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

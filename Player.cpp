@@ -9,10 +9,12 @@ D3DXVECTOR3				Player::GetMoveVector() {return mMoveVector;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
 D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
 
-Player::Player(){}
+Player::Player(): Billboard(D3DXVECTOR2(10, 10), 1.f) {}
 
-Player::Player(D3DXVECTOR3 _pos, Node* _node)
+void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
+	Obj3D::Init(device,deviceContext,shader,texture,_pos,D3DXVECTOR3(1,1,1));
+
 	mStatus = ALIVE;
 	mPosition = _pos;
 	mNode = _node;
@@ -29,6 +31,10 @@ Player::Player(D3DXVECTOR3 _pos, Node* _node)
 Player::~Player(void)
 {
 
+}
+
+void Player::Update(const float dt)
+{
 }
 
 void Player::Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir )

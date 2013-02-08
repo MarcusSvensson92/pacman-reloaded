@@ -5,11 +5,13 @@ cbuffer cbPerFrame
 	matrix gWorld;
 	matrix gViewProj;
 	float3 gCameraPositionW;
+	
 };
 
 cbuffer cbPerObject
 {
 	float gAlphaValue;
+	float3 gPlayerPos;
 };
 
 cbuffer cbConstants
@@ -91,7 +93,7 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 float4 PS(PSIn input) : SV_TARGET
 {
 	float4 texColor = gTexture.Sample(linSampler, float3(input.tex0, 0.f));
-	return float4(texColor.xyz, texColor.w * gAlphaValue);
+	return float4(texColor.xyz*Fog(gPlayerPos,input.positionW), texColor.w * gAlphaValue);
 }
 
 technique11 BillboardTech
@@ -102,6 +104,6 @@ technique11 BillboardTech
 		SetGeometryShader(CompileShader(gs_4_0, GS()));
 		SetPixelShader(CompileShader(ps_4_0, PS()));
 
-		SetBlendState(AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF);
+		SetBlendState(AlphaBlending1, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF);
 	}
 }
