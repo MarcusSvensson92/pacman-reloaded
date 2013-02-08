@@ -21,11 +21,8 @@ private:
 
 	Player* m_player;
 
-	float m_animationPositionXZ;
-	float m_animationPositionY;
-
-	float m_kXZ;
-	float m_kY;
+	D3DXVECTOR3 m_animationPosition;
+	D3DXVECTOR3 m_animationK;
 
 	bool m_active;
 };

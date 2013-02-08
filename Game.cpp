@@ -120,10 +120,10 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	PinkElephant* pinkElephant = new PinkElephant(&mPlayer);
 	pinkElephant->Init(m_Device, m_DeviceContext,
-					   m_shaders.get("Billboard"),
-					   "Content/Img/pinkelephant.png",
-					   D3DXVECTOR3(0.f, 0.f, 0.f),
-					   D3DXVECTOR3(1.f, 1.f, 1.f));
+						m_shaders.get("Billboard"),
+						"Content/Img/pinkelephant.png",
+						D3DXVECTOR3(0.f, 0.f, 0.f),
+						D3DXVECTOR3(1.f, 1.f, 1.f));
 	mObjList.push_back(pinkElephant);
 
 	// Send all candy lights to Shader
