@@ -3,8 +3,6 @@
 
 const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(5.50667f, 7.f);
 const float		  g_ghostSpeed				   = 20.f;
-const float		  g_ghostEatableBlueTime	   = 3.f;
-const float		  g_ghostEatableTotalTime	   = 5.f;
 const float		  g_ghostEatableSpeedReduction = 0.5f;
 const float		  g_ghostDeadAlphaValue		   = 0.51f;
 const float		  g_ghostDeadSpeedIncrease	   = 3.f;
@@ -14,7 +12,9 @@ Ghost::Ghost(GhostAI* ai)
 {
 	m_ai = ai;
 
-	m_elapsedTime = 0.f;
+	m_eatableElapsedTime = 0.f;
+	m_eatableBlueTime    = 0.f;
+	m_eatableTotalTime   = 0.f;
 }
 
 Ghost::~Ghost(void)
@@ -22,20 +22,25 @@ Ghost::~Ghost(void)
 	delete m_ai;
 }
 
-void Ghost::SetSpawnNode(Node* spawn)
+void Ghost::MakeEatable(const float blueTime, const float totalTime)
 {
-	m_ai->SetSpawnNode(spawn);
-}
-
-void Ghost::MakeEatable(void)
-{
-	if (m_ai->SetState(Eatable))
-		m_elapsedTime = 0.f;
+	m_ai->SetState(Eatable);
+	
+	m_eatableElapsedTime = 0.f;
+	m_eatableBlueTime    = blueTime;
+	m_eatableTotalTime   = totalTime;
 }
 
 void Ghost::Kill(void)
 {
 	m_ai->SetState(Dead);
+}
+
+void Ghost::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale, Node* spawn)
+{
+	m_ai->SetSpawnNode(spawn);
+
+	Billboard::Init(device, deviceContext, shader, texture, pos, scale);
 }
 
 void Ghost::Update(const float dt)
@@ -80,18 +85,18 @@ void Ghost::UpdateTexture(const float dt)
 {
 	if (m_ai->GetState() == Eatable)
 	{
-		m_elapsedTime += dt;
+		m_eatableElapsedTime += dt;
 
-		if (m_elapsedTime >= g_ghostEatableBlueTime)
+		if (m_eatableElapsedTime >= m_eatableBlueTime)
 		{
-			const float t = m_elapsedTime - (int)m_elapsedTime;
+			const float t = m_eatableElapsedTime - (int)m_eatableElapsedTime;
 			if (t > 0.25f && t < 0.5f ||
 				t > 0.75f && t < 1.f)
 				mTexture = m_eatableTexture1;
 			else
 				mTexture = m_eatableTexture2;
 
-			if (m_elapsedTime >= g_ghostEatableTotalTime)
+			if (m_eatableElapsedTime >= m_eatableTotalTime)
 			{
 				m_ai->SetState(Roaming);
 				mTexture = m_roamingTexture;

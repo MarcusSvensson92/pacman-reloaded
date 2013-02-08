@@ -10,15 +10,14 @@ public:
 	Ghost(GhostAI* ai);
 	~Ghost(void);
 
-	void SetSpawnNode(Node* spawn);
-
 	bool IsRoaming(void) const { return m_ai->GetState() == Roaming; }
 	bool IsEatable(void) const { return m_ai->GetState() == Eatable; }
 	bool IsDead(void)	 const { return m_ai->GetState() == Dead;    }
 
-	void MakeEatable(void);
+	void MakeEatable(const float blueTime, const float totalTime);
 	void Kill(void);
 
+	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale, Node* spawn);
 	void Update(const float dt);
 protected:
 	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
@@ -34,7 +33,9 @@ private:
 	ID3D11ShaderResourceView* m_eatableTexture1;
 	ID3D11ShaderResourceView* m_eatableTexture2;
 
-	float m_elapsedTime;
+	float m_eatableElapsedTime;
+	float m_eatableBlueTime;
+	float m_eatableTotalTime;
 };
 
 #endif

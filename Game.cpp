@@ -105,8 +105,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 						m_shaders.get("Billboard"),
 						textureFilename.c_str(),
 						ObjectSpawnList[i].Node->GetPosition(),
-						D3DXVECTOR3(1.f, 1.f, 1.f));
-			ghost->SetSpawnNode(ObjectSpawnList[i].Node);
+						D3DXVECTOR3(1.f, 1.f, 1.f),
+						ObjectSpawnList[i].Node);
 			mObjList.push_back(ghost);
 		}
 
@@ -261,7 +261,7 @@ void Game::PacManRampage()
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				ghost->MakeEatable();
+				ghost->MakeEatable(3.f, 5.f);
 			}
 		}
 	}
