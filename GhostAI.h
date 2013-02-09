@@ -22,6 +22,8 @@ public:
 	void SetSpawnNode(Node* spawn);
 	bool SetState(const GhostState state);
 
+	void Reset(void);
+
 	D3DXVECTOR3 ComputeDirection(void) const;
 	float ComputeNodeOffset(const D3DXVECTOR3& position) const;
 

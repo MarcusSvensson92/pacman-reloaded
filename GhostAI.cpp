@@ -19,9 +19,8 @@ GhostAI::~GhostAI(void) { }
 
 void GhostAI::SetSpawnNode(Node* spawn)
 {
-	m_start = spawn;
-	m_end	= spawn;
 	m_spawn = spawn;
+	Reset();
 }
 
 bool GhostAI::SetState(const GhostState state)
@@ -53,6 +52,14 @@ bool GhostAI::SetState(const GhostState state)
 		break;
 	}
 	return false;
+}
+
+void GhostAI::Reset(void)
+{
+	m_start = m_spawn;
+	m_end	= m_spawn;
+
+	m_state = Roaming;
 }
 
 D3DXVECTOR3 GhostAI::ComputeDirection(void) const

@@ -16,6 +16,7 @@ public:
 
 	void MakeEatable(const float blueTime, const float totalTime);
 	void Kill(void);
+	void Reset(void);
 
 	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale, Node* spawn);
 	void Update(const float dt);

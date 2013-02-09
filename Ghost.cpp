@@ -36,6 +36,13 @@ void Ghost::Kill(void)
 	m_ai->SetState(Dead);
 }
 
+void Ghost::Reset(void)
+{
+	m_ai->Reset();
+
+	mPosition = m_ai->GetStartNodePosition();
+}
+
 void Ghost::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale, Node* spawn)
 {
 	m_ai->SetSpawnNode(spawn);
