@@ -43,15 +43,18 @@ private: //DS = DirectSound
 	bool InitializeDS(HWND);
 	void ShutdownDS();
 
-	bool LoadWaveFile(char*, IDirectSoundBuffer8**);
-	void ShutdownWaveFile(IDirectSoundBuffer8**);
+	bool LoadWaveFile(char*, IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
+	void ShutdownWaveFile(IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
 
 	bool PlayWaveFile();
 
 private:
 	IDirectSound8* m_DirectSound;
 	IDirectSoundBuffer* m_primaryBuffer;//Mixes the sounds from the secondary buffers and plays them.
+	
+	IDirectSound3DListener8* m_listener; //Listener used by pacman to simulate 3D sounds
 	IDirectSoundBuffer8* m_secondaryBufferMain;//Used for looping the main music
+	IDirectSound3DBuffer8* m_secondary3DBufferMain;//2ndry buffer used by 3d sounds
 	//Add more secondary buffers in order to play more files
 };
 

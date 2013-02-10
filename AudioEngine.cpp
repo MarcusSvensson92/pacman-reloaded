@@ -7,7 +7,9 @@ AudioEngine::AudioEngine()
 {
 	m_DirectSound = 0;
 	m_primaryBuffer = 0;
+	m_listener = 0;
 	m_secondaryBufferMain = 0;
+	m_secondary3DBufferMain = 0;
 }
 AudioEngine::AudioEngine(const AudioEngine& other)
 {
@@ -28,7 +30,7 @@ bool AudioEngine::Initialize(HWND hwnd)
 		return false;
 	
 	//Load the main music into the secondaryBufferMain
-	result = LoadWaveFile("Content/Audio/Music/MainMusic.wav", &m_secondaryBufferMain);
+	result = LoadWaveFile("Content/Audio/Music/Test.wav", &m_secondaryBufferMain, &m_secondary3DBufferMain);
 	if(!result)
 		return false;
 
@@ -44,7 +46,7 @@ bool AudioEngine::Initialize(HWND hwnd)
 void AudioEngine::Shutdown()
 {
 	//Release secondary buffers
-	ShutdownWaveFile(&m_secondaryBufferMain);
+	ShutdownWaveFile(&m_secondaryBufferMain,&m_secondary3DBufferMain);
 
 	//Shutdown the DirectSound AIP
 	ShutdownDS();
@@ -74,7 +76,7 @@ bool AudioEngine::InitializeDS(HWND hwnd)
 
 	//Setup primary buffer description
 	bufferDesc.dwSize = sizeof(DSBUFFERDESC);
-	bufferDesc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_CTRLVOLUME;
+	bufferDesc.dwFlags = DSBCAPS_PRIMARYBUFFER | DSBCAPS_CTRLVOLUME | DSBCAPS_CTRL3D;
 	bufferDesc.dwBufferBytes = 0;
 	bufferDesc.dwReserved = 0;
 	bufferDesc.lpwfxFormat = NULL;
@@ -104,12 +106,27 @@ bool AudioEngine::InitializeDS(HWND hwnd)
 	return false;
 	}
 
+	// Obtain listener interface
+	result = m_primaryBuffer->QueryInterface(IID_IDirectSound3DListener8, (LPVOID*)&m_listener);
+	if(FAILED(result))
+		return false;
+
+	//Set the listeners initial location to the middle of the screen
+	m_listener->SetPosition(0.0f,0.0f,0.0f,DS3D_IMMEDIATE);
+
 	//If successfull
 	return true;
 }
 
 void AudioEngine::ShutdownDS()
 {
+	//Release listener
+	if(m_listener)
+	{
+		m_listener->Release();
+		m_listener = 0;
+	}
+	
 	//Release primary sound buffer
 	if(m_primaryBuffer)
 	{
@@ -125,7 +142,7 @@ void AudioEngine::ShutdownDS()
 	return;
 }
 
-bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer)
+bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer)
 {
 	int error;
 	FILE* filePtr;
@@ -175,9 +192,8 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	{
 		return false;
 	}
-
-	//Check that the file is in stereo format
-	if(waveFileHeader.numChannels != 2)
+	//Check that the file is in mono format
+	if(waveFileHeader.numChannels != 1) //1=mono;2=stereo (mono for 3D sounds)
 	{
 		return false;
 	}
@@ -205,14 +221,14 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	waveFormat.wFormatTag = WAVE_FORMAT_PCM;
 	waveFormat.nSamplesPerSec = 44100;
 	waveFormat.wBitsPerSample = 16;
-	waveFormat.nChannels = 2;
+	waveFormat.nChannels = 1;
 	waveFormat.nBlockAlign = (waveFormat.wBitsPerSample / 8) * waveFormat.nChannels;
 	waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
 	waveFormat.cbSize = 0;
 
 	//Set buffer description for secondary buffer
 	bufferDesc.dwSize = sizeof(DSBUFFERDESC);
-	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME;
+	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRL3D;
 	bufferDesc.dwBufferBytes = waveFileHeader.dataSize;
 	bufferDesc.dwReserved = 0;
 	bufferDesc.lpwfxFormat = &waveFormat;
@@ -267,13 +283,24 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	delete [] waveData;
 	waveData = 0;
 
+	//Get the 3d interface to the 2ndry buffer
+	result = (*secondaryBuffer)->QueryInterface(IID_IDirectSound3DBuffer8, (void**)&*secondary3DBuffer);
+	if(FAILED(result))
+		return false;
+
 	//If everything was successfull
 	return true;
 }
 
-void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer)
+void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer)
 {
-//Release secondary buffer
+	//Release 3D buffer
+	if(*secondary3DBuffer)
+	{
+		(*secondary3DBuffer)->Release();
+		*secondary3DBuffer = 0;
+	}
+	//Release secondary buffer
 	if(*secondaryBuffer)
 	{
 		(*secondaryBuffer)->Release();
@@ -286,6 +313,12 @@ bool AudioEngine::PlayWaveFile()
 {
 	HRESULT result;
 
+	float posx,posy,posz;
+	//Set the location of where the music shall appear
+	posx = -2.0f;
+	posy = 0.0f;
+	posz = 0.0f;
+
 	//Set pos at the beginning of the sound buffer
 	result = m_secondaryBufferMain->SetCurrentPosition(0);
 	if(FAILED(result))
@@ -295,6 +328,9 @@ bool AudioEngine::PlayWaveFile()
 	result = m_secondaryBufferMain->SetVolume(DSBVOLUME_MAX);
 	if(FAILED(result))
 		return false;
+
+	//Set location of the sound
+	m_secondary3DBufferMain->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
 
 	//Play the file
 	result = m_secondaryBufferMain->Play(0, 0, 0);
