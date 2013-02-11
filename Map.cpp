@@ -153,6 +153,10 @@ std::vector<MapOutput>	Map::CreateOutput(std::vector<int> ColorMap, int width, i
 		{
 			output.push_back(MapOutput(SUPER_CANDY,		&m_nodes[i]));
 		}
+		else if ( ColorMap[i] == 85 )
+		{
+			output.push_back(MapOutput(FRUIT,		&m_nodes[i]));
+		}
 		else if ( ColorMap[i] == 248 )
 		{
 			output.push_back(MapOutput(PACMAN,			&m_nodes[i]));

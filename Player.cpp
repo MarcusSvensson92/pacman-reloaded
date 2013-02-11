@@ -144,7 +144,7 @@ void Player::Collision(Node* node)
 void Player::Move( const float dt)
 {
 	// Äter Godis
-	if (mNode != mNextNode && mNode->Item != NULL)
+	if (mNode != mNextNode && mNode->Item != NULL && !mNode->Item->IsEaten())
 	{
 		Collision(mNode);
 	}

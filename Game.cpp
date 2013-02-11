@@ -63,7 +63,12 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 			//m_lights.AddLight(candy->GetPositionPtr(), SUPERCANDYLIGHT);
 		}
-
+		// Add fruit spawnpoint
+		if ( ObjectSpawnList[i].Type == FRUIT )
+		{	
+			// LÄGG TILL KOD HÄR JOHAN FÖR ATT SKAPA FRUITSPAWNEN
+			// ObjectSpawnList[i].Node = noden som frukten ska spawna på
+		}
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
 			ObjectSpawnList[i].Type == RED_GHOST ||
