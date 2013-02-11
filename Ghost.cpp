@@ -59,8 +59,8 @@ void Ghost::Update(const float dt)
 
 void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	const std::string eatableTexture1Filename = "Content/Img/eatableghost1.png";
-	const std::string eatableTexture2Filename = "Content/Img/eatableghost2.png";
+	const std::string eatableTexture1Filename = "Content/Img/eatableghost0.png";
+	const std::string eatableTexture2Filename = "Content/Img/eatableghost1.png";
 	
 	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture1Filename.c_str(), NULL, NULL, &m_eatableTexture1, NULL);
 	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture2Filename.c_str(), NULL, NULL, &m_eatableTexture2, NULL);

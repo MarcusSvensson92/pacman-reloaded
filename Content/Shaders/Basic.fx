@@ -1,7 +1,7 @@
 #include "Lights.fx"
 #include "RenderStates.fx"
 
-Texture2D mTexture;		
+Texture2D mTexture;
 
 struct VSIn
 {
@@ -20,6 +20,7 @@ struct PSSceneIn
 	float3 normalW		: NORMAL;
 	float4 diffuse		: DIFFUSE;
 	float4 spec			: SPECULAR;
+	float  opacity		: OPACITY;
 };
 
 //-----------------------------------------------------------------------------------------
@@ -30,13 +31,19 @@ PSSceneIn VSScene(VSIn input)
 	PSSceneIn output = (PSSceneIn)1;
 
 	output.posW = mul(float4(input.Pos,1.0f),gWorld);
-	output.normalW = mul(float4(input.Normal,0.0f),gWVP);
+	output.normalW = mul(float4(input.Normal,0.0f),gWorld);
 	output.Pos = mul(float4(input.Pos, 1), gWVP);
 
 	output.Tex = mul(float4(input.Tex.x,input.Tex.y, 0.0f, 1.0f), gTextureTransform);
 
 	output.spec = input.spec;
 	output.diffuse = input.diffuse;
+	
+	const float r = 20.f;
+	const float d = length(output.Pos);
+	if		(d / r < 0.9f) output.opacity = 0.9f;
+	else if (d / r > 1.0f) output.opacity = 1.0f;
+	else				   output.opacity = d / r;
 	
 	return output;
 }
@@ -79,11 +86,11 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	float4 texColor = mTexture.Sample(linearSampler, input.Tex);
 
-	float4 litColor = (texColor*(ambient + diffuse) + specular)*Fog(gPlayerPos,input.posW);
+	float4 litColor = texColor*(ambient + diffuse) + specular;
 
 	litColor.a = gMaterial.Diffuse.a;
 
-	return litColor;
+	return float4(litColor.xyz, litColor.w * input.opacity);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -98,8 +105,9 @@ technique11 BasicTech
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
 	    
-	    //SetRasterizerState( NoCulling );
+		// Problem med cullingen!
+	    SetRasterizerState(NoCulling);
 
-		SetBlendState( AlphaBlending1, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
+		SetBlendState( AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
     }  
 }
