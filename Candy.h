@@ -17,6 +17,7 @@ public:
 	void Update(const float dt);
 private:
 	bool eaten;
+protected:
 	bool supercandy;
 };
 
