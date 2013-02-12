@@ -4,6 +4,7 @@
 #include "d3dApp.h"
 #include "Camera.h"
 #include "Candy.h"
+#include "Fruit.h"
 #include "Map.h"
 #include "Player.h"
 #include "Ghost.h"
@@ -37,6 +38,8 @@ public:
 
 	void RemoveEatenCandy();
 
+	void SpawnFruit();
+
 	void Trams();
 
 	void Draw();
@@ -49,6 +52,9 @@ private:
 	ShaderManager m_shaders;
 	AudioEngine m_audio;
 	LightManager m_lights;
+	
+	Node* m_fruitNode;
+	int m_eatenCandy;
 
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );

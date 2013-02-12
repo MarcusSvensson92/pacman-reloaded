@@ -24,6 +24,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	initShaders();
 
+	m_eatenCandy = 0;
 	//m_audio.Initialize(hwnd);
 
 	// Init Map and fetch ObjectSpawnList
@@ -66,8 +67,18 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		// Add fruit spawnpoint
 		if ( ObjectSpawnList[i].Type == FRUIT )
 		{	
+			//Fruit* fruit = new Fruit();
+			//fruit->Init(m_Device, m_DeviceContext,
+			//	m_shaders.get("Billboard"),
+			//	"Content/Img/Fruits/cherry.png",
+			//	ObjectSpawnList[i].Node->GetPosition(),
+			//	D3DXVECTOR3(1,1,1),100);
+			//mObjList.push_back(fruit);
+
+			//// Set node item to current fruit.
+			//ObjectSpawnList[i].Node->Item = fruit;
 			// LÄGG TILL KOD HÄR JOHAN FÖR ATT SKAPA FRUITSPAWNEN
-			// ObjectSpawnList[i].Node = noden som frukten ska spawna på
+			m_fruitNode = ObjectSpawnList[i].Node;
 		}
 
 		if (ObjectSpawnList[i].Type == PINK_GHOST ||
@@ -273,8 +284,28 @@ void Game::RemoveEatenCandy()
 		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
 		if (x != NULL)
 			if (x->IsEaten())
+			{
 				mObjList.erase(mObjList.begin() + i);
+				m_eatenCandy++;
+				//Check if pac-man have eaten enough candy to spawn a fruit
+				if(m_eatenCandy == 70 || m_eatenCandy == 170)
+					SpawnFruit();
+			}
 	}
+}
+
+void Game::SpawnFruit()
+{
+			Fruit* fruit = new Fruit();
+			fruit->Init(m_Device, m_DeviceContext,
+				m_shaders.get("Billboard"),
+				"Content/Img/Fruits/cherry.png",
+				m_fruitNode->GetPosition(),
+				D3DXVECTOR3(1,1,1),100);
+			mObjList.push_back(fruit);
+
+			// Set node item to current fruit.
+			m_fruitNode->Item = fruit;
 }
 
 void Game::PacManRampage()
