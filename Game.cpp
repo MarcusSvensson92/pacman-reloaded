@@ -67,17 +67,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 		// Add fruit spawnpoint
 		if ( ObjectSpawnList[i].Type == FRUIT )
 		{	
-			//Fruit* fruit = new Fruit();
-			//fruit->Init(m_Device, m_DeviceContext,
-			//	m_shaders.get("Billboard"),
-			//	"Content/Img/Fruits/cherry.png",
-			//	ObjectSpawnList[i].Node->GetPosition(),
-			//	D3DXVECTOR3(1,1,1),100);
-			//mObjList.push_back(fruit);
-
-			//// Set node item to current fruit.
-			//ObjectSpawnList[i].Node->Item = fruit;
-			// LÄGG TILL KOD HÄR JOHAN FÖR ATT SKAPA FRUITSPAWNEN
+			//Set pointer to the node where the fruit will spawn.
 			m_fruitNode = ObjectSpawnList[i].Node;
 		}
 
