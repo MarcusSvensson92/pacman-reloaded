@@ -37,7 +37,7 @@ BlendState AlphaBlending2
         SrcBlend = SRC_ALPHA;
         DestBlend = INV_SRC_ALPHA;
         BlendOp = ADD;
-        SrcBlendAlpha = SRC_ALPHA;
+        SrcBlendAlpha = ONE;
         DestBlendAlpha = INV_SRC_ALPHA;
         BlendOpAlpha = ADD;
         RenderTargetWriteMask[0] = 0x0F;
@@ -61,7 +61,7 @@ float4 Fog(float3 eyePos, float3 objPos)
 
 RasterizerState NoCulling
 {
-	CullMode = None;
+	CullMode = Back;
 	FillMode = Solid;
 };
 

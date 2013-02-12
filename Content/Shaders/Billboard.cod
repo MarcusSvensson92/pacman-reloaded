@@ -55,14 +55,14 @@ BlendState AlphaBlending2
     SrcBlend[0] = uint(SRC_ALPHA /* 5 */);
     DestBlend[0] = uint(INV_SRC_ALPHA /* 6 */);
     BlendOp[0] = uint(ADD /* 1 */);
-    SrcBlendAlpha[0] = uint(SRC_ALPHA /* 5 */);
+    SrcBlendAlpha[0] = uint(ONE /* 2 */);
     DestBlendAlpha[0] = uint(INV_SRC_ALPHA /* 6 */);
     BlendOpAlpha[0] = uint(ADD /* 1 */);
     RenderTargetWriteMask[0] = byte(0x0f);
 };
 RasterizerState NoCulling
 {
-    CullMode = uint(NONE /* 1 */);
+    CullMode = uint(BACK /* 3 */);
     FillMode = uint(SOLID /* 3 */);
 };
 RasterizerState CullBack
