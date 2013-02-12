@@ -38,6 +38,8 @@ public:
 
 	void RemoveEatenCandy();
 
+	void RemoveExpiredFruit();
+
 	void SpawnFruit();
 
 	void Trams();

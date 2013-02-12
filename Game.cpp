@@ -161,6 +161,8 @@ void Game::Update(const float dt)
 
 	Trams();
 
+	RemoveExpiredFruit();
+
 	RemoveEatenCandy();
 
 	PlayerCollisionGhost();
@@ -274,6 +276,19 @@ void Game::Trams()
 				pinkElephant->Deactivate();
 			}
 		}
+	}
+}
+
+void Game::RemoveExpiredFruit()
+{
+	for ( int i = mObjList.size() - 1; i >= 0; i--)
+	{
+		Fruit* f = dynamic_cast<Fruit*>(mObjList[i]);
+		if (f != NULL)
+			if (f->Expired())
+			{
+				mObjList.erase(mObjList.begin() + i);
+			}
 	}
 }
 

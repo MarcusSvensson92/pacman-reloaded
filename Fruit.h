@@ -10,7 +10,7 @@ public:
 	~Fruit(void);
 	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale,int points);
 	void Update(const float dt);
-	//bool Expired() {return expired;}
+	bool Expired() {return m_expired;}
 private:
 	int m_duration;
 	int m_points;

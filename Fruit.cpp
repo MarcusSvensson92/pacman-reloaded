@@ -5,7 +5,7 @@
 Fruit::Fruit(void)
 {
 	m_expired = false;
-	 m_duration = 6000; //6000 = Lasts for 10 seconds
+	 m_duration = 600; //600 = Lasts for 10 seconds
 }
 
 
