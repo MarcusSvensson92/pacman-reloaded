@@ -7,12 +7,13 @@
 class Pinky : public GhostAI
 {
 public:
-	Pinky(Player* player);
+	Pinky(Node** playerStartNode, Node** playerEndNode);
 	~Pinky(void);
 protected:
 	void RoamingBehaviour(void);
 private:
-	Player* m_player;
+	Node** m_playerStartNode;
+	Node** m_playerEndNode;
 };
 
 #endif

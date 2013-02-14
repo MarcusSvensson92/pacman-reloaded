@@ -2,9 +2,10 @@
 #include "Blinky.h"
 #include "PathFinding.h"
 
-Blinky::Blinky(Player* player)
+Blinky::Blinky(Node** playerStartNode, Node** playerEndNode)
 {
-	m_player = player;
+	m_playerStartNode = playerStartNode;
+	m_playerEndNode	  = playerEndNode;
 }
 
 Blinky::~Blinky(void) { }
@@ -25,10 +26,10 @@ void Blinky::RoamingBehaviour(void)
 	}
 	else if (n > 1)
 	{
-		if (m_start == m_player->GetNode())
-			m_end = m_player->GetNextNode();
+		if (m_start == *m_playerStartNode)
+			m_end = *m_playerEndNode;
 		else
-			m_end = Pathfinding::findPath(m_player->GetNode(), m_start).back();
+			m_end = Pathfinding::findPath(*m_playerStartNode, m_start).back();
 
 		if (!IsEndNodeInVector(availableNodes))
 			m_end = availableNodes[rand() % n];

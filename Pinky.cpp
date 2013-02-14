@@ -2,9 +2,10 @@
 #include "Pinky.h"
 #include "PathFinding.h"
 
-Pinky::Pinky(Player* player)
+Pinky::Pinky(Node** playerStartNode, Node** playerEndNode)
 {
-	m_player = player;
+	m_playerStartNode = playerStartNode;
+	m_playerEndNode	  = playerEndNode;
 }
 
 Pinky::~Pinky(void) { }
@@ -25,10 +26,10 @@ void Pinky::RoamingBehaviour(void)
 	}
 	else if (n > 1)
 	{
-		if (m_start == m_player->GetNextNode())
-			m_end = m_player->GetNode();
+		if (m_start == *m_playerEndNode)
+			m_end = *m_playerStartNode;
 		else
-			m_end = Pathfinding::findPath(m_player->GetNextNode(), m_start).back();
+			m_end = Pathfinding::findPath(*m_playerEndNode, m_start).back();
 
 		if (!IsEndNodeInVector(availableNodes))
 			m_end = availableNodes[rand() % n];

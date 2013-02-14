@@ -119,6 +119,9 @@
     <ClInclude Include="PinkElephant.h">
       <Filter>Objects\Billboard\Trippy Shit</Filter>
     </ClInclude>
+    <ClInclude Include="Fruit.h">
+      <Filter>Objects\Billboard\Consumables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -191,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="PinkElephant.cpp">
       <Filter>Objects\Billboard\Trippy Shit</Filter>
+    </ClCompile>
+    <ClCompile Include="Fruit.cpp">
+      <Filter>Objects\Billboard\Consumables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

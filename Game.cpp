@@ -81,14 +81,14 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 			std::string textureFilename;
 			if (ObjectSpawnList[i].Type == PINK_GHOST)
 			{	 
-				ghost = new Ghost(new Pinky(&mPlayer));
+				ghost = new Ghost(new Pinky(mPlayer.GetNodePtr(), mPlayer.GetNextNodePtr()));
 				textureFilename = "Content/Img/pinkghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_PINK);
 			}
 
 			if (ObjectSpawnList[i].Type == RED_GHOST)
 			{	 
-				ghost = new Ghost(new Blinky(&mPlayer));
+				ghost = new Ghost(new Blinky(mPlayer.GetNodePtr(), mPlayer.GetNextNodePtr()));
 				textureFilename = "Content/Img/redghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_RED);
 			}
@@ -102,7 +102,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 			if (ObjectSpawnList[i].Type == TEAL_GHOST)
 			{  
-				ghost = new Ghost(new Inky(&mPlayer));
+				ghost = new Ghost(new Inky(mPlayer.GetNodePtr(), mPlayer.GetNextNodePtr()));
 				textureFilename = "Content/Img/tealghost.png"; 
 				m_lights.AddLight(ghost->GetPositionPtr(), GHOSTLIGHT_TEAL);
 			}
@@ -321,7 +321,7 @@ void Game::PacManRampage()
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				ghost->MakeEatable(3.f, 5.f);
+				ghost->MakeEatable(7.f, 10.f);
 			}
 		}
 	}

@@ -7,12 +7,13 @@
 class Inky : public GhostAI
 {
 public:
-	Inky(Player* player);
+	Inky(Node** playerStartNode, Node** playerEndNode);
 	~Inky(void);
 protected:
 	void RoamingBehaviour(void);
 private:
-	Player* m_player;
+	Node** m_playerStartNode;
+	Node** m_playerEndNode;
 };
 
 #endif

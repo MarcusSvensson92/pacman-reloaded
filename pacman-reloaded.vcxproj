@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="Blinky.h" />
     <ClInclude Include="Clyde.h" />
+    <ClInclude Include="Fruit.h" />
     <ClInclude Include="GhostAI.h" />
     <ClInclude Include="AudioEngine.h" />
     <ClInclude Include="Billboard.h" />
@@ -179,6 +180,7 @@
   <ItemGroup>
     <ClCompile Include="Blinky.cpp" />
     <ClCompile Include="Clyde.cpp" />
+    <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="GhostAI.cpp" />
     <ClCompile Include="AudioEngine.cpp" />
     <ClCompile Include="Billboard.cpp" />

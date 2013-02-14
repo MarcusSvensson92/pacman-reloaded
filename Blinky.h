@@ -7,12 +7,13 @@
 class Blinky : public GhostAI
 {
 public:
-	Blinky(Player* player);
+	Blinky(Node** playerStartNode, Node** playerEndNode);
 	~Blinky(void);
 protected:
 	void RoamingBehaviour(void);
 private:
-	Player* m_player;
+	Node** m_playerStartNode;
+	Node** m_playerEndNode;
 };
 
 #endif
