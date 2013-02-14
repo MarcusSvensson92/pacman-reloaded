@@ -208,3 +208,7 @@ void Player::NewDirection(Node* node)
 	mDistance = D3DXVec3Length(&mMoveVector);
 }
 
+void Player::AddPoints(int points)
+{
+	mPoints+=points;
+}

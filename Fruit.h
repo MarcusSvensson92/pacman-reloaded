@@ -13,7 +13,6 @@ public:
 	bool Expired() {return m_expired;}
 private:
 	int m_duration;
-	int m_points;
 	bool m_expired;
 	/*
 	2 fruits per stage, spawn at the same place(under the ghost cage)

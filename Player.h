@@ -47,6 +47,10 @@ public:
 
 	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node);
 
+	void AddPoints(int points);
+
+	int GetPoints() {return mPoints;}
+
 private:
 
 	D3DXVECTOR3		mMoveVector;
@@ -55,6 +59,8 @@ private:
 	PlayerStatus	mStatus;
 
 	bool			mSuperCandy;
+
+	int				mPoints;
 
 	Node*			mNode;
 	Node*			mNextNode;

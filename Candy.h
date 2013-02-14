@@ -15,10 +15,13 @@ public:
 	void Eat();
 	void Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture, D3DXVECTOR3 pos, D3DXVECTOR3 scale,bool _supercandy);
 	void Update(const float dt);
+	int GetPoints() {return m_points;}
 private:
 	bool eaten;
 protected:
 	bool supercandy;
+
+	int m_points;
 };
 
 #endif

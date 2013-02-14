@@ -292,6 +292,8 @@ void Game::RemoveEatenCandy()
 			{
 				mObjList.erase(mObjList.begin() + i);
 				m_eatenCandy++;
+				//Get 1 point for eating a candy
+				mPlayer.AddPoints(x->GetPoints());
 				//Check if pac-man have eaten enough candy to spawn a fruit
 				if(m_eatenCandy == 70 || m_eatenCandy == 170)
 					SpawnFruit();
