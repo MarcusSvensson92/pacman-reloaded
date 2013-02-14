@@ -66,6 +66,8 @@ private:
 	void PlayerCollisionFruit();
 
 	LPCTSTR mLastKey;
+
+	int m_ghostsEaten;
 };
 
 #endif

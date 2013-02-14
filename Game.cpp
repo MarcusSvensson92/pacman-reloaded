@@ -25,6 +25,7 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	initShaders();
 
 	m_eatenCandy = 0;
+	m_ghostsEaten = 0;
 	//m_audio.Initialize(hwnd);
 
 	// Init Map and fetch ObjectSpawnList
@@ -397,6 +398,10 @@ void Game::PlayerCollisionGhost()
 					{
 						// Spöke dör
 						x->Kill();
+						//Increase number of eaten ghosts
+						m_ghostsEaten++;
+						//Award the player with (200 * eaten ghosts) points.
+						mPlayer.AddPoints(200 * m_ghostsEaten);
 					}
 				}
 			}
