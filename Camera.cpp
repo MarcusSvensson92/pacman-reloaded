@@ -128,7 +128,7 @@ D3DXMATRIX Camera::ViewProj() const
 	return mView*mProj;
 }
 
-void Camera::Strafe( float d,float angle)
+void Camera::Strafe(float d)
 {
 	mPosition += d*mRight;
 }

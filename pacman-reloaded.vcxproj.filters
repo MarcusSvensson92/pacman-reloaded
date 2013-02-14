@@ -16,12 +16,39 @@
     <Filter Include="Resource Files\Content\Shaders">
       <UniqueIdentifier>{92b8c40d-da28-467b-9ca4-8671301de163}</UniqueIdentifier>
     </Filter>
+    <Filter Include="D3D">
+      <UniqueIdentifier>{8d08c649-289f-4f2c-8a28-dc6bf7a5dce8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Audio">
+      <UniqueIdentifier>{f5db62d5-26f9-4caa-b969-c3755fd8c122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Audio\Sounds">
+      <UniqueIdentifier>{d51fdfe0-bedc-4c45-aeb6-13069c3c0a0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Content\Audio\Music">
+      <UniqueIdentifier>{c35aaf2f-0c31-4c16-980b-4a376cba0632}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Maze">
+      <UniqueIdentifier>{e6d6052c-0488-419a-b5aa-709e9c12c0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard">
+      <UniqueIdentifier>{58dcc83e-1d5f-4edc-b59c-674e3eafdad6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Ghost">
+      <UniqueIdentifier>{dae9c7d0-4f20-440c-b28c-905c16fb5f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Consumables">
+      <UniqueIdentifier>{7d3d29e8-0d57-4b87-a862-c1218e26da43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Ghost\AI">
+      <UniqueIdentifier>{d0792dae-bc38-4b8b-a26a-131ccd8ce304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Billboard\Trippy Shit">
+      <UniqueIdentifier>{85002bda-1da1-4790-9cc2-404d2bfff112}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
-      <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dApp.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -33,36 +60,74 @@
     <ClInclude Include="Obj3D.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Candy.h">
-      <Filter>Objects</Filter>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Shader.h">
+      <Filter>D3D</Filter>
     </ClInclude>
     <ClInclude Include="Buffer.h">
-      <Filter>Objects</Filter>
+      <Filter>D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioEngine.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="LightManager.h" />
+    <ClInclude Include="Map.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinding.h">
+      <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dApp.h">
+      <Filter>D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Objects\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Ghost.h">
+      <Filter>Objects\Billboard\Ghost</Filter>
+    </ClInclude>
+    <ClInclude Include="Candy.h">
+      <Filter>Objects\Billboard\Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostAI.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Blinky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Pinky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inky.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Clyde.h">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="PinkElephant.h">
+      <Filter>Objects\Billboard\Trippy Shit</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="d3dApp.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Obj3D.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -74,11 +139,58 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Candy.cpp">
-      <Filter>Objects</Filter>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Shader.cpp">
+      <Filter>D3D</Filter>
     </ClCompile>
     <ClCompile Include="Buffer.cpp">
-      <Filter>Objects</Filter>
+      <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEngine.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="LightManager.cpp" />
+    <ClCompile Include="Map.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="Pathfinding.cpp">
+      <Filter>Maze</Filter>
+    </ClCompile>
+    <ClCompile Include="d3dApp.cpp">
+      <Filter>D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Objects\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Ghost.cpp">
+      <Filter>Objects\Billboard\Ghost</Filter>
+    </ClCompile>
+    <ClCompile Include="Candy.cpp">
+      <Filter>Objects\Billboard\Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostAI.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Blinky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Pinky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Inky.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Clyde.cpp">
+      <Filter>Objects\Billboard\Ghost\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="PinkElephant.cpp">
+      <Filter>Objects\Billboard\Trippy Shit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -91,5 +203,16 @@
     <CustomBuild Include="Content\Shaders\RenderStates.fx">
       <Filter>Resource Files\Content\Shaders</Filter>
     </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Billboard.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Content\Shaders\Lightning.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Audio\Music\MainMusic.wav">
+      <Filter>Resource Files\Content\Audio\Music</Filter>
+    </None>
   </ItemGroup>
 </Project>

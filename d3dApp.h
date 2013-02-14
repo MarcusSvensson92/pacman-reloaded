@@ -17,9 +17,8 @@ protected:
 	void DrawBegin();
 	void DrawEnd();
 	
-	// Fel prefix!
-	ID3D11Device*		 g_Device;
-	ID3D11DeviceContext* g_DeviceContext;
+	ID3D11Device*		 m_Device;
+	ID3D11DeviceContext* m_DeviceContext;
 
 	Camera mCamera;
 private:
@@ -27,22 +26,22 @@ private:
 	void SetRenderTargetView();
 	void SetDepthStencil(int, int);
 	void SetViewPort(float, float, float, float);
-	void InitMouse( int screenWidth, int screenHeight );
+	void InitCamera( int screenWidth, int screenHeight );
+
+	// inte i kamera classen? Update(dt); som kör dessa inne från kameran? Alternativt game?
 	void Keyboards();
 	void OnMouseMove();
-	// Här också!
-	IDXGISwapChain*         g_SwapChain;
-	ID3D11RenderTargetView* g_RenderTargetView;
-	ID3D11Texture2D*        g_DepthStencil;
-	ID3D11DepthStencilView* g_DepthStencilView;
+	
+	IDXGISwapChain*         m_SwapChain;
+	ID3D11RenderTargetView* m_RenderTargetView;
+	ID3D11Texture2D*        m_DepthStencil;
+	ID3D11DepthStencilView* m_DepthStencilView;
 
-	D3DXMATRIX				g_World;
-	D3DXMATRIX				g_WVP;
-	D3DXMATRIX				g_iWorld;
-
+	// inte i kamera classen? Update(dt); som kör dessa inne från kameran? Alternativt game?
 	POINT mLastMousePos;
 	POINT mMousePos;
 
+	// Varför ligger detta inte i kameraklassen?
 	float mCamRotP;
 	float mCamRotY;
 };
