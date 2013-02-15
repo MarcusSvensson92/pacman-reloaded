@@ -5,17 +5,36 @@
 Node*					Player::GetNode()		{return mNode;}
 Node*					Player::GetNextNode()	{return mNextNode;}
 Node**					Player::GetNodePtr()	{return &mNode;}
-Node**					Player::GetNextNodePtr() {return &mNextNode;}
+Node**					Player::GetNextNodePtr(){return &mNextNode;}
 D3DXVECTOR3				Player::GetPosition()	{return mPosition;}
 D3DXVECTOR3				Player::GetMoveVector() {return mMoveVector;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
 D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
+int						Player::GetFrame()		{return mFrame;}
+int						Player::GetMaxFrames()	{return mMaxFrames;}
 
 Player::Player(): Billboard(D3DXVECTOR2(10, 10), 1.f) {}
 
 void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
-	Obj3D::Init(device,deviceContext,shader,texture,_pos,D3DXVECTOR3(1,1,1));
+	mScale = D3DXVECTOR3(1,1,1);
+	mPosition = _pos;
+	mRotation = D3DXVECTOR3(0,0,0);
+
+	D3DXMatrixScaling(&mTexTransform, 1,1,1);
+
+	mTexturePath = texture;
+
+	mShader = shader;
+
+	InitBuffers(device, deviceContext);
+	InitGFX(device,deviceContext);
+
+	D3DXMatrixIdentity(&world);
+	D3DXMatrixIdentity(&rotation);
+	D3DXMatrixIdentity(&translation);
+	D3DXMatrixIdentity(&scaling);
+
 
 	mStatus = ALIVE;
 	mPosition = _pos;
@@ -24,29 +43,75 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mDistanceCovered = 0;
-	mSpeed = 3;
+	mSpeed = 20;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	mSuperCandy = false;
+
+	mFrame = 0;
+	mMaxFrames = 2;
+	mAnimationSpeed = 0.1f;
+	mAnimationTimer = 0;
+	mHit = false;
 }
 
+void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+{
+	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, mTexturePath.c_str(), 0, 0, &mTexture, 0 )))
+	{
+		std::string failed = mTexturePath + " Texture Failed";
+		MessageBox(0, failed.c_str(), "Fail!", 0);
+	}
+
+	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, "Content/Img/Pacman_dead.png", 0, 0, &mKillTexture, 0 )))
+	{
+		std::string failed = "Pacman Killtexture Failed";
+		MessageBox(0, failed.c_str(), "Fail!", 0);
+	}
+}
 
 Player::~Player(void)
 {
 
 }
 
-void Player::Update(const float dt)
-{
-}
+void Player::Update(const float dt){}
 
 void Player::Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir )
 {
-	Move(dt);
+	if(!mHit)
+	{
+		Move(dt);
 
-	if(!oldSchoolView)
-		ChangeDirection(look);
-	else
-		OldSchoolControl(dir);
+		if(!oldSchoolView)
+			ChangeDirection(look);
+		else
+			OldSchoolControl(dir);
+	}
+
+	Animation(dt);
+	
+}
+
+void Player::Animation(const float dt)
+{
+
+	mAnimationTimer += dt;
+
+	if(mAnimationTimer > mAnimationSpeed)
+	{
+		mFrame++;
+		mAnimationTimer = 0;
+	}
+
+	if(mFrame >= mMaxFrames && mHit)
+	{
+		mFrame = mMaxFrames;
+		mStatus = DEAD;
+		return;
+	}
+
+	if(mFrame >= mMaxFrames)
+		mFrame = 0;
 }
 
 void Player::OldSchoolControl(LPCSTR dir)
@@ -154,6 +219,7 @@ void Player::Move( const float dt)
 	//kör iterationerna så länge man inte nått noden -> != PAUSE.
 	if(mDirection != PAUSE)
 	{
+		D3DXVec3Normalize(&mMoveVector,&mMoveVector);
 		D3DXVECTOR3 move = mMoveVector*dt*mSpeed;
 
 		mPosition += move;
@@ -197,7 +263,11 @@ void Player::CheckDirections()
 
 void Player::Kill()
 {
-	mStatus = DEAD;
+	mHit = true;
+	mFrame = 0;
+	mMaxFrames = 9;
+	mTexture = mKillTexture;
+
 }
 
 void Player::NewDirection(Node* node)

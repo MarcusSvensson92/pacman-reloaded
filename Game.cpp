@@ -190,7 +190,13 @@ void Game::Draw()
 	m_map.Draw(m_DeviceContext, mCamera);
 
 	if(gameType == OLD_SCHOOL)
+	{
+		m_shaders.get("Billboard")->SetBool("gAnimation",true);
+		m_shaders.get("Billboard")->SetInt("gFrame",mPlayer.GetFrame());
+		m_shaders.get("Billboard")->SetInt("gMaxFrames",mPlayer.GetMaxFrames());
 		mPlayer.Draw(m_DeviceContext, mCamera);
+		m_shaders.get("Billboard")->SetBool("gAnimation",false);
+	}
 
 	DrawEnd();
 }

@@ -29,13 +29,15 @@ public:
 	
 	D3DXVECTOR3* GetPositionPtr();
 
-	Node*		GetNode();
-	Node*		GetNextNode();
-	Node**		GetNodePtr();
-	Node**		GetNextNodePtr();
-	D3DXVECTOR3 GetPosition();
-	D3DXVECTOR3 GetMoveVector();
-	PlayerStatus GetStatus();
+	Node*			GetNode();
+	Node*			GetNextNode();
+	Node**			GetNodePtr();
+	Node**			GetNextNodePtr();
+	D3DXVECTOR3		GetPosition();
+	D3DXVECTOR3		GetMoveVector();
+	PlayerStatus	GetStatus();
+	int				GetFrame();
+	int				GetMaxFrames();
 
 	bool HasEatenSuperCandy();
 
@@ -62,6 +64,13 @@ private:
 
 	int				mPoints;
 
+	int				mFrame;
+	int				mMaxFrames;
+	float			mAnimationSpeed;
+	float			mAnimationTimer;
+
+	bool			mHit;
+
 	Node*			mNode;
 	Node*			mNextNode;
 
@@ -71,6 +80,8 @@ private:
 
 	UINT			mImmortalityTimer;
 	UINT			mImmortalityMax;
+
+	ID3D11ShaderResourceView*	mKillTexture;
 
 	
 	void Move( const float dt);
@@ -82,6 +93,10 @@ private:
 	void NewDirection(Node* node);
 	void Collision(Node* node);
 	void SuperCandy();
-	
+
+	void Animation(const float dt);
+	void InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+
+
 };
 

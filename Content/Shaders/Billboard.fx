@@ -22,7 +22,33 @@ cbuffer cbConstants
 							 float2(1.f, 0.f) };
 };
 
-Texture2D gTexture;
+
+
+Texture2D	gTexture;
+bool		gAnimation;
+uint		gFrame;
+uint		gMaxFrames;
+
+//tar animationstexturer av spritesheets i enbart x-led
+float Animation(int corner)
+{
+ 	float mf = gMaxFrames;
+	float step = 1/mf;
+
+	float x;
+
+	if(corner == 0)
+	x = step*gFrame;
+	else if(corner == 1)
+	x = step*gFrame;
+	else if(corner == 2)
+	x = step+gFrame*step;
+	else if(corner == 3)
+	x = step+gFrame*step;
+
+	return x;
+
+}
 
 SamplerState linSampler
 {
@@ -91,15 +117,24 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 	[unroll]
 	for (int i = 0; i < 4; i++)
 	{
+
+		if(gAnimation)
+			output.tex0		 = float2(Animation(i),gTexCoords[i].y);
+		else
+			output.tex0		 = gTexCoords[i];
+
 		output.positionH = mul(positions[i], gViewProj);
 		output.positionW = positions[i].xyz;
 		output.normalW	 = look;
-		output.tex0		 = gTexCoords[i];
+		
+
 		output.opacity	 = input[0].opacity;
 
 		stream.Append(output);
 	}
 }
+
+
 
 float4 PS(PSIn input) : SV_TARGET
 {
