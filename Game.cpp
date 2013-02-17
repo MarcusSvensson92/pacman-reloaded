@@ -131,7 +131,7 @@ void Game::initLevel(void)
 		{
 			mPlayer.Init(m_Device, m_DeviceContext,
 				m_shaders.get("Billboard"),
-				"Content/Img/Pacman.png",
+				"Content/Img/Pacman_kelka.png",
 				ObjectSpawnList[i].Node->GetPosition(),
 				ObjectSpawnList[i].Node);
 
