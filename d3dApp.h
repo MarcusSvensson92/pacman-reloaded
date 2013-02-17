@@ -21,6 +21,9 @@ protected:
 	ID3D11DeviceContext* m_DeviceContext;
 
 	Camera mCamera;
+
+	void Keyboards();
+	void OnMouseMove();
 private:
 	void SetDriverType();
 	void SetRenderTargetView();
@@ -28,10 +31,6 @@ private:
 	void SetViewPort(float, float, float, float);
 	void InitCamera( int screenWidth, int screenHeight );
 
-	// inte i kamera classen? Update(dt); som kör dessa inne från kameran? Alternativt game?
-	void Keyboards();
-	void OnMouseMove();
-	
 	IDXGISwapChain*         m_SwapChain;
 	ID3D11RenderTargetView* m_RenderTargetView;
 	ID3D11Texture2D*        m_DepthStencil;

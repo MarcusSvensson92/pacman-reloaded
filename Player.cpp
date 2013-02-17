@@ -49,7 +49,7 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	mSuperCandy = false;
 
 	mFrame = 0;
-	mMaxFrames = 4;
+	mMaxFrames = 2;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
@@ -285,7 +285,7 @@ void Player::ReSpawn()
 	mSuperCandy = false;
 		
 	mFrame = 0;
-	mMaxFrames = 4;
+	mMaxFrames = 2;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
@@ -298,7 +298,7 @@ void Player::Kill()
 	{
 		mHit = true;
 		mFrame = 0;
-		mAnimationSpeed = 0.15f;
+		mAnimationSpeed = 0.10f;
 		mMaxFrames = 9;
 		mTexture = mKillTexture;
 	}
