@@ -4,7 +4,6 @@
 #include "Pinky.h"
 #include "Inky.h"
 #include "Clyde.h"
-#include "PinkElephant.h"
 
 Game::Game(void)
 {
@@ -137,14 +136,6 @@ void Game::initLevel(void)
 			m_lights.AddLight(mPlayer.GetPositionPtr(), PACMANLIGHT);
 		}
 	}
-
-	PinkElephant* pinkElephant = new PinkElephant(&mPlayer);
-	pinkElephant->Init(m_Device, m_DeviceContext,
-						m_shaders.get("Billboard"),
-						"Content/Img/pinkelephant.png",
-						D3DXVECTOR3(0.f, 0.f, 0.f),
-						D3DXVECTOR3(1.f, 1.f, 1.f));
-	mObjList.push_back(pinkElephant);
 }
 
 void Game::Update(const float dt)
@@ -157,8 +148,6 @@ void Game::Update(const float dt)
 	ChangeView();
 
 	PacManRampage();
-
-	Trams();
 
 	RemoveExpiredFruit();
 
@@ -262,30 +251,6 @@ void Game::OldSchool()
 		mLastKey = "D";
 	else 
 		mLastKey = "";
-}
-
-void Game::Trams()
-{
-	if (GetAsyncKeyState('P') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
-			{
-				pinkElephant->Activate();
-			}
-		}
-	}
-	if (GetAsyncKeyState('L') & 0x8000)
-	{
-		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		{
-			if (PinkElephant* pinkElephant = dynamic_cast<PinkElephant*>((*it)))
-			{
-				pinkElephant->Deactivate();
-			}
-		}
-	}
 }
 
 void Game::RemoveExpiredFruit()
