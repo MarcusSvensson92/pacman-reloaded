@@ -9,6 +9,7 @@
 Game::Game(void)
 {
 	gameType = OLD_SCHOOL;
+	m_level = 1;
 }
 
 Game::~Game(void)
@@ -23,6 +24,14 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	d3dApp::Init(hinstance, hwnd, vsync, fullscreen, screenDepth, screenNear);
 
 	initShaders();
+
+	initLevel();
+
+}
+
+void Game::initLevel(void)
+{
+	mObjList.clear();
 
 	m_eatenCandy = 0;
 	m_ghostsEaten = 0;
@@ -136,7 +145,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 						D3DXVECTOR3(0.f, 0.f, 0.f),
 						D3DXVECTOR3(1.f, 1.f, 1.f));
 	mObjList.push_back(pinkElephant);
-
 }
 
 void Game::Update(const float dt)
@@ -154,20 +162,17 @@ void Game::Update(const float dt)
 
 	RemoveExpiredFruit();
 
-	RemoveEatenCandy();
+	CountEatenCandy();
 
 	PlayerCollisionGhost();
 
-	
-
-// 		D3D11_BLEND SrcBlend.;
-// 
-// 		D3D10_BLEND_OP BlendOp.;
+	// TO DO small animation before reset
+	if (LevelCleared())
+		NextLevel();
 
 
-
-	//if(PlayerCollisionGhost() && mPlayer.GetStatus() != Player::PlayerStatus::IMMORTAL)
-	//mPlayer.Kill();
+	if (mPlayer.IsDead())
+		NewLife();
 
 	d3dApp::Update(dt);
 }
@@ -185,7 +190,14 @@ void Game::Draw()
 	// Loop to draw Objects
  	for (int i = 0; i < mObjList.size(); i++) 
  	{
- 		mObjList[i]->Draw(m_DeviceContext, mCamera);
+		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
+		if (x != NULL)
+		{
+			if (!x->IsEaten())
+				mObjList[i]->Draw(m_DeviceContext, mCamera);
+		}
+		else
+ 			mObjList[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
 
@@ -289,23 +301,64 @@ void Game::RemoveExpiredFruit()
 	}
 }
 
-void Game::RemoveEatenCandy()
+bool Game::LevelCleared()
 {
+	if (m_eatenCandy == 245)
+		return true;
+	else
+		return false;
+}
+
+void Game::NextLevel(void)
+{
+	m_level++;
+	m_eatenCandy = 0;
+	m_ghostsEaten = 0;
+
+	for ( int i = mObjList.size() - 1; i >= 0; i--)
+	{
+		Candy* c = dynamic_cast<Candy*>(mObjList[i]);
+		if (c != NULL)
+			c->ReSpawn();
+
+		Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
+		if (g != NULL)
+			g->Reset();
+	}
+
+	mPlayer.ReSpawn();
+}
+
+void Game::NewLife(void)
+{
+	for ( int i = mObjList.size() - 1; i >= 0; i--)
+	{
+		Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
+		if (g != NULL)
+			g->Reset();
+	}
+
+	mPlayer.ReSpawn();
+}
+
+void Game::CountEatenCandy()
+{
+	int candyEaten = 0;
 	for ( int i = mObjList.size() - 1; i >= 0; i--)
 	{
 		Candy* x = dynamic_cast<Candy*>(mObjList[i]);
 		if (x != NULL)
 			if (x->IsEaten())
 			{
-				mObjList.erase(mObjList.begin() + i);
-				m_eatenCandy++;
+				candyEaten++;
 				//Get 1 point for eating a candy
 				mPlayer.AddPoints(x->GetPoints());
-				//Check if pac-man have eaten enough candy to spawn a fruit
-				if(m_eatenCandy == 70 || m_eatenCandy == 170)
-					SpawnFruit();
 			}
 	}
+	m_eatenCandy = candyEaten;
+	//Check if pac-man have eaten enough candy to spawn a fruit
+	if(m_eatenCandy == 70 || m_eatenCandy == 170)
+		SpawnFruit();
 }
 
 void Game::SpawnFruit()

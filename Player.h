@@ -26,6 +26,8 @@ public:
 
 	void Kill();
 	void Eat();
+
+	void ReSpawn();
 	
 	D3DXVECTOR3* GetPositionPtr();
 
@@ -40,6 +42,7 @@ public:
 	int				GetMaxFrames();
 
 	bool HasEatenSuperCandy();
+	bool IsDead();
 
 	void Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir );
 
@@ -71,6 +74,7 @@ private:
 
 	bool			mHit;
 
+	Node*			mSpawnNode;
 	Node*			mNode;
 	Node*			mNextNode;
 
@@ -82,6 +86,7 @@ private:
 	UINT			mImmortalityMax;
 
 	ID3D11ShaderResourceView*	mKillTexture;
+	ID3D11ShaderResourceView*	mAliveTexture;
 
 	
 	void Move( const float dt);

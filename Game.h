@@ -30,13 +30,15 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
 
+	bool LevelCleared();
+	
 	void SwitchGameType( const float dt );
 
 	void ChangeView();
 
 	void PacManRampage();
 
-	void RemoveEatenCandy();
+	void CountEatenCandy();
 
 	void RemoveExpiredFruit();
 
@@ -47,6 +49,10 @@ public:
 	void Draw();
 private:
 	void initShaders(void);
+	void initLevel(void);
+
+	void NextLevel(void);
+	void NewLife(void);
 
 	std::vector<Obj3D *> mObjList;
 	Map m_map;
@@ -68,6 +74,7 @@ private:
 	LPCTSTR mLastKey;
 
 	int m_ghostsEaten;
+	int m_level;
 };
 
 #endif

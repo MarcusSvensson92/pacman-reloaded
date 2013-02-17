@@ -40,10 +40,11 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	mPosition = _pos;
 	mNode = _node;
 	mNextNode = _node;
+	mSpawnNode = _node;
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mDistanceCovered = 0;
-	mSpeed = 20;
+	mSpeed = 21;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	mSuperCandy = false;
 
@@ -56,7 +57,7 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 
 void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, mTexturePath.c_str(), 0, 0, &mTexture, 0 )))
+	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, mTexturePath.c_str(), 0, 0, &mAliveTexture, 0 )))
 	{
 		std::string failed = mTexturePath + " Texture Failed";
 		MessageBox(0, failed.c_str(), "Fail!", 0);
@@ -67,6 +68,7 @@ void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 		std::string failed = "Pacman Killtexture Failed";
 		MessageBox(0, failed.c_str(), "Fail!", 0);
 	}
+	mTexture = mAliveTexture;
 }
 
 Player::~Player(void)
@@ -184,6 +186,14 @@ void Player::ChangeDirection(D3DXVECTOR3 look)
 	
 }
 
+bool Player::IsDead()
+{
+	if (mStatus == DEAD)
+		return true;
+	else
+		return false;
+}
+
 bool Player::HasEatenSuperCandy()
 {
 	if (mSuperCandy)
@@ -261,13 +271,36 @@ void Player::CheckDirections()
 	else mDirection = PAUSE;
 }
 
+void Player::ReSpawn()
+{
+	mStatus = ALIVE;
+	mTexture = mAliveTexture;
+	
+	mNode = mSpawnNode;
+	mNextNode = mSpawnNode;
+	mPosition = mNode->GetPosition();
+	mDirection = PAUSE;
+	mDistanceCovered = 0;
+	mMoveVector = D3DXVECTOR3(0,0,0);
+	mSuperCandy = false;
+		
+	mFrame = 0;
+	mMaxFrames = 2;
+	mAnimationSpeed = 0.1f;
+	mAnimationTimer = 0;
+	mHit = false;
+}
+
 void Player::Kill()
 {
-	mHit = true;
-	mFrame = 0;
-	mMaxFrames = 9;
-	mTexture = mKillTexture;
-
+	// Pacman only die once
+	if (!mHit)
+	{
+		mHit = true;
+		mFrame = 0;
+		mMaxFrames = 9;
+		mTexture = mKillTexture;
+	}
 }
 
 void Player::NewDirection(Node* node)

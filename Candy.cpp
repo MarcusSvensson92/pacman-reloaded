@@ -26,3 +26,8 @@ void Candy::Eat()
 { 
 	eaten = true;
 }
+
+void Candy::ReSpawn() 
+{ 
+	eaten = false;
+}
