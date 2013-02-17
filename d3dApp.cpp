@@ -112,7 +112,7 @@ void d3dApp::Update(float dt)
 }
 void d3dApp::DrawBegin()
 {
-	static float ClearColor[4] = { 0.0f, 0.1f, 0.2f, 0.0f };
+	static float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	m_DeviceContext->ClearRenderTargetView( m_RenderTargetView, ClearColor );	
 
 	m_DeviceContext->ClearDepthStencilView( m_DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0 );

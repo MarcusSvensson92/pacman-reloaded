@@ -238,7 +238,7 @@ void Game::initShaders(void)
 void Game::CameraFollowPlayer()
 {
 	OnMouseMove();
-	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0, 1.5f, 0));
+	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0, 4.f, 0));
 }
 
 void Game::DebugCam(const float dt )
