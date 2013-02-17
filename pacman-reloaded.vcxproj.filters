@@ -70,9 +70,6 @@
     <ClInclude Include="Buffer.h">
       <Filter>D3D</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>D3D</Filter>
-    </ClInclude>
     <ClInclude Include="AudioEngine.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -115,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Fruit.h">
       <Filter>Objects\Billboard\Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Maze</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
