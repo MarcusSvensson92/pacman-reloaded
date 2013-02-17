@@ -49,7 +49,7 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	mSuperCandy = false;
 
 	mFrame = 0;
-	mMaxFrames = 4;
+	mMaxFrames = 2;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
@@ -63,7 +63,7 @@ void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 		MessageBox(0, failed.c_str(), "Fail!", 0);
 	}
 
-	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, "Content/Img/Pacman_dead.png", 0, 0, &mKillTexture, 0 )))
+	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, "Content/Img/Pacman_dead_kelka.png", 0, 0, &mKillTexture, 0 )))
 	{
 		std::string failed = "Pacman Killtexture Failed";
 		MessageBox(0, failed.c_str(), "Fail!", 0);
@@ -285,7 +285,7 @@ void Player::ReSpawn()
 	mSuperCandy = false;
 		
 	mFrame = 0;
-	mMaxFrames = 4;
+	mMaxFrames = 2;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
