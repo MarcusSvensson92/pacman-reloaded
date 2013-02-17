@@ -20,7 +20,6 @@ struct PSSceneIn
 	float3 normalW		: NORMAL;
 	float4 diffuse		: DIFFUSE;
 	float4 spec			: SPECULAR;
-	float  opacity		: OPACITY;
 };
 
 //-----------------------------------------------------------------------------------------
@@ -38,12 +37,6 @@ PSSceneIn VSScene(VSIn input)
 
 	output.spec = input.spec;
 	output.diffuse = input.diffuse;
-	
-	const float r = 20.f;
-	const float d = length(output.Pos);
-	if		(d / r < 0.9f) output.opacity = 0.9f;
-	else if (d / r > 1.0f) output.opacity = 1.0f;
-	else				   output.opacity = d / r;
 	
 	return output;
 }
@@ -90,7 +83,7 @@ float4 PSScene(PSSceneIn input) : SV_Target
 
 	litColor.a = gMaterial.Diffuse.a;
 
-	return float4(litColor.xyz, litColor.w * input.opacity);
+	return litColor;
 }
 
 //-----------------------------------------------------------------------------------------
@@ -105,8 +98,7 @@ technique11 BasicTech
         SetGeometryShader( NULL );
         SetPixelShader( CompileShader( ps_4_0, PSScene() ) );
 	    
-		// Problem med cullingen!
-	    SetRasterizerState(NoCulling);
+	    SetRasterizerState(CullBack);
 
 		SetBlendState( AlphaBlending2, float4( 0.0f, 0.0f, 0.0f, 0.0f ), 0xFFFFFFFF );
     }  
