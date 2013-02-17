@@ -38,15 +38,19 @@ public:
 
 	bool Initialize(HWND);
 	void Shutdown();
+	void MuteSound();
+	void UpdateListenerPos(D3DXVECTOR3 position);
+
 private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
 	void ShutdownDS();
 
+	bool PlayWaveFile();
+	bool PlayWaveFile3D(D3DXVECTOR3 position);
+
 	bool LoadWaveFile(char*, IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
 	void ShutdownWaveFile(IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
-
-	bool PlayWaveFile();
 
 private:
 	IDirectSound8* m_DirectSound;

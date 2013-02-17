@@ -26,6 +26,11 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	initLevel();
 
+	m_eatenCandy = 0;
+	m_ghostsEaten = 0;
+	
+	m_audio.Initialize(hwnd);
+
 	mCamera.UpdateMatrix();
 
 }
@@ -33,10 +38,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 void Game::initLevel(void)
 {
 	mObjList.clear();
-
-	m_eatenCandy = 0;
-	m_ghostsEaten = 0;
-	//m_audio.Initialize(hwnd);
 
 	// Init Map and fetch ObjectSpawnList
 	std::vector<MapOutput> ObjectSpawnList;
@@ -148,6 +149,9 @@ void Game::Update(const float dt)
 	SwitchGameType(dt);
 
 	ChangeView();
+
+	if (GetAsyncKeyState('m') & 0x8000)
+		m_audio.MuteSound();
 
 	PacManRampage();
 

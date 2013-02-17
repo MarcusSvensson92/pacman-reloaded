@@ -54,6 +54,11 @@ void AudioEngine::Shutdown()
 	return;
 }
 
+void AudioEngine::UpdateListenerPos(D3DXVECTOR3 position)
+{
+	m_listener->SetPosition(position.x,position.y,position.z,DS3D_IMMEDIATE);
+}
+
 bool AudioEngine::InitializeDS(HWND hwnd)
 {
 	HRESULT result;
@@ -140,6 +145,11 @@ void AudioEngine::ShutdownDS()
 		m_DirectSound = 0;
 	}
 	return;
+}
+
+void AudioEngine::MuteSound()
+{
+	m_primaryBuffer->SetVolume(0);
 }
 
 bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer)
@@ -318,6 +328,40 @@ bool AudioEngine::PlayWaveFile()
 	posx = -2.0f;
 	posy = 0.0f;
 	posz = 0.0f;
+
+	//Set pos at the beginning of the sound buffer
+	result = m_secondaryBufferMain->SetCurrentPosition(0);
+	if(FAILED(result))
+		return false;
+
+	//Set volum to 100%
+	result = m_secondaryBufferMain->SetVolume(DSBVOLUME_MAX);
+	if(FAILED(result))
+		return false;
+
+	//Set location of the sound
+	m_secondary3DBufferMain->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
+
+	//Play the file
+	result = m_secondaryBufferMain->Play(0, 0, 0);
+	if(FAILED(result))
+	{
+		return false;
+	}
+
+	//Everything was successfull
+	return true;
+}
+
+bool AudioEngine::PlayWaveFile3D(D3DXVECTOR3 position)
+{
+	HRESULT result;
+
+	float posx,posy,posz;
+	//Set the location of where the music shall appear
+	posx = position.x;
+	posy = position.y;
+	posz = position.z;
 
 	//Set pos at the beginning of the sound buffer
 	result = m_secondaryBufferMain->SetCurrentPosition(0);
