@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Ghost.h"
 
-const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(5.50667f, 7.f);
+const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(7.f, 7.f);
 const float		  g_ghostSpeed				   = 20.f;
 const float		  g_ghostEatableSpeedReduction = 0.5f;
 const float		  g_ghostDeadAlphaValue		   = 0.51f;

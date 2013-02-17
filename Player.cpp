@@ -13,7 +13,7 @@ D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
 int						Player::GetFrame()		{return mFrame;}
 int						Player::GetMaxFrames()	{return mMaxFrames;}
 
-Player::Player(): Billboard(D3DXVECTOR2(10, 10), 1.f) {}
+Player::Player(): Billboard(D3DXVECTOR2(7, 7), 1.f) {}
 
 void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
@@ -49,7 +49,7 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	mSuperCandy = false;
 
 	mFrame = 0;
-	mMaxFrames = 2;
+	mMaxFrames = 4;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
@@ -285,7 +285,7 @@ void Player::ReSpawn()
 	mSuperCandy = false;
 		
 	mFrame = 0;
-	mMaxFrames = 2;
+	mMaxFrames = 4;
 	mAnimationSpeed = 0.1f;
 	mAnimationTimer = 0;
 	mHit = false;
