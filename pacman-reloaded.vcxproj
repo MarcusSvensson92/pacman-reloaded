@@ -168,7 +168,6 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Obj3D.h" />
     <ClInclude Include="PathFinding.h" />
-    <ClInclude Include="PinkElephant.h" />
     <ClInclude Include="Pinky.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
@@ -196,7 +195,6 @@
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Obj3D.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
-    <ClCompile Include="PinkElephant.cpp" />
     <ClCompile Include="Pinky.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Shader.cpp" />

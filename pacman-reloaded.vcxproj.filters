@@ -43,9 +43,6 @@
     <Filter Include="Objects\Billboard\Ghost\AI">
       <UniqueIdentifier>{d0792dae-bc38-4b8b-a26a-131ccd8ce304}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Billboard\Trippy Shit">
-      <UniqueIdentifier>{85002bda-1da1-4790-9cc2-404d2bfff112}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -115,9 +112,6 @@
     </ClInclude>
     <ClInclude Include="Clyde.h">
       <Filter>Objects\Billboard\Ghost\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="PinkElephant.h">
-      <Filter>Objects\Billboard\Trippy Shit</Filter>
     </ClInclude>
     <ClInclude Include="Fruit.h">
       <Filter>Objects\Billboard\Consumables</Filter>
@@ -191,9 +185,6 @@
     </ClCompile>
     <ClCompile Include="Clyde.cpp">
       <Filter>Objects\Billboard\Ghost\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="PinkElephant.cpp">
-      <Filter>Objects\Billboard\Trippy Shit</Filter>
     </ClCompile>
     <ClCompile Include="Fruit.cpp">
       <Filter>Objects\Billboard\Consumables</Filter>

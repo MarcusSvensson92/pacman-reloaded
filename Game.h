@@ -44,8 +44,6 @@ public:
 
 	void SpawnFruit();
 
-	void Trams();
-
 	void Draw();
 private:
 	void initShaders(void);
