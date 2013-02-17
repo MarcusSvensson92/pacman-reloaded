@@ -26,6 +26,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	initLevel();
 
+	mCamera.UpdateMatrix();
+
 }
 
 void Game::initLevel(void)
@@ -163,7 +165,7 @@ void Game::Update(const float dt)
 	if (mPlayer.IsDead())
 		NewLife();
 
-	d3dApp::Update(dt);
+	Keyboards();
 }
 void Game::Draw()
 {
@@ -190,7 +192,7 @@ void Game::Draw()
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
 
-	if(gameType == OLD_SCHOOL)
+	if(gameType != FIRST_PERSON)
 	{
 		m_shaders.get("Billboard")->SetBool("gAnimation",true);
 		m_shaders.get("Billboard")->SetInt("gFrame",mPlayer.GetFrame());
@@ -224,6 +226,7 @@ void Game::initShaders(void)
 
 void Game::CameraFollowPlayer()
 {
+	OnMouseMove();
 	mCamera.SetPosition(mPlayer.GetPosition() + D3DXVECTOR3(0, 1.5f, 0));
 }
 
@@ -237,6 +240,8 @@ void Game::DebugCam(const float dt )
 		mCamera.Strafe(-20.f * dt);
 	if (GetAsyncKeyState('D') & 0x8000)
 		mCamera.Strafe(20.f * dt);
+
+	OnMouseMove();
 }
 
 void Game::OldSchool()
@@ -363,6 +368,7 @@ void Game::ChangeView()
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
 		gameType = OLD_SCHOOL;
+		mCamera.UpdateMatrix();
 	}
 	if (GetAsyncKeyState('3') & 0x8000)
 	{
