@@ -169,8 +169,16 @@ void Game::Update(const float dt)
 	if (mPlayer.IsDead())
 		NewLife();
 
+	UpdateAudio();
+
 	Keyboards();
 }
+
+void Game::UpdateAudio()
+{
+	m_audio.UpdateListenerPos(mPlayer.GetPosition());
+}
+
 void Game::Draw()
 {
 	DrawBegin();

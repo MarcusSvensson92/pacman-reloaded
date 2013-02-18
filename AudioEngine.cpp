@@ -30,7 +30,7 @@ bool AudioEngine::Initialize(HWND hwnd)
 		return false;
 	
 	//Load the main music into the secondaryBufferMain
-	result = LoadWaveFile("Content/Audio/Music/Test.wav", &m_secondaryBufferMain, &m_secondary3DBufferMain);
+	result = LoadWaveFile("Content/Audio/Music/MainMusicMono.wav", &m_secondaryBufferMain, &m_secondary3DBufferMain);
 	if(!result)
 		return false;
 
@@ -116,11 +116,20 @@ bool AudioEngine::InitializeDS(HWND hwnd)
 	if(FAILED(result))
 		return false;
 
-	//Set the listeners initial location to the middle of the screen
-	m_listener->SetPosition(0.0f,0.0f,0.0f,DS3D_IMMEDIATE);
+	//Init Listener
+	InitListener();
 
 	//If successfull
 	return true;
+}
+
+void AudioEngine::InitListener()
+{
+	//Set the listeners initial location to the middle of the screen
+	m_listener->SetPosition(0.0f,0.0f,0.0f,DS3D_IMMEDIATE);
+	//Set values for controlling audio distance and roll off
+	m_listener->SetDistanceFactor(10.0f,DS3D_IMMEDIATE);
+	m_listener->SetRolloffFactor(0.06f,DS3D_IMMEDIATE);
 }
 
 void AudioEngine::ShutdownDS()
@@ -325,9 +334,9 @@ bool AudioEngine::PlayWaveFile()
 
 	float posx,posy,posz;
 	//Set the location of where the music shall appear
-	posx = -2.0f;
+	posx = 230.0f;
 	posy = 0.0f;
-	posz = 0.0f;
+	posz = 140.0f;
 
 	//Set pos at the beginning of the sound buffer
 	result = m_secondaryBufferMain->SetCurrentPosition(0);

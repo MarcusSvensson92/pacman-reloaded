@@ -30,6 +30,8 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
 
+	void UpdateAudio();
+
 	bool LevelCleared();
 	
 	void SwitchGameType( const float dt );

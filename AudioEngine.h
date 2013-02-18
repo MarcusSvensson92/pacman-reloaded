@@ -37,6 +37,7 @@ public:
 	~AudioEngine();
 
 	bool Initialize(HWND);
+	void InitListener();
 	void Shutdown();
 	void MuteSound();
 	void UpdateListenerPos(D3DXVECTOR3 position);
