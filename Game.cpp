@@ -59,6 +59,7 @@ void Game::initLevel(void)
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
 
+			m_totalCandy++;
 		}
 		// Add candy that looks like supercandy (temp fix)
 		if ( ObjectSpawnList[i].Type == SUPER_CANDY )
@@ -74,6 +75,7 @@ void Game::initLevel(void)
 			// Set node item to current candy.
 			ObjectSpawnList[i].Node->Item = candy;
 
+			m_totalCandy++;
 			//m_lights.AddLight(candy->GetPositionPtr(), SUPERCANDYLIGHT);
 		}
 		// Add fruit spawnpoint
@@ -207,6 +209,7 @@ void Game::Draw()
 	if(gameType != FIRST_PERSON)
 	{
 		m_shaders.get("Billboard")->SetBool("gAnimation",true);
+		m_shaders.get("Billboard")->SetFloat3("gMoveVector",mPlayer.GetMoveVector());
 		m_shaders.get("Billboard")->SetInt("gFrame",mPlayer.GetFrame());
 		m_shaders.get("Billboard")->SetInt("gMaxFrames",mPlayer.GetMaxFrames());
 		mPlayer.Draw(m_DeviceContext, mCamera);
@@ -285,7 +288,7 @@ void Game::RemoveExpiredFruit()
 
 bool Game::LevelCleared()
 {
-	if (m_eatenCandy == 245)
+	if (m_eatenCandy == m_totalCandy)
 		return true;
 	else
 		return false;

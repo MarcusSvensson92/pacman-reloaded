@@ -63,6 +63,7 @@ private:
 	
 	Node* m_fruitNode;
 	int m_eatenCandy;
+	int m_totalCandy;
 
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );
