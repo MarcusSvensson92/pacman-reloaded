@@ -13,11 +13,10 @@ D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
 int						Player::GetFrame()		{return mFrame;}
 int						Player::GetMaxFrames()	{return mMaxFrames;}
 
-Player::Player(): Billboard(D3DXVECTOR2(7, 7), 1.f) {}
+Player::Player(): Billboard(D3DXVECTOR2(9, 9), 1.f) {}
 
 void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
-	mScale = D3DXVECTOR3(1,1,1);
 	mPosition = _pos;
 	mRotation = D3DXVECTOR3(0,0,0);
 
@@ -35,24 +34,30 @@ void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shad
 	D3DXMatrixIdentity(&translation);
 	D3DXMatrixIdentity(&scaling);
 
-
-	mStatus = ALIVE;
-	mPosition = _pos;
-	mNode = _node;
-	mNextNode = _node;
 	mSpawnNode = _node;
+
+	SetInitValues();
+
+}
+
+void Player::SetInitValues()
+{
+	mStatus = ALIVE;
+	mNode = mSpawnNode;
+	mNextNode = mSpawnNode;
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mDistanceCovered = 0;
-	mSpeed = 21;
+	mSpeed = 31;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	mSuperCandy = false;
 
 	mFrame = 0;
-	mMaxFrames = 2;
-	mAnimationSpeed = 0.1f;
+	mMaxFrames = 4;
+	mAnimationSpeed = 0.05f;
 	mAnimationTimer = 0;
 	mHit = false;
+	mTexture = mAliveTexture;
 }
 
 void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -273,22 +278,7 @@ void Player::CheckDirections()
 
 void Player::ReSpawn()
 {
-	mStatus = ALIVE;
-	mTexture = mAliveTexture;
-	
-	mNode = mSpawnNode;
-	mNextNode = mSpawnNode;
-	mPosition = mNode->GetPosition();
-	mDirection = PAUSE;
-	mDistanceCovered = 0;
-	mMoveVector = D3DXVECTOR3(0,0,0);
-	mSuperCandy = false;
-		
-	mFrame = 0;
-	mMaxFrames = 2;
-	mAnimationSpeed = 0.1f;
-	mAnimationTimer = 0;
-	mHit = false;
+	SetInitValues();
 }
 
 void Player::Kill()

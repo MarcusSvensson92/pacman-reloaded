@@ -5,7 +5,7 @@
 Fruit::Fruit(void)
 {
 	m_expired = false;
-	 m_duration = 600; //600 = Lasts for 10 seconds
+	 m_duration = 800;
 }
 
 
@@ -22,7 +22,7 @@ void Fruit::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shade
 
 void Fruit::Update(const float dt)
 {
-	m_duration--;
+	m_duration-=dt;
 	if(m_duration <= 0)
 	m_expired = true;
 }
