@@ -7,7 +7,7 @@ class Billboard : public Obj3D
 {
 public:
 	Billboard(const D3DXVECTOR2& size, const float alphaValue);
-	~Billboard(void);
+	virtual ~Billboard(void);
 
 	virtual void Draw(ID3D11DeviceContext* deviceContext, Camera camera);
 protected:

@@ -19,6 +19,10 @@ Ghost::Ghost(GhostAI* ai)
 
 Ghost::~Ghost(void)
 {
+	RELEASE(m_roamingTexture);
+	RELEASE(m_eatableTexture0);
+	RELEASE(m_eatableTexture1);
+
 	delete m_ai;
 }
 
@@ -59,11 +63,11 @@ void Ghost::Update(const float dt)
 
 void Ghost::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 {
-	const std::string eatableTexture1Filename = "Content/Img/eatableghost0.png";
-	const std::string eatableTexture2Filename = "Content/Img/eatableghost1.png";
+	const std::string eatableTexture0Filename = "Content/Img/eatableghost0.png";
+	const std::string eatableTexture1Filename = "Content/Img/eatableghost1.png";
 	
+	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture0Filename.c_str(), NULL, NULL, &m_eatableTexture0, NULL);
 	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture1Filename.c_str(), NULL, NULL, &m_eatableTexture1, NULL);
-	D3DX11CreateShaderResourceViewFromFile(device, eatableTexture2Filename.c_str(), NULL, NULL, &m_eatableTexture2, NULL);
 
 	Obj3D::InitGFX(device, deviceContext);
 
@@ -99,9 +103,9 @@ void Ghost::UpdateTexture(const float dt)
 			const float t = m_eatableElapsedTime - (int)m_eatableElapsedTime;
 			if (t > 0.25f && t < 0.5f ||
 				t > 0.75f && t < 1.f)
-				mTexture = m_eatableTexture1;
+				mTexture = m_eatableTexture0;
 			else
-				mTexture = m_eatableTexture2;
+				mTexture = m_eatableTexture1;
 
 			if (m_eatableElapsedTime >= m_eatableTotalTime)
 			{
@@ -110,7 +114,7 @@ void Ghost::UpdateTexture(const float dt)
 			}
 		}
 		else
-			mTexture = m_eatableTexture1;
+			mTexture = m_eatableTexture0;
 	}
 	else
 		mTexture = m_roamingTexture;

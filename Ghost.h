@@ -31,8 +31,8 @@ private:
 	GhostAI* m_ai;
 
 	ID3D11ShaderResourceView* m_roamingTexture;
+	ID3D11ShaderResourceView* m_eatableTexture0;
 	ID3D11ShaderResourceView* m_eatableTexture1;
-	ID3D11ShaderResourceView* m_eatableTexture2;
 
 	float m_eatableElapsedTime;
 	float m_eatableBlueTime;
