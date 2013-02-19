@@ -178,7 +178,10 @@ void Game::Update(const float dt)
 
 void Game::UpdateAudio()
 {
-	m_audio.UpdateListenerPos(mPlayer.GetPosition());
+	m_audio.UpdateListener(mPlayer.GetPosition(),mPlayer.GetMoveVector());
+	if (GetAsyncKeyState('m') & 0x8000)
+		m_audio.MuteSound();
+
 }
 
 void Game::Draw()

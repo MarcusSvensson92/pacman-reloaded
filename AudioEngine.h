@@ -11,6 +11,7 @@
 #include <dsound.h>
 #include <stdio.h>
 
+
 class AudioEngine
 {
 private://audio file header types
@@ -40,17 +41,20 @@ public:
 	void InitListener();
 	void Shutdown();
 	void MuteSound();
-	void UpdateListenerPos(D3DXVECTOR3 position);
+	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
 
 private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
 	void ShutdownDS();
+	bool LoadFiles();
 
-	bool PlayWaveFile();
-	bool PlayWaveFile3D(D3DXVECTOR3 position);
+	void PlaySound(char file[]);
 
-	bool LoadWaveFile(char*, IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
+	bool PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer);
+	bool PlayWaveFile3D(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer);
+
+	bool LoadWaveFile(char*, IDirectSoundBuffer8**,IDirectSound3DBuffer8**,int channels);
 	void ShutdownWaveFile(IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
 
 private:
@@ -58,9 +62,21 @@ private:
 	IDirectSoundBuffer* m_primaryBuffer;//Mixes the sounds from the secondary buffers and plays them.
 	
 	IDirectSound3DListener8* m_listener; //Listener used by pacman to simulate 3D sounds
-	IDirectSoundBuffer8* m_secondaryBufferMain;//Used for looping the main music
-	IDirectSound3DBuffer8* m_secondary3DBufferMain;//2ndry buffer used by 3d sounds
-	//Add more secondary buffers in order to play more files
+	IDirectSoundBuffer8* m_secondaryBufferMain;
+	IDirectSoundBuffer8* m_secondaryBufferMusic;//Used for looping music
+	IDirectSound3DBuffer8* m_secondary3DBufferMain;
+	IDirectSound3DBuffer8* m_secondary3DBufferMusic;
+	//Pacman
+	IDirectSoundBuffer8* m_secondaryBufferPacmanSounds;
+	//Consumables
+	IDirectSoundBuffer8* m_secondaryBufferConsumableSounds;
+	IDirectSoundBuffer8* m_secondaryBufferConsumableMusic;
+	IDirectSound3DBuffer8* m_secondary3DBufferConsumableMusic;
+	//Ghosts
+	IDirectSoundBuffer8* m_secondaryBufferGhostMusic;
+	IDirectSoundBuffer8* m_secondaryBufferGhostSounds;
+	IDirectSound3DBuffer8* m_secondary3DBufferGhostMusic;
+	IDirectSound3DBuffer8* m_secondary3DBufferGhostSounds;
 };
 
 #endif

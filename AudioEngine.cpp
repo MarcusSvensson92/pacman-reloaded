@@ -29,18 +29,35 @@ bool AudioEngine::Initialize(HWND hwnd)
 	if(!result)
 		return false;
 	
-	//Load the main music into the secondaryBufferMain
-	result = LoadWaveFile("Content/Audio/Music/MainMusicMono.wav", &m_secondaryBufferMain, &m_secondary3DBufferMain);
-	if(!result)
-		return false;
-
-	//Play the main music file
-	result = PlayWaveFile();
+	result = LoadFiles();
 	if(!result)
 		return false;
 
 	//If everything was succesfull
 	return true;
+}
+
+bool AudioEngine::LoadFiles()
+{
+	bool result;
+
+	//result = LoadWaveFile("Content/Audio/Music/MainMusicStereo.wav", &m_secondaryBufferMusic, NULL, 2);
+	//if(!result)
+	//	return false;
+
+	////Play the main music file
+	//result = PlayWaveFile2D(m_secondaryBufferMusic);
+	//if(!result)
+	//	return false;
+	//Load the main music into the secondaryBufferMusic
+	result = LoadWaveFile("Content/Audio/Music/MainMusicMono.wav", &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
+	if(!result)
+		return false;
+
+	//Play the main music file
+	result = PlayWaveFile3D(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	if(!result)
+		return false;
 }
 
 void AudioEngine::Shutdown()
@@ -54,9 +71,10 @@ void AudioEngine::Shutdown()
 	return;
 }
 
-void AudioEngine::UpdateListenerPos(D3DXVECTOR3 position)
+void AudioEngine::UpdateListener(D3DXVECTOR3 position,D3DXVECTOR3 orientation)
 {
 	m_listener->SetPosition(position.x,position.y,position.z,DS3D_IMMEDIATE);
+	//m_listener->SetOrientation(orientation.x,orientation.y,orientation.z,0,0,0,DS3D_IMMEDIATE);
 }
 
 bool AudioEngine::InitializeDS(HWND hwnd)
@@ -159,9 +177,10 @@ void AudioEngine::ShutdownDS()
 void AudioEngine::MuteSound()
 {
 	m_primaryBuffer->SetVolume(0);
+	m_secondaryBufferMusic->SetVolume(0);
 }
 
-bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer)
+bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer, int channels)
 {
 	int error;
 	FILE* filePtr;
@@ -212,7 +231,7 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 		return false;
 	}
 	//Check that the file is in mono format
-	if(waveFileHeader.numChannels != 1) //1=mono;2=stereo (mono for 3D sounds)
+	if(waveFileHeader.numChannels != channels) //1=mono;2=stereo (mono for 3D sounds)
 	{
 		return false;
 	}
@@ -240,14 +259,19 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	waveFormat.wFormatTag = WAVE_FORMAT_PCM;
 	waveFormat.nSamplesPerSec = 44100;
 	waveFormat.wBitsPerSample = 16;
-	waveFormat.nChannels = 1;
+	waveFormat.nChannels = channels;
 	waveFormat.nBlockAlign = (waveFormat.wBitsPerSample / 8) * waveFormat.nChannels;
 	waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
 	waveFormat.cbSize = 0;
 
 	//Set buffer description for secondary buffer
 	bufferDesc.dwSize = sizeof(DSBUFFERDESC);
+	//Check if the file is got 1 or 2 channels to determin if it is in 3D
+	if(channels == 1)
 	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRL3D;
+	else if(channels == 2)
+	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME;
+	//
 	bufferDesc.dwBufferBytes = waveFileHeader.dataSize;
 	bufferDesc.dwReserved = 0;
 	bufferDesc.lpwfxFormat = &waveFormat;
@@ -303,9 +327,12 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	waveData = 0;
 
 	//Get the 3d interface to the 2ndry buffer
+	if(secondary3DBuffer != NULL)
+	{
 	result = (*secondaryBuffer)->QueryInterface(IID_IDirectSound3DBuffer8, (void**)&*secondary3DBuffer);
 	if(FAILED(result))
 		return false;
+	}
 
 	//If everything was successfull
 	return true;
@@ -328,41 +355,41 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 	return;
 }
 
-bool AudioEngine::PlayWaveFile()
+void AudioEngine::PlaySound(char file[])
+{
+
+}
+
+bool AudioEngine::PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer)
 {
 	HRESULT result;
-
-	float posx,posy,posz;
-	//Set the location of where the music shall appear
-	posx = 230.0f;
-	posy = 0.0f;
-	posz = 140.0f;
-
-	//Set pos at the beginning of the sound buffer
-	result = m_secondaryBufferMain->SetCurrentPosition(0);
-	if(FAILED(result))
-		return false;
-
-	//Set volum to 100%
-	result = m_secondaryBufferMain->SetVolume(DSBVOLUME_MAX);
-	if(FAILED(result))
-		return false;
-
-	//Set location of the sound
-	m_secondary3DBufferMain->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
-
-	//Play the file
-	result = m_secondaryBufferMain->Play(0, 0, 0);
+ 
+ 
+	// Set position at the beginning of the sound buffer.
+	result = secondBuffer->SetCurrentPosition(0);
 	if(FAILED(result))
 	{
 		return false;
 	}
-
-	//Everything was successfull
+ 
+	// Set volume of the buffer to 100%.
+	result = secondBuffer->SetVolume(DSBVOLUME_MAX);
+	if(FAILED(result))
+	{
+		return false;
+	}
+ 
+	// Play the contents of the secondary sound buffer.
+	result = secondBuffer->Play(0, 0, 0);
+	if(FAILED(result))
+	{
+		return false;
+	}
+ 
 	return true;
 }
 
-bool AudioEngine::PlayWaveFile3D(D3DXVECTOR3 position)
+bool AudioEngine::PlayWaveFile3D(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer)
 {
 	HRESULT result;
 
@@ -373,20 +400,20 @@ bool AudioEngine::PlayWaveFile3D(D3DXVECTOR3 position)
 	posz = position.z;
 
 	//Set pos at the beginning of the sound buffer
-	result = m_secondaryBufferMain->SetCurrentPosition(0);
+	result = secondBuffer->SetCurrentPosition(0);
 	if(FAILED(result))
 		return false;
 
 	//Set volum to 100%
-	result = m_secondaryBufferMain->SetVolume(DSBVOLUME_MAX);
+	result = secondBuffer->SetVolume(DSBVOLUME_MAX);
 	if(FAILED(result))
 		return false;
 
 	//Set location of the sound
-	m_secondary3DBufferMain->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
+	second3DBuffer->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
 
 	//Play the file
-	result = m_secondaryBufferMain->Play(0, 0, 0);
+	result = secondBuffer->Play(0, 0, 0);
 	if(FAILED(result))
 	{
 		return false;
