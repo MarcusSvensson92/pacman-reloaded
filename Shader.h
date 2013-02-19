@@ -22,6 +22,7 @@ public:
 
 	void SetMatrix(char* variable, D3DXMATRIX& mat);
 	void SetFloat(char* variable, float value);
+	void SetFloat2(char* variable, D3DXVECTOR2 value);
 	void SetFloat3(char* variable, D3DXVECTOR3 value);
 	void SetFloat4(char* variable, D3DXVECTOR4 value);
 

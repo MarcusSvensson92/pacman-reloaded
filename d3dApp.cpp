@@ -16,8 +16,8 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 	// Get screenSize
 	RECT rc;
 	GetClientRect( hwnd, &rc );
-	int screenWidth = rc.right - rc.left;
-	int screenHeight = rc.bottom - rc.top;
+	screenWidth = rc.right - rc.left;
+	screenHeight = rc.bottom - rc.top;
 
 	// DeviceFlags
 	UINT createDeviceFlags = 0;
@@ -158,6 +158,8 @@ void d3dApp::SetDepthStencil(int width, int height)
 	if( FAILED(hr) )
 		MessageBoxA(0, "Failed CreateTexture2D", 0, 0);
 
+	InitDepthStencilState();
+
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
 	ZeroMemory(&descDSV, sizeof(descDSV));
 	descDSV.Format = descDepth.Format;
@@ -204,5 +206,63 @@ void d3dApp::Keyboards()
 {
 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		PostQuitMessage(0);
+}
+
+HRESULT d3dApp::InitDepthStencilState()
+{
+	HRESULT hr = S_OK;
+	// State
+	D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+	ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+
+	// Set up the description of the stencil state.
+	depthStencilDesc.DepthEnable = true;
+	depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	depthStencilDesc.StencilEnable = true;
+	depthStencilDesc.StencilReadMask = 0xFF;
+	depthStencilDesc.StencilWriteMask = 0xFF;
+
+	// Stencil operations if pixel is front-facing.
+	depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Stencil operations if pixel is back-facing.
+	depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state.
+	hr = m_Device->CreateDepthStencilState(&depthStencilDesc, &m_depthStencilState);
+	if(FAILED(hr))
+	{
+		return hr;
+	}
+
+	// Second State (Disabled)
+	depthStencilDesc.DepthEnable = false;
+	hr = m_Device->CreateDepthStencilState(&depthStencilDesc, &m_depthDisabledStencilState);
+	if(FAILED(hr))
+	{
+		return hr;
+	}
+
+	m_DeviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+}
+
+void d3dApp::TurnOnZBuffer()
+{
+	// Set the depth stencil state.
+	m_DeviceContext->OMSetDepthStencilState(m_depthStencilState, 1);
+}
+
+void d3dApp::TurnOffZBuffer()
+{
+	// Set the depth stencil state.
+	m_DeviceContext->OMSetDepthStencilState(m_depthDisabledStencilState, 1);
 }
 

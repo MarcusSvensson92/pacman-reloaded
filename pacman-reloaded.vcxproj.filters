@@ -43,6 +43,9 @@
     <Filter Include="Objects\Billboard\Ghost\AI">
       <UniqueIdentifier>{d0792dae-bc38-4b8b-a26a-131ccd8ce304}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{6344e3dc-d3a7-4873-b34d-29ce95898ef4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinApp.h">
@@ -115,6 +118,18 @@
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
       <Filter>Maze</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIchar.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIElement.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIString.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +204,18 @@
     <ClCompile Include="Fruit.cpp">
       <Filter>Objects\Billboard\Consumables</Filter>
     </ClCompile>
+    <ClCompile Include="GUIchar.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIElement.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIString.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">
@@ -210,6 +237,9 @@
   <ItemGroup>
     <None Include="Content\Audio\Music\MainMusic.wav">
       <Filter>Resource Files\Content\Audio\Music</Filter>
+    </None>
+    <None Include="Content\Shaders\2D.fx">
+      <Filter>Resource Files\Content\Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

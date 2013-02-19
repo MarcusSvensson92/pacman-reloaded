@@ -123,6 +123,11 @@ void Shader::SetMatrix(char* variable, D3DXMATRIX& mat)
 	m_pEffect->GetVariableByName(variable)->AsMatrix()->SetMatrix((float*)&mat);
 }
 
+void Shader::SetFloat2(char* variable, D3DXVECTOR2 value)
+{
+	m_pEffect->GetVariableByName(variable)->AsVector()->SetFloatVector((float*)&value);
+}
+
 void Shader::SetFloat3(char* variable, D3DXVECTOR3 value)
 {
 	m_pEffect->GetVariableByName(variable)->AsVector()->SetFloatVector((float*)&value);

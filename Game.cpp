@@ -33,6 +33,8 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 
 	mCamera.UpdateMatrix();
 
+	m_GUIManager.InitScore(m_DeviceContext, m_Device);
+	m_GUIManager.InitLife(3, m_DeviceContext, m_Device);
 }
 
 void Game::initLevel(void)
@@ -219,6 +221,11 @@ void Game::Draw()
 		m_shaders.get("Billboard")->SetBool("gAnimation",false);
 	}
 
+	TurnOffZBuffer();
+	m_GUIManager.DrawLife(m_DeviceContext, m_shaders.get("2D"), screenWidth, screenHeight);
+	m_GUIManager.DrawScore(m_DeviceContext, m_shaders.get("2D"), screenWidth, screenHeight);
+	TurnOnZBuffer();
+
 	DrawEnd();
 }
 
@@ -240,6 +247,12 @@ void Game::initShaders(void)
 		{ "SIZE_W",	    0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 	m_shaders.add("Billboard", "Content/Shaders/Billboard.fx", billboardInputDesc, 2);
+
+	D3D11_INPUT_ELEMENT_DESC TWODInputDesc[] = {
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+	m_shaders.add("2D", "Content/Shaders/2D.fx", TWODInputDesc, 2);
 }
 
 void Game::CameraFollowPlayer()

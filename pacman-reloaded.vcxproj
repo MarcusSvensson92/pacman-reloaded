@@ -162,6 +162,10 @@
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Ghost.h" />
+    <ClInclude Include="GUIchar.h" />
+    <ClInclude Include="GUIElement.h" />
+    <ClInclude Include="GUIManager.h" />
+    <ClInclude Include="GUIString.h" />
     <ClInclude Include="Inky.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />
@@ -189,6 +193,10 @@
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Ghost.cpp" />
+    <ClCompile Include="GUIchar.cpp" />
+    <ClCompile Include="GUIElement.cpp" />
+    <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="GUIString.cpp" />
     <ClCompile Include="Inky.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -246,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Audio\Music\MainMusic.wav" />
+    <None Include="Content\Shaders\2D.fx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

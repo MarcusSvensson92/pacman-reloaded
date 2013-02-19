@@ -11,6 +11,7 @@
 #include "ShaderManager.h"
 #include "AudioEngine.h"
 #include "LightManager.h"
+#include "GUIManager.h"
 
 class Game : public d3dApp
 {
@@ -60,7 +61,8 @@ private:
 	ShaderManager m_shaders;
 	AudioEngine m_audio;
 	LightManager m_lights;
-	
+	GUIManager m_GUIManager;
+
 	Node* m_fruitNode;
 	int m_eatenCandy;
 	int m_totalCandy;
