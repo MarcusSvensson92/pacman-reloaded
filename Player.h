@@ -38,6 +38,7 @@ public:
 	D3DXVECTOR3		GetPosition();
 	D3DXVECTOR3		GetMoveVector();
 	PlayerStatus	GetStatus();
+	int				GetLives();
 	int				GetFrame();
 	int				GetMaxFrames();
 
@@ -65,6 +66,7 @@ private:
 
 	bool			mSuperCandy;
 
+	int				mLives;
 	int				mPoints;
 
 	int				mFrame;

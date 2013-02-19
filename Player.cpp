@@ -10,10 +10,15 @@ D3DXVECTOR3				Player::GetPosition()	{return mPosition;}
 D3DXVECTOR3				Player::GetMoveVector() {return mMoveVector;}
 Player::PlayerStatus	Player::GetStatus()		{return mStatus;}
 D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
+int						Player::GetLives()		{return mLives;}
 int						Player::GetFrame()		{return mFrame;}
 int						Player::GetMaxFrames()	{return mMaxFrames;}
 
-Player::Player(): Billboard(D3DXVECTOR2(9, 9), 1.f) {}
+Player::Player(): Billboard(D3DXVECTOR2(9, 9), 1.f) 
+{
+	mLives = 3;
+	mPoints = 0;
+}
 
 void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
@@ -114,6 +119,7 @@ void Player::Animation(const float dt)
 	{
 		mFrame = mMaxFrames;
 		mStatus = DEAD;
+		mLives--;
 		return;
 	}
 

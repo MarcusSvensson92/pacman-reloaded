@@ -32,8 +32,6 @@ public:
 	void Update(const float dt);
 
 	void UpdateAudio();
-
-	bool LevelCleared();
 	
 	void SwitchGameType( const float dt );
 
@@ -53,6 +51,7 @@ private:
 	void initLevel(void);
 
 	void NextLevel(void);
+	void ChangeLevel(int);
 	void NewLife(void);
 
 	std::vector<Obj3D *> mObjList;
@@ -78,6 +77,8 @@ private:
 
 	int m_ghostsEaten;
 	int m_level;
+	float m_ghostblueTime;
+	float m_ghostweakTime;
 };
 
 #endif

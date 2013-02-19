@@ -8,7 +8,10 @@
 Game::Game(void)
 {
 	gameType = OLD_SCHOOL;
-	m_level = 1;
+	m_eatenCandy = 0;
+	m_totalCandy = 0;
+	m_level = 0;
+	ChangeLevel(m_level);
 }
 
 Game::~Game(void)
@@ -157,21 +160,29 @@ void Game::Update(const float dt)
 	if (GetAsyncKeyState('m') & 0x8000)
 		m_audio.MuteSound();
 
+	if (GetAsyncKeyState('0') & 0x8000)
+		ChangeLevel(13);
+
 	PacManRampage();
 
 	RemoveExpiredFruit();
-
+	
 	CountEatenCandy();
 
 	PlayerCollisionGhost();
 
 	// TO DO small animation before reset
-	if (LevelCleared())
-		NextLevel();
+	NextLevel();
 
 
 	if (mPlayer.IsDead())
-		NewLife();
+		if (mPlayer.GetLives() > 0)
+			NewLife();
+		else
+		{
+			MessageBoxA(0, "YOU SUCK!", 0, 0);
+			PostQuitMessage(0); // GAME OVER HERE
+		}
 
 	UpdateAudio();
 
@@ -301,33 +312,39 @@ void Game::RemoveExpiredFruit()
 			}
 	}
 }
-
-bool Game::LevelCleared()
+void Game::ChangeLevel(int level)
 {
-	if (m_eatenCandy == m_totalCandy)
-		return true;
-	else
-		return false;
-}
+	m_level = level;
 
+	m_ghostblueTime = 8.0f - m_level;
+	if (m_ghostblueTime < 0)
+		m_ghostblueTime = 0;
+	m_ghostweakTime = 11.f - m_level;
+	if (m_ghostweakTime < 0)
+		m_ghostweakTime = 0;
+}
 void Game::NextLevel(void)
 {
-	m_level++;
-	m_eatenCandy = 0;
-	m_ghostsEaten = 0;
-
-	for ( int i = mObjList.size() - 1; i >= 0; i--)
+	if (m_eatenCandy == m_totalCandy)
 	{
-		Candy* c = dynamic_cast<Candy*>(mObjList[i]);
-		if (c != NULL)
-			c->ReSpawn();
+		ChangeLevel(m_level + 1);
 
-		Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
-		if (g != NULL)
-			g->Reset();
+		m_eatenCandy = 0;
+		m_ghostsEaten = 0;
+
+		for ( int i = mObjList.size() - 1; i >= 0; i--)
+		{
+			Candy* c = dynamic_cast<Candy*>(mObjList[i]);
+			if (c != NULL)
+				c->ReSpawn();
+
+			Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
+			if (g != NULL)
+				g->Reset();
+		}
+
+		mPlayer.ReSpawn();
 	}
-
-	mPlayer.ReSpawn();
 }
 
 void Game::NewLife(void)
@@ -384,7 +401,7 @@ void Game::PacManRampage()
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
-				ghost->MakeEatable(7.f, 10.f);
+				ghost->MakeEatable(m_ghostblueTime, m_ghostweakTime);
 			}
 		}
 	}
