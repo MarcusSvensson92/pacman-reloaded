@@ -411,6 +411,8 @@ void Game::PacManRampage()
 			}
 		}
 	}
+	else
+		m_ghostsEaten = 0;
 }
 
 void Game::ChangeView()
