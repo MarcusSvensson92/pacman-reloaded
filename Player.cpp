@@ -223,10 +223,13 @@ void Player::SuperCandy()
 
 void Player::Collision(Node* node)
 {
-	node->Item->Eat();
-
-	if(node->Item->IsSuperCandy())
-		SuperCandy();
+	if (!node->Item->IsEaten())
+	{
+		AddPoints(node->Item->GetPoints());
+		node->Item->Eat();
+		if(node->Item->IsSuperCandy())
+			SuperCandy();
+	}
 }
 
 void Player::Move( const float dt)

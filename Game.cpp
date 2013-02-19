@@ -176,15 +176,22 @@ void Game::Update(const float dt)
 
 
 	if (mPlayer.IsDead())
+	{
+		m_GUIManager.RemoveLife();
 		if (mPlayer.GetLives() > 0)
+		{
 			NewLife();
+		}
 		else
 		{
 			MessageBoxA(0, "YOU SUCK!", 0, 0);
 			PostQuitMessage(0); // GAME OVER HERE
 		}
+	}
 
 	UpdateAudio();
+
+	m_GUIManager.UpdateScore(static_cast<std::ostringstream*>( &(std::ostringstream() << mPlayer.GetPoints()) )->str(), m_DeviceContext, m_Device);
 
 	Keyboards();
 }
@@ -369,8 +376,6 @@ void Game::CountEatenCandy()
 			if (x->IsEaten())
 			{
 				candyEaten++;
-				//Get 1 point for eating a candy
-				mPlayer.AddPoints(x->GetPoints());
 			}
 	}
 	m_eatenCandy = candyEaten;
@@ -462,7 +467,7 @@ void Game::PlayerCollisionGhost()
 			v = mPlayer.GetPosition() - *x->GetPositionPtr();
 			if (D3DXVec3Length(&v) < 5) // 5 = distance
 			{
-				// Kollar så att spöket inte är dött
+				// Kollar så att pacman inte är död
 				if (!x->IsDead())
 				{
 					// Kollar ifall spöket är farligt
