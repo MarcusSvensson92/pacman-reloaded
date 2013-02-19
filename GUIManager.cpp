@@ -23,8 +23,8 @@ void GUIManager::UpdateScore( std::string text, ID3D11DeviceContext* deviceConte
 
 void GUIManager::InitScore(ID3D11DeviceContext* deviceContext, ID3D11Device* device)
 {
-	mScoreLabel.Init(D3DXVECTOR2(0,0), 31, 174, "Content/Img/score.png", deviceContext, device);
-	mScore = GUIString(D3DXVECTOR2(205,0), 31);
+	mScoreLabel.Init(D3DXVECTOR2(4,4), 31, 174, "Content/Img/score.png", deviceContext, device);
+	mScore = GUIString(D3DXVECTOR2(205,4), 31);
 }
 
 void GUIManager::DrawLife( ID3D11DeviceContext* deviceContext, Shader* shader,  int screenWidth, int screenHeight )
@@ -42,7 +42,7 @@ void GUIManager::InitLife(int lives, ID3D11DeviceContext* deviceContext, ID3D11D
 void GUIManager::AddLife(ID3D11DeviceContext* deviceContext, ID3D11Device* device)
 {
 	GUIElement temp;
-	temp.Init(D3DXVECTOR2(28*mLives.size(), 41), 28, 28, "Content/Img/life.png", deviceContext, device);
+	temp.Init(D3DXVECTOR2(32*mLives.size()+4, 45), 28, 28, "Content/Img/life.png", deviceContext, device);
 	mLives.push_back(temp);
 }
 

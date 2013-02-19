@@ -22,27 +22,11 @@ Player::Player(): Billboard(D3DXVECTOR2(9, 9), 1.f)
 
 void Player::Init(ID3D11Device* device, ID3D11DeviceContext* deviceContext, Shader* shader, LPCSTR texture,D3DXVECTOR3 _pos, Node* _node)
 {
-	mPosition = _pos;
-	mRotation = D3DXVECTOR3(0,0,0);
-
-	D3DXMatrixScaling(&mTexTransform, 1,1,1);
-
-	mTexturePath = texture;
-
-	mShader = shader;
-
-	InitBuffers(device, deviceContext);
-	InitGFX(device,deviceContext);
-
-	D3DXMatrixIdentity(&world);
-	D3DXMatrixIdentity(&rotation);
-	D3DXMatrixIdentity(&translation);
-	D3DXMatrixIdentity(&scaling);
+	Billboard::Init(device, deviceContext, shader, texture, _pos, D3DXVECTOR3(1.f, 1.f, 1.f));
 
 	mSpawnNode = _node;
 
 	SetInitValues();
-
 }
 
 void Player::SetInitValues()
@@ -78,6 +62,7 @@ void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 		std::string failed = "Pacman Killtexture Failed";
 		MessageBox(0, failed.c_str(), "Fail!", 0);
 	}
+
 	mTexture = mAliveTexture;
 }
 

@@ -215,6 +215,17 @@ void Game::Draw()
 	m_shaders.get("Basic")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
 	m_shaders.get("Billboard")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
 
+
+	if(gameType != FIRST_PERSON)
+	{
+		m_shaders.get("Billboard")->SetBool("gAnimation",true);
+		m_shaders.get("Billboard")->SetFloat3("gMoveVector",mPlayer.GetMoveVector());
+		m_shaders.get("Billboard")->SetInt("gFrame",mPlayer.GetFrame());
+		m_shaders.get("Billboard")->SetInt("gMaxFrames",mPlayer.GetMaxFrames());
+		mPlayer.Draw(m_DeviceContext, mCamera);
+		m_shaders.get("Billboard")->SetBool("gAnimation",false);
+	}
+
 	// Loop to draw Objects
  	for (int i = 0; i < mObjList.size(); i++) 
  	{
@@ -228,16 +239,6 @@ void Game::Draw()
  			mObjList[i]->Draw(m_DeviceContext, mCamera);
  	}
 	m_map.Draw(m_DeviceContext, mCamera);
-
-	if(gameType != FIRST_PERSON)
-	{
-		m_shaders.get("Billboard")->SetBool("gAnimation",true);
-		m_shaders.get("Billboard")->SetFloat3("gMoveVector",mPlayer.GetMoveVector());
-		m_shaders.get("Billboard")->SetInt("gFrame",mPlayer.GetFrame());
-		m_shaders.get("Billboard")->SetInt("gMaxFrames",mPlayer.GetMaxFrames());
-		mPlayer.Draw(m_DeviceContext, mCamera);
-		m_shaders.get("Billboard")->SetBool("gAnimation",false);
-	}
 
 	TurnOffZBuffer();
 	m_GUIManager.DrawLife(m_DeviceContext, m_shaders.get("2D"), screenWidth, screenHeight);
@@ -391,7 +392,7 @@ void Game::SpawnFruit()
 				m_shaders.get("Billboard"),
 				"Content/Img/Fruits/cherry.png",
 				m_fruitNode->GetPosition(),
-				D3DXVECTOR3(1,1,1),100);
+				D3DXVECTOR3(1,1,1));
 			mObjList.push_back(fruit);
 
 			// Set node item to current fruit.
