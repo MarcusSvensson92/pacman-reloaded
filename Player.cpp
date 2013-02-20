@@ -38,7 +38,7 @@ void Player::SetInitValues()
 	mPosition = mNode->GetPosition();
 	mDirection = PAUSE;
 	mDistanceCovered = 0;
-	mSpeed = 31;
+	mSpeed = 35;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	mSuperCandy = false;
 	mCandy = false;

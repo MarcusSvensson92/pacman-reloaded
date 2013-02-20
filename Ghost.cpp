@@ -2,7 +2,7 @@
 #include "Ghost.h"
 
 const D3DXVECTOR2 g_ghostSize				   = D3DXVECTOR2(7.f, 7.f);
-const float		  g_ghostSpeed				   = 30.f;
+const float		  g_ghostSpeed				   = 32.f;
 const float		  g_ghostEatableSpeedReduction = 0.5f;
 const float		  g_ghostDeadAlphaValue		   = 0.51f;
 const float		  g_ghostDeadSpeedIncrease	   = 3.f;
