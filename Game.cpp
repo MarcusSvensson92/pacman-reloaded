@@ -157,12 +157,6 @@ void Game::Update(const float dt)
 
 	ChangeView();
 
-	if (GetAsyncKeyState('m') & 0x8000)
-		m_audio.MuteSound();
-
-	if (GetAsyncKeyState('0') & 0x8000)
-		ChangeLevel(13);
-
 	PacManRampage();
 
 	RemoveExpiredFruit();
@@ -199,9 +193,9 @@ void Game::Update(const float dt)
 void Game::UpdateAudio()
 {
 	m_audio.UpdateListener(mPlayer.GetPosition(),mPlayer.GetMoveVector());
-	if (GetAsyncKeyState('m') & 0x8000)
-		m_audio.MuteSound();
 
+	if (GetAsyncKeyState('m') & 0x8000)
+		m_audio.MuteSound();  // <- fungerar inte
 }
 
 void Game::Draw()
@@ -314,7 +308,7 @@ void Game::RemoveExpiredFruit()
 	{
 		Fruit* f = dynamic_cast<Fruit*>(mObjList[i]);
 		if (f != NULL)
-			if (f->Expired())
+			if (f->Expired() || f->IsEaten())
 			{
 				mObjList.erase(mObjList.begin() + i);
 			}
@@ -387,16 +381,76 @@ void Game::CountEatenCandy()
 
 void Game::SpawnFruit()
 {
-			Fruit* fruit = new Fruit();
-			fruit->Init(m_Device, m_DeviceContext,
-				m_shaders.get("Billboard"),
-				"Content/Img/Fruits/cherry.png",
-				m_fruitNode->GetPosition(),
-				D3DXVECTOR3(1,1,1));
-			mObjList.push_back(fruit);
+	if (m_fruitNode->Item != NULL)
+		return;
 
-			// Set node item to current fruit.
-			m_fruitNode->Item = fruit;
+/*
+2 fruits per stage, spawn at the same place(under the ghost cage)
+The first fruit spawns after eating 70 candy, 2nd fruit after 170 candy
+Stage/Name/Points
+1: cherry = 100 
+2: strawberry = 200
+3,4: orange = 500
+5,6: apple = 700
+7,8: grape = 1000
+9,10: ice compot = 2000
+11,12: stewed fruit = 3000
+13: key = 5000
+*/
+	LPCSTR texture;
+	int points;
+	if (m_level == 0)
+	{
+		texture = "Content/Img/Fruits/cherry.png";
+		points	= 100;
+	}
+	else if (m_level == 1)
+	{
+		texture = "Content/Img/Fruits/strawberry.png";
+		points	= 200;
+	}
+	else if (m_level < 4)
+	{
+		texture = "Content/Img/Fruits/orange.png";
+		points	= 500;
+	}
+	else if (m_level < 6)
+	{
+		texture = "Content/Img/Fruits/apple.png";
+		points	= 700;
+	}
+	else if (m_level < 8)
+	{
+		texture = "Content/Img/Fruits/grape.png";
+		points	= 1000;
+	}
+	else if (m_level < 10)
+	{
+		texture = "Content/Img/Fruits/ice_compot.png";
+		points	= 2000;
+	}
+	else if (m_level < 12)
+	{
+		texture = "Content/Img/Fruits/stewed_fruit.png";
+		points	= 3000;
+	}
+	else
+	{
+		texture = "Content/Img/Fruits/key.png";
+		points	= 5000;
+	}
+
+
+	Fruit* fruit = new Fruit();
+	fruit->Init(m_Device, m_DeviceContext,
+		m_shaders.get("Billboard"),
+		texture,
+		m_fruitNode->GetPosition(),
+		D3DXVECTOR3(1,1,1), points);
+	mObjList.push_back(fruit);
+
+	// Set node item to current fruit.
+	m_fruitNode->Item = fruit;
 }
 
 void Game::PacManRampage()
