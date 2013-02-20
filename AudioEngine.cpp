@@ -8,8 +8,10 @@ AudioEngine::AudioEngine()
 	m_DirectSound = 0;
 	m_primaryBuffer = 0;
 	m_listener = 0;
-	m_secondaryBufferMain = 0;
-	m_secondary3DBufferMain = 0;
+	m_secondaryBufferMusic = 0;
+	m_secondary3DBufferMusic = 0;
+	 m_secondaryBufferSound = 0;
+	 m_secondary3DBufferSound = 0;
 }
 AudioEngine::AudioEngine(const AudioEngine& other)
 {
@@ -63,8 +65,8 @@ bool AudioEngine::LoadFiles()
 void AudioEngine::Shutdown()
 {
 	//Release secondary buffers
-	ShutdownWaveFile(&m_secondaryBufferMain,&m_secondary3DBufferMain);
-
+	ShutdownWaveFile(&m_secondaryBufferMusic,&m_secondary3DBufferMusic);
+	ShutdownWaveFile(&m_secondaryBufferSound,&m_secondary3DBufferSound);
 	//Shutdown the DirectSound AIP
 	ShutdownDS();
 
@@ -370,6 +372,20 @@ pacman_song1.wav			= borde spelas upp någonstans vid start.
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	delete [] cstr;
 	PlayWaveFile3D(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
+}
+
+void AudioEngine::PlaySoundAtPos(std::string wavefile, D3DXVECTOR3 position)
+{
+	char *cstr = new char[wavefile.length() + 1];
+	strcpy(cstr, wavefile.c_str());
+	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
+	delete [] cstr;
+	PlayWaveFile3D(position, m_secondaryBufferMusic, m_secondary3DBufferMusic);
+}
+
+void AudioEngine::PlaySoundAtPosP(std::string wavefile, D3DXVECTOR3* position)
+{
+	
 }
 
 bool AudioEngine::PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer)

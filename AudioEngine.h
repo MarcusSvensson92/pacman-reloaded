@@ -44,6 +44,8 @@ public:
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
 
 	void PlaySound(std::string);
+	void PlaySoundAtPos(std::string, D3DXVECTOR3 position);
+	void PlaySoundAtPosP(std::string, D3DXVECTOR3* position);
 
 private: //DS = DirectSound
 
@@ -64,9 +66,9 @@ private:
 	IDirectSoundBuffer* m_primaryBuffer;//Mixes the sounds from the secondary buffers and plays them.
 	
 	IDirectSound3DListener8* m_listener; //Listener used by pacman to simulate 3D sounds
-	IDirectSoundBuffer8* m_secondaryBufferMain;
+	IDirectSoundBuffer8* m_secondaryBufferSound;
 	IDirectSoundBuffer8* m_secondaryBufferMusic;//Used for looping music
-	IDirectSound3DBuffer8* m_secondary3DBufferMain;
+	IDirectSound3DBuffer8* m_secondary3DBufferSound;
 	IDirectSound3DBuffer8* m_secondary3DBufferMusic;
 	//Pacman
 	IDirectSoundBuffer8* m_secondaryBufferPacmanSounds;
