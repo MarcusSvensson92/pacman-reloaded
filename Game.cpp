@@ -168,20 +168,7 @@ void Game::Update(const float dt)
 	// TO DO small animation before reset
 	NextLevel();
 
-
-	if (mPlayer.IsDead())
-	{
-		m_GUIManager.RemoveLife();
-		if (mPlayer.GetLives() > 0)
-		{
-			NewLife();
-		}
-		else
-		{
-			MessageBoxA(0, "YOU SUCK!", 0, 0);
-			PostQuitMessage(0); // GAME OVER HERE
-		}
-	}
+	PlayerDead();
 
 	UpdateAudio();
 
@@ -560,6 +547,23 @@ void Game::PlayerCollisionGhost()
 					}
 				}
 			}
+		}
+	}
+}
+
+void Game::PlayerDead()
+{
+	if (mPlayer.IsDead())
+	{
+		m_GUIManager.RemoveLife();
+		if (mPlayer.GetLives() > 0)
+		{
+			NewLife();
+		}
+		else
+		{
+			MessageBoxA(0, "YOU SUCK!", 0, 0);
+			PostQuitMessage(0); // GAME OVER HERE
 		}
 	}
 }

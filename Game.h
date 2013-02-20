@@ -31,6 +31,8 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
 
+	void PlayerDead();
+
 	void UpdateAudio();
 	
 	void SwitchGameType( const float dt );
