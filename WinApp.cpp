@@ -91,6 +91,11 @@ int WinApp::run(void)
 		{
 			m_timer.tick();
 
+			// PRINT FPS IN HEADER
+			char title[255];
+			sprintf_s(title, sizeof(title), "Pacman Reloaded | FPS: %d",
+				(int)(1.0f / (float)m_timer.getDeltaTime()));
+			SetWindowText(m_hWnd, title);
 			// Add update- and render-stuff here!
 			m_game.Update((float)m_timer.getDeltaTime());
 			m_game.Draw();
