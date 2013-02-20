@@ -1,0 +1,11 @@
+max 10
+s1 0 name
+s2 0 name
+s3 0 name
+s4 0 name
+s5 0 name
+s6 0 name
+s7 0 name
+s8 0 name
+s9 0 name
+s10 0 name
