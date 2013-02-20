@@ -39,7 +39,7 @@ void d3dApp::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, f
 	ZeroMemory( &swapChainDesc, sizeof(swapChainDesc) );
 	swapChainDesc.BufferDesc.Width							= screenWidth;
 	swapChainDesc.BufferDesc.Height							= screenHeight;
-	swapChainDesc.BufferDesc.RefreshRate.Numerator			= 60;				// ?
+	swapChainDesc.BufferDesc.RefreshRate.Numerator			= 100;				// ?
 	swapChainDesc.BufferDesc.RefreshRate.Denominator		= 1;				// ?
 	swapChainDesc.BufferDesc.Format							= DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.SampleDesc.Count							= 1;
