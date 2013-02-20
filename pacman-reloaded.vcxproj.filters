@@ -131,6 +131,7 @@
     <ClInclude Include="GUIString.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="HighScore.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinApp.cpp">
@@ -216,6 +217,7 @@
     <ClCompile Include="GUIString.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="HighScore.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="Content\Shaders\Lights.fx">

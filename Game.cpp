@@ -12,8 +12,7 @@ Game::Game(void)
 	m_totalCandy = 0;
 	m_level = 0;
 	ChangeLevel(m_level);
-	m_startTime = 4.f;
-	startTimer = 0;
+	FreezeGame(4.f);
 }
 
 Game::~Game(void)
@@ -177,11 +176,8 @@ void Game::Update(const float dt)
 	SwitchGameType(dt);
 
 	// FUNCTION TO THAT PAUSE SHIT ON STARTUP
-	if (m_startTime > startTimer)
-	{
-		startTimer += dt;
+	if (GameFreezed(dt))
 		return;
-	}
 
 	// GAME LOGIC
 	PlayerUpdate(dt);
@@ -351,7 +347,7 @@ void Game::NextLevel(void)
 
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;
-		startTimer = 0;
+		FreezeGame(4.f);
 		m_audio.PlaySound("Content/Audio/Music/pacman_beginning.WAV");
 
 		for ( int i = mObjList.size() - 1; i >= 0; i--)
@@ -371,6 +367,8 @@ void Game::NextLevel(void)
 
 void Game::NewLife(void)
 {
+	FreezeGame(1.f);
+
 	for ( int i = mObjList.size() - 1; i >= 0; i--)
 	{
 		Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
@@ -623,10 +621,27 @@ void Game::PlaySound(std::string wavefile)
 							m_audio.PlaySound(wavefile);
 }
 
+<<<<<<< HEAD
 void Game::PlaySound(int index)
 {
 	if(gameType == FIRST_PERSON)
 		m_audio.PlaySoundAtPos(index,mPlayer.GetPosition());
 	else
 		m_audio.PlaySound(index);
+=======
+bool Game::GameFreezed( const float dt )
+{
+	if (m_freezeTime > freezeTimer)
+	{		
+		freezeTimer += dt;
+		return true;
+	}
+	else
+		return false;
+}
+void Game::FreezeGame( float sec )
+{
+	m_freezeTime = sec;
+	freezeTimer = 0;
+>>>>>>> dafb44c0c305c0907f1731fa1cb9c8d6ecaecf19
 }

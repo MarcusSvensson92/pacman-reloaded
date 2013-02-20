@@ -166,6 +166,7 @@
     <ClInclude Include="GUIElement.h" />
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="GUIString.h" />
+    <ClInclude Include="HighScore.h" />
     <ClInclude Include="Inky.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Map.h" />
@@ -197,6 +198,7 @@
     <ClCompile Include="GUIElement.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="GUIString.cpp" />
+    <ClCompile Include="HighScore.cpp" />
     <ClCompile Include="Inky.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="Map.cpp" />
