@@ -32,7 +32,6 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	initLevel();
 
 	m_eatenCandy = 0;
-	m_ghostsEaten = 0;
 	
 	m_audio.Initialize(hwnd);
 /*
@@ -327,7 +326,7 @@ void Game::RemoveExpiredFruit()
 			if (f->Expired() || f->IsEaten())
 			{
 				if (f->IsEaten())
-					m_audio.PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav");
+					PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav");
 				m_fruitNode->Item = NULL;
 				mObjList.erase(mObjList.begin() + i);
 			}
@@ -477,11 +476,12 @@ Stage/Name/Points
 void Game::PacManRampage()
 {
 	if (mPlayer.HasEatenCandy())
-		m_audio.PlaySound("Content/Audio/Sounds/pacman_coinin.WAV");
+		PlaySound("Content/Audio/Sounds/pacman_coinin.WAV");
 
 	if (mPlayer.HasEatenSuperCandy())
 	{
-		m_audio.PlaySound("Content/Audio/Sounds/pacman_power1.wav");
+			PlaySound("Content/Audio/Sounds/pacman_power1.wav");
+
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
@@ -577,14 +577,15 @@ void Game::PlayerCollisionGhost()
 						{
 							// Pacman dör
 							mPlayer.Kill();
-							m_audio.PlaySound("Content/Audio/Sounds/pacman_death.WAV");
+							
+							PlaySound("Content/Audio/Sounds/pacman_death.wav");
 						}
 						// Kollar ifall spöket är ätbart
 						else if (x->IsEatable())
 						{
 							// Spöke dör
 							x->Kill();
-							m_audio.PlaySound("Content/Audio/Sounds/pacman_getghost.WAV");
+							PlaySound("Content/Audio/Sounds/pacman_getghost.WAV");
 							//Increase number of eaten ghosts
 							m_ghostsEaten++;
 							//Award the player with (200 * eaten ghosts) points.
@@ -612,4 +613,12 @@ void Game::PlayerDead()
 			PostQuitMessage(0); // GAME OVER HERE
 		}
 	}
+}
+
+void Game::PlaySound(std::string wavefile)
+{
+	if(gameType == FIRST_PERSON)
+							m_audio.PlaySoundAtPos(wavefile,mPlayer.GetPosition());
+							else
+							m_audio.PlaySound(wavefile);
 }
