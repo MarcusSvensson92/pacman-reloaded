@@ -49,6 +49,8 @@ void AudioEngine::InitializeBuffers()
  	//Candy
  m_secondaryBuffers[2] = m_secondaryBufferCandySound;
  m_secondary3DBuffers[2] = m_secondary3DBufferCandySound;
+	//Ghosts
+
 }
 bool AudioEngine::LoadFiles()
 {
@@ -60,7 +62,7 @@ bool AudioEngine::LoadFiles()
 		return false;
 
 	//Play the main music file
-	result = PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[0], m_secondary3DBuffers[0]);
+	result = PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[0], m_secondary3DBuffers[0],true);
 	if(!result)
 		return false;
 
@@ -355,12 +357,12 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 	return;
 }
 
-void AudioEngine::PlaySound(int index)
+void AudioEngine::PlaySound(int index,bool loop)
 {
-	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[index], m_secondary3DBuffers[index]);
+	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[index], m_secondary3DBuffers[index], loop);
 }
 
-void AudioEngine::PlaySound(std::string wavefile)
+void AudioEngine::PlaySound(std::string wavefile,bool loop)
 {
 	/*
 
@@ -385,30 +387,30 @@ pacman_song1.wav			= borde spelas upp någonstans vid start.
 	strcpy(cstr, wavefile.c_str());
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	delete [] cstr;
-	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic, loop);
 }
 
-void AudioEngine::PlaySoundAtPos(std::string wavefile, D3DXVECTOR3 position)
+void AudioEngine::PlaySoundAtPos(std::string wavefile, D3DXVECTOR3 position,bool loop)
 {
 	char *cstr = new char[wavefile.length() + 1];
 	strcpy(cstr, wavefile.c_str());
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	delete [] cstr;
-	PlayWaveFile(position, m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	PlayWaveFile(position, m_secondaryBufferMusic, m_secondary3DBufferMusic, loop);
 }
 
 
-void AudioEngine::PlaySoundAtPos(int index, D3DXVECTOR3 position)
+void AudioEngine::PlaySoundAtPos(int index, D3DXVECTOR3 position,bool loop)
 {
-	PlayWaveFile(position, m_secondaryBuffers[index], m_secondary3DBuffers[index]);
+	PlayWaveFile(position, m_secondaryBuffers[index], m_secondary3DBuffers[index], loop);
 }
 
-void AudioEngine::PlaySoundAtPosP(std::string wavefile, D3DXVECTOR3* position)
+void AudioEngine::PlaySoundAtPosP(std::string wavefile, D3DXVECTOR3* position,bool loop)
 {
 	
 }
 
-bool AudioEngine::PlayWaveFile(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer)
+bool AudioEngine::PlayWaveFile(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer, bool loop)
 {
 	HRESULT result;
 
@@ -432,7 +434,10 @@ bool AudioEngine::PlayWaveFile(D3DXVECTOR3 position,IDirectSoundBuffer8* secondB
 	second3DBuffer->SetPosition(posx,posy,posz, DS3D_IMMEDIATE);
 
 	//Play the file
-	result = secondBuffer->Play(0, 0, 0);
+	if(loop)
+		result = secondBuffer->Play(0, 0, 1);
+	else
+		result = secondBuffer->Play(0, 0, 0);
 	if(FAILED(result))
 	{
 		return false;

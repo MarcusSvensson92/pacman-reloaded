@@ -322,7 +322,7 @@ void Game::RemoveExpiredFruit()
 			if (f->Expired() || f->IsEaten())
 			{
 				if (f->IsEaten())
-					PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav");
+					PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav", false);
 				m_fruitNode->Item = NULL;
 				mObjList.erase(mObjList.begin() + i);
 			}
@@ -348,7 +348,7 @@ void Game::NextLevel(void)
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;
 		FreezeGame(4.f);
-		m_audio.PlaySound("Content/Audio/Music/pacman_beginning.WAV");
+		m_audio.PlaySound("Content/Audio/Music/pacman_beginning.WAV",false);
 
 		for ( int i = mObjList.size() - 1; i >= 0; i--)
 		{
@@ -474,11 +474,11 @@ Stage/Name/Points
 void Game::PacManRampage()
 {
 	if (mPlayer.HasEatenCandy())
-		PlaySound(2);//Content/Audio/Sounds/pacman_coinin.WAV
+		PlaySound(2, false);//Content/Audio/Sounds/pacman_coinin.WAV
 
 	if (mPlayer.HasEatenSuperCandy())
 	{
-			PlaySound("Content/Audio/Sounds/pacman_power1.wav");
+			PlaySound("Content/Audio/Sounds/pacman_power1.wav", false);
 
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
@@ -576,14 +576,14 @@ void Game::PlayerCollisionGhost()
 							// Pacman dör
 							mPlayer.Kill();
 							
-							PlaySound("Content/Audio/Sounds/pacman_death.wav");
+							PlaySound("Content/Audio/Sounds/pacman_death.wav", false);
 						}
 						// Kollar ifall spöket är ätbart
 						else if (x->IsEatable())
 						{
 							// Spöke dör
 							x->Kill();
-							PlaySound("Content/Audio/Sounds/pacman_getghost.WAV");
+							PlaySound("Content/Audio/Sounds/pacman_getghost.WAV", false);
 							//Increase number of eaten ghosts
 							m_ghostsEaten++;
 							//Award the player with (200 * eaten ghosts) points.
@@ -613,20 +613,20 @@ void Game::PlayerDead()
 	}
 }
 
-void Game::PlaySound(std::string wavefile)
+void Game::PlaySound(std::string wavefile, bool loop)
 {
 	if(gameType == FIRST_PERSON)
-							m_audio.PlaySoundAtPos(wavefile,mPlayer.GetPosition());
+							m_audio.PlaySoundAtPos(wavefile,mPlayer.GetPosition(), loop);
 							else
-							m_audio.PlaySound(wavefile);
+							m_audio.PlaySound(wavefile, loop);
 }
 
-void Game::PlaySound(int index)
+void Game::PlaySound(int index, bool loop)
 {
 	if(gameType == FIRST_PERSON)
-		m_audio.PlaySoundAtPos(index,mPlayer.GetPosition());
+		m_audio.PlaySoundAtPos(index,mPlayer.GetPosition(), loop);
 	else
-		m_audio.PlaySound(index);
+		m_audio.PlaySound(index, loop);
 }
 
 bool Game::GameFreezed( const float dt )
