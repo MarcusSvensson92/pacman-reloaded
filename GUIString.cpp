@@ -22,7 +22,7 @@ GUIString::~GUIString(void)
 void GUIString::AddCharacter(ID3D11DeviceContext* deviceContext, ID3D11Device* device )
 {
 	GUIchar temp;
-	temp.Init(mPosition + D3DXVECTOR2(mWidth*mChars.size(), 0), mHeight, mWidth, deviceContext, device);
+	temp.Init(mPosition + D3DXVECTOR2(mWidth*mChars.size(), 0), mHeight, mWidth, "Content/Img/digits.png", deviceContext, device);
 	mChars.push_back(temp);
 }
 

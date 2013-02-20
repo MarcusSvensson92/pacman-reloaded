@@ -23,8 +23,8 @@ protected:
 	std::vector<Vertex2D> mVertices;
 	Buffer* mVBuffer;
 	ID3D11ShaderResourceView* mTexture;
-	void InitTexture( ID3D11Device* device, std::string path);
-	void InitBuffer( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
-	void InitGeometry( D3DXVECTOR2 pos, float height, float width );
+	virtual void InitTexture( ID3D11Device* device, std::string path);
+	virtual void InitBuffer( ID3D11Device* device, ID3D11DeviceContext* deviceContext );
+	virtual void InitGeometry( D3DXVECTOR2 pos, float height, float width );
 };
 

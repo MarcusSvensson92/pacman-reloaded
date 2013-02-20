@@ -16,7 +16,6 @@ public:
 	void InitLife(int lives, ID3D11DeviceContext* deviceContext, ID3D11Device* device);
 	void RemoveLife();
 private:
-	std::vector<GUIElement*> mComponents;
 	GUIString mScore;
 	GUIElement mScoreLabel;
 	std::vector<GUIElement> mLives;

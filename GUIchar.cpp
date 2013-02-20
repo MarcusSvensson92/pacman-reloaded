@@ -19,13 +19,6 @@ void GUIchar::Draw(ID3D11DeviceContext* deviceContext, Shader* shader,  int scre
 	shader->SetFloat2("frame", D3DXVECTOR2(0,0));
 }
 
-void GUIchar::Init(D3DXVECTOR2 pos, float height, float width, ID3D11DeviceContext* deviceContext, ID3D11Device* device)
-{
-	mPosition = pos;
-	InitGeometry(pos, height, width);
-	InitBuffer(device, deviceContext);
-	InitTexture(device, "Content/Img/digits.png");
-}
 
 void GUIchar::Update(int frame)
 {
