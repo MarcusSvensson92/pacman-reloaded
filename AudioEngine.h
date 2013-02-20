@@ -44,10 +44,7 @@ public:
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
 
 	void PlaySound(int index,bool loop);
-	void PlaySound(std::string,bool loop);
 	void PlaySoundAtPos(int index, D3DXVECTOR3 position,bool loop);
-	void PlaySoundAtPos(std::string, D3DXVECTOR3 position,bool loop);
-	void PlaySoundAtPosP(std::string, D3DXVECTOR3* position, bool loop);
 
 private: //DS = DirectSound
 
@@ -79,8 +76,8 @@ private:
 	IDirectSound3DBuffer8* m_secondary3DBufferConsumableMusic;
 
 	//Arrays used for holding the audio buffers
-	IDirectSoundBuffer8* m_secondaryBuffers[3];
-	IDirectSound3DBuffer8* m_secondary3DBuffers[3];
+	IDirectSoundBuffer8* m_secondaryBuffers[8];
+	IDirectSound3DBuffer8* m_secondary3DBuffers[8];
 
 	//Ghosts
 	IDirectSoundBuffer8* m_secondaryBuffersGhostMusicNormal;

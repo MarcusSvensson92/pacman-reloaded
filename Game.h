@@ -76,7 +76,6 @@ private:
 	void CameraFollowPlayer();
 	void DebugCam(const float dt );
 	void OldSchool();
-	void PlaySound(std::string, bool loop);
 	void PlaySound(int index, bool loop);
 
 	void PlayerCollisionGhost();
