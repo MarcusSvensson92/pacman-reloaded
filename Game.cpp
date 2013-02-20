@@ -101,7 +101,7 @@ void Game::initLevel(void)
 			ObjectSpawnList[i].Node->Item = candy;
 
 			m_totalCandy++;
-			//m_lights.AddLight(candy->GetPositionPtr(), SUPERCANDYLIGHT);
+			m_lights.AddLight(candy->GetPositionPtr(), SUPERCANDYLIGHT);
 		}
 		// Add fruit spawnpoint
 		if ( ObjectSpawnList[i].Type == FRUIT )
@@ -214,9 +214,13 @@ void Game::Draw()
 {
 	DrawBegin();
 
-	// Update moving lights
+	// Draw moving lights
 	std::vector<PointLight> tempLights = m_lights.SetMovingLights();
 	m_shaders.get("Basic")->SetRawData("gMovingLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
+
+	// Draw candy lights
+	tempLights = m_lights.SetCandyLights();
+	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 
 	m_shaders.get("Basic")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
 	m_shaders.get("Billboard")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
@@ -322,6 +326,7 @@ void Game::RemoveExpiredFruit()
 		if (f != NULL)
 			if (f->Expired() || f->IsEaten())
 			{
+				m_lights.RemoveLight(f->GetPositionPtr(), FRUITLIGHT);
 				if (f->IsEaten())
 					PlaySound(2, false);
 				m_fruitNode->Item = NULL;
@@ -355,7 +360,11 @@ void Game::NextLevel(void)
 		{
 			Candy* c = dynamic_cast<Candy*>(mObjList[i]);
 			if (c != NULL)
+			{
 				c->ReSpawn();
+				if(c->IsSuperCandy())
+					m_lights.RemoveLight(c->GetPositionPtr(), SUPERCANDYLIGHT);
+			}
 
 			Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
 			if (g != NULL)
@@ -389,6 +398,8 @@ void Game::CountEatenCandy()
 		if (x != NULL)
 			if (x->IsEaten())
 			{
+				if(x->IsSuperCandy())
+					m_lights.RemoveLight(x->GetPositionPtr(), SUPERCANDYLIGHT);
 				candyEaten++;
 			}
 	}
@@ -470,6 +481,8 @@ Stage/Name/Points
 
 	// Set node item to current fruit.
 	m_fruitNode->Item = fruit;
+
+	m_lights.AddLight(fruit->GetPositionPtr(), FRUITLIGHT);
 }
 
 void Game::PacManRampage()
