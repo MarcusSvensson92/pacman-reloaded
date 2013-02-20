@@ -346,6 +346,25 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 
 void AudioEngine::PlaySound(std::string wavefile)
 {
+/*
+
+	Vi skulle behöva olika playsound funtioner i m_audio.
+	[1] En funktion som spelar upp ljud på en Position pointer.
+	[2] En funktion som spelar upp ljud på en Position.
+	[3] En funktion som spelar upp bakgrunds ljud som loopas på en Position pointer
+	[4] En funktion som spelar upp bakgrunds ljud som loopas på en Position.
+
+pacman_power1.wav			= borde spelas upp på varje spökes position pointer när de är blåa [1]/[3]
+pacman_background1.wav		= borde spelas upp på varje spökes position pointer när de är normala [1]/[3]
+pacman_background2.wav		= borde spelas upp på varje spökes position pointer när de är normala i högre levels [1]/[3]
+pacman_coinin.wav			= borde spelas upp på candy position. [1]/[2]
+pacman_death.wav			= borde spelas upp på pacmans position när han dör. [1]/[2]
+pacman_eatfruit.wav			= borde spelas upp på fruit position. [1]/[2]
+pacman_extralife.wav		= borde spelas upp på pacman när han når 10 000 poäng. [2]
+pacman_power1.wav			= borde spelas upp på varje spökes position pointer när de dör [1]
+pacman_song1.wav			= borde spelas upp någonstans vid start.
+
+*/
 	char *cstr = new char[wavefile.length() + 1];
 	strcpy(cstr, wavefile.c_str());
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);

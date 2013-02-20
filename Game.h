@@ -37,6 +37,8 @@ public:
 	
 	void SwitchGameType( const float dt );
 
+	void PlayerUpdate( const float dt );
+
 	void ChangeView();
 
 	void PacManRampage();
@@ -81,6 +83,9 @@ private:
 	int m_level;
 	float m_ghostblueTime;
 	float m_ghostweakTime;
+
+	float m_startTime;
+	float startTimer;
 };
 
 #endif

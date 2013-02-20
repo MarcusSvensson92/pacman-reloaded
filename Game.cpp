@@ -12,6 +12,8 @@ Game::Game(void)
 	m_totalCandy = 0;
 	m_level = 0;
 	ChangeLevel(m_level);
+	m_startTime = 4.f;
+	startTimer = 0;
 }
 
 Game::~Game(void)
@@ -33,6 +35,25 @@ void Game::Init(HINSTANCE hinstance, HWND hwnd, bool vsync, bool fullscreen, flo
 	m_ghostsEaten = 0;
 	
 	m_audio.Initialize(hwnd);
+/*
+
+	Vi skulle behöva olika playsound funtioner i m_audio.
+	[1] En funktion som spelar upp ljud på en Position pointer.
+	[2] En funktion som spelar upp ljud på en Position.
+	[3] En funktion som spelar upp bakgrunds ljud som loopas på en Position pointer
+	[4] En funktion som spelar upp bakgrunds ljud som loopas på en Position.
+
+pacman_power1.wav			= borde spelas upp på varje spökes position pointer när de är blåa [1]/[3]
+pacman_background1.wav		= borde spelas upp på varje spökes position pointer när de är normala [1]/[3]
+pacman_background2.wav		= borde spelas upp på varje spökes position pointer när de är normala i högre levels [1]/[3]
+pacman_coinin.wav			= borde spelas upp på candy position. [1]/[2]
+pacman_death.wav			= borde spelas upp på pacmans position när han dör. [1]/[2]
+pacman_eatfruit.wav			= borde spelas upp på fruit position. [1]/[2]
+pacman_extralife.wav		= borde spelas upp på pacman när han når 10 000 poäng. [2]
+pacman_power1.wav			= borde spelas upp på varje spökes position pointer när de dör [1]
+pacman_song1.wav			= borde spelas upp någonstans vid start.
+
+*/
 
 	mCamera.UpdateMatrix();
 
@@ -150,31 +171,36 @@ void Game::initLevel(void)
 
 void Game::Update(const float dt)
 {
-	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
-		(*it)->Update(dt);
-
+	// IMPORTANT GAME STUFF
+	ChangeView();
+	UpdateAudio();
+	Keyboards();
 	SwitchGameType(dt);
 
-	ChangeView();
+	// FUNCTION TO THAT PAUSE SHIT ON STARTUP
+	if (m_startTime > startTimer)
+	{
+		startTimer += dt;
+		return;
+	}
 
+	// GAME LOGIC
+	PlayerUpdate(dt);
+	for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+		(*it)->Update(dt);
 	PacManRampage();
-
 	RemoveExpiredFruit();
-	
 	CountEatenCandy();
-
 	PlayerCollisionGhost();
-
-	// TO DO small animation before reset
 	NextLevel();
 
 	PlayerDead();
 
 	UpdateAudio();
 
-	m_GUIManager.UpdateScore(static_cast<std::ostringstream*>( &(std::ostringstream() << mPlayer.GetPoints()) )->str(), m_DeviceContext, m_Device);
+	PlayerDead();
 
-	Keyboards();
+	m_GUIManager.UpdateScore(static_cast<std::ostringstream*>( &(std::ostringstream() << mPlayer.GetPoints()) )->str(), m_DeviceContext, m_Device);
 }
 
 void Game::UpdateAudio()
@@ -302,6 +328,7 @@ void Game::RemoveExpiredFruit()
 			{
 				if (f->IsEaten())
 					m_audio.PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav");
+				m_fruitNode->Item = NULL;
 				mObjList.erase(mObjList.begin() + i);
 			}
 	}
@@ -325,6 +352,8 @@ void Game::NextLevel(void)
 
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;
+		startTimer = 0;
+		m_audio.PlaySound("Content/Audio/Music/pacman_beginning.WAV");
 
 		for ( int i = mObjList.size() - 1; i >= 0; i--)
 		{
@@ -452,12 +481,12 @@ void Game::PacManRampage()
 
 	if (mPlayer.HasEatenSuperCandy())
 	{
+		m_audio.PlaySound("Content/Audio/Sounds/pacman_power1.wav");
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
 				ghost->MakeEatable(m_ghostblueTime, m_ghostweakTime);
-				m_audio.PlaySound("Content/Audio/Sounds/pacman_power1.wav");
 			}
 		}
 	}
@@ -482,6 +511,25 @@ void Game::ChangeView()
 	}
 }
 
+void Game::PlayerUpdate( const float dt )
+{
+	switch (gameType)
+	{
+	case FIRST_PERSON :
+ 		if(!(mPlayer.GetStatus() == Player::DEAD))
+ 		{
+			mPlayer.Update(mCamera.GetLook(),dt,false,"");
+		}
+		break;
+	case OLD_SCHOOL :
+		if(!(mPlayer.GetStatus() == Player::DEAD))
+		{
+			mPlayer.Update(mCamera.GetLook(),dt,true,mLastKey);
+		}
+		break;
+	}
+}
+
 void Game::SwitchGameType( const float dt )
 {
 	switch (gameType)
@@ -490,14 +538,12 @@ void Game::SwitchGameType( const float dt )
  		if(!(mPlayer.GetStatus() == Player::DEAD))
  		{
 			CameraFollowPlayer(); 
-			mPlayer.Update(mCamera.GetLook(),dt,false,"");
 		}
 		break;
 	case OLD_SCHOOL :
 		if(!(mPlayer.GetStatus() == Player::DEAD))
 		{
 			OldSchool();
-			mPlayer.Update(mCamera.GetLook(),dt,true,mLastKey);
 			mCamera.LookAt(D3DXVECTOR3(410, 210, 135), D3DXVECTOR3(200,0,135), D3DXVECTOR3(0,1,0));
 		}
 		break;
