@@ -3,8 +3,9 @@
 
 Billboard::Billboard(const D3DXVECTOR2& size, const float alphaValue)
 {
-	m_size		 = size;
-	m_alphaValue = alphaValue;
+	m_size		  = size;
+	m_alphaValue  = alphaValue;
+	m_classicView = true;
 }
 
 Billboard::~Billboard(void) { }
@@ -20,6 +21,7 @@ void Billboard::Draw(ID3D11DeviceContext* deviceContext, Camera camera)
 	mShader->SetMatrix("gViewProj", camera.ViewProj());
 	mShader->SetFloat3("gCameraPositionW", camera.GetPosition());
 	mShader->SetFloat("gAlphaValue", m_alphaValue);
+	mShader->SetBool("gClassicView", m_classicView);
 	mShader->SetResource("gTexture", mTexture);
 
 	mVBuffer->Apply();

@@ -10,6 +10,7 @@ cbuffer $Globals
     bool    gAnimation;                 // Offset:    4, size:    4
     uint    gFrame;                     // Offset:    8, size:    4
     uint    gMaxFrames;                 // Offset:   12, size:    4
+    float3  gMoveVector;                // Offset:   16, size:   12
 }
 
 cbuffer cbPerFrame
@@ -23,6 +24,7 @@ cbuffer cbPerObject
 {
     float   gAlphaValue;                // Offset:    0, size:    4
     float3  gPlayerPos;                 // Offset:    4, size:   12
+    bool    gClassicView;               // Offset:   16, size:    4
 }
 
 cbuffer cbConstants

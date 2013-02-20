@@ -12,6 +12,8 @@ cbuffer cbPerObject
 {
 	float gAlphaValue;
 	float3 gPlayerPos;
+	
+	bool gClassicView;
 };
 
 cbuffer cbConstants
@@ -174,8 +176,14 @@ GSIn VS(VSIn input)
 void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 {
 	float3 up = float3(0.f, 1.f, 0.f);
-	float3 look = gCameraPositionW - input[0].positionW;
-	look = normalize(look);
+	float3 look;
+	if (gClassicView)
+		look = float3(1.f, 0.f, 0.f);
+	else
+	{
+		look = gCameraPositionW - input[0].positionW;
+		look = normalize(look);
+	}
 	float3 right = cross(up, look);
 
 	float halfWidth  = 0.5f * input[0].sizeW.x;

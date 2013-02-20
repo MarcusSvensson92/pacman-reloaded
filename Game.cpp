@@ -509,15 +509,36 @@ void Game::ChangeView()
 {
 	if (GetAsyncKeyState('1') & 0x8000)
 	{
+		if (gameType != FIRST_PERSON)
+		{
+			for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+				if (Billboard* billboard = dynamic_cast<Billboard*>((*it)))
+					billboard->EnableClassicView(false);
+		}
+
 		gameType = FIRST_PERSON;
 	}
 	if (GetAsyncKeyState('2') & 0x8000)
 	{
+		if (gameType != OLD_SCHOOL)
+		{
+			for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+				if (Billboard* billboard = dynamic_cast<Billboard*>((*it)))
+					billboard->EnableClassicView(true);
+		}
+
 		gameType = OLD_SCHOOL;
 		mCamera.UpdateMatrix();
 	}
 	if (GetAsyncKeyState('3') & 0x8000)
 	{
+		if (gameType != NO_CLIP)
+		{
+			for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
+				if (Billboard* billboard = dynamic_cast<Billboard*>((*it)))
+					billboard->EnableClassicView(false);
+		}
+
 		gameType = NO_CLIP;
 	}
 }
