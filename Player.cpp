@@ -13,6 +13,7 @@ D3DXVECTOR3*			Player::GetPositionPtr(){return &mPosition;}
 int						Player::GetLives()		{return mLives;}
 int						Player::GetFrame()		{return mFrame;}
 int						Player::GetMaxFrames()	{return mMaxFrames;}
+bool					Player::IsHit()			{return mHit;}
 
 Player::Player(): Billboard(D3DXVECTOR2(9, 9), 1.f) 
 {
@@ -40,6 +41,7 @@ void Player::SetInitValues()
 	mSpeed = 31;
 	mMoveVector = D3DXVECTOR3(0,0,0);
 	mSuperCandy = false;
+	mCandy = false;
 
 	mFrame = 0;
 	mMaxFrames = 4;
@@ -190,6 +192,17 @@ bool Player::IsDead()
 		return false;
 }
 
+bool Player::HasEatenCandy()
+{
+	if (mCandy)
+	{
+		mCandy = false;
+		return true;
+	}
+	else
+		return false;
+}
+
 bool Player::HasEatenSuperCandy()
 {
 	if (mSuperCandy)
@@ -214,6 +227,8 @@ void Player::Collision(Node* node)
 		node->Item->Eat();
 		if(node->Item->IsSuperCandy())
 			SuperCandy();
+
+		mCandy = true;
 	}
 }
 
@@ -282,7 +297,7 @@ void Player::Kill()
 	{
 		mHit = true;
 		mFrame = 0;
-		mAnimationSpeed = 0.10f;
+		mAnimationSpeed = 0.16f;
 		mMaxFrames = 9;
 		mTexture = mKillTexture;
 	}

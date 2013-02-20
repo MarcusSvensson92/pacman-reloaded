@@ -50,7 +50,7 @@ bool AudioEngine::LoadFiles()
 	//if(!result)
 	//	return false;
 	//Load the main music into the secondaryBufferMusic
-	result = LoadWaveFile("Content/Audio/Music/MainMusicMono.wav", &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
+	result = LoadWaveFile("Content/Audio/Music/pacman_beginning.WAV", &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	if(!result)
 		return false;
 
@@ -230,20 +230,9 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	{
 		return false;
 	}
+
 	//Check that the file is in mono format
 	if(waveFileHeader.numChannels != channels) //1=mono;2=stereo (mono for 3D sounds)
-	{
-		return false;
-	}
-
-	//Check that sample rate is 44.1 KHz
-	if(waveFileHeader.sampleRate != 44100)
-	{
-		return false;
-	}
-
-	//Check that the file is in 16bit format
-	if(waveFileHeader.bitsPerSample != 16)
 	{
 		return false;
 	}
@@ -257,8 +246,8 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
  
 	//Set wave format for secondary buffers that this file will be loaded onto
 	waveFormat.wFormatTag = WAVE_FORMAT_PCM;
-	waveFormat.nSamplesPerSec = 44100;
-	waveFormat.wBitsPerSample = 16;
+	waveFormat.nSamplesPerSec = waveFileHeader.sampleRate;
+	waveFormat.wBitsPerSample = waveFileHeader.bitsPerSample;
 	waveFormat.nChannels = channels;
 	waveFormat.nBlockAlign = (waveFormat.wBitsPerSample / 8) * waveFormat.nChannels;
 	waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
@@ -355,9 +344,13 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 	return;
 }
 
-void AudioEngine::PlaySound(char file[])
+void AudioEngine::PlaySound(std::string wavefile)
 {
-
+	char *cstr = new char[wavefile.length() + 1];
+	strcpy(cstr, wavefile.c_str());
+	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
+	delete [] cstr;
+	PlayWaveFile3D(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
 }
 
 bool AudioEngine::PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer)

@@ -41,8 +41,10 @@ public:
 	int				GetLives();
 	int				GetFrame();
 	int				GetMaxFrames();
+	bool			IsHit();
 
 	bool HasEatenSuperCandy();
+	bool HasEatenCandy();
 	bool IsDead();
 
 	void Update(D3DXVECTOR3 look, const float dt,bool oldSchoolView,LPCSTR dir );
@@ -65,6 +67,7 @@ private:
 	PlayerStatus	mStatus;
 
 	bool			mSuperCandy;
+	bool			mCandy;
 
 	int				mLives;
 	int				mPoints;

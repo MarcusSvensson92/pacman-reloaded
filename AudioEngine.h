@@ -43,13 +43,15 @@ public:
 	void MuteSound();
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
 
+	void PlaySound(std::string);
+
 private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
 	void ShutdownDS();
 	bool LoadFiles();
 
-	void PlaySound(char file[]);
+
 
 	bool PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer);
 	bool PlayWaveFile3D(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer);

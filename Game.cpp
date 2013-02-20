@@ -192,7 +192,10 @@ void Game::Update(const float dt)
 
 void Game::UpdateAudio()
 {
-	m_audio.UpdateListener(mPlayer.GetPosition(),mPlayer.GetMoveVector());
+	if (gameType == OLD_SCHOOL)
+		m_audio.UpdateListener(D3DXVECTOR3(230, 0, 140), D3DXVECTOR3(0, 1, 0));
+	else
+		m_audio.UpdateListener(mPlayer.GetPosition(), mCamera.GetLook());
 
 	if (GetAsyncKeyState('m') & 0x8000)
 		m_audio.MuteSound();  // <- fungerar inte
@@ -310,6 +313,8 @@ void Game::RemoveExpiredFruit()
 		if (f != NULL)
 			if (f->Expired() || f->IsEaten())
 			{
+				if (f->IsEaten())
+					m_audio.PlaySound("Content/Audio/Sounds/pacman_eatfruit.wav");
 				mObjList.erase(mObjList.begin() + i);
 			}
 	}
@@ -455,6 +460,9 @@ Stage/Name/Points
 
 void Game::PacManRampage()
 {
+	if (mPlayer.HasEatenCandy())
+		m_audio.PlaySound("Content/Audio/Sounds/pacman_coinin.WAV");
+
 	if (mPlayer.HasEatenSuperCandy())
 	{
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
@@ -462,6 +470,7 @@ void Game::PacManRampage()
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
 			{
 				ghost->MakeEatable(m_ghostblueTime, m_ghostweakTime);
+				m_audio.PlaySound("Content/Audio/Sounds/pacman_power1.wav");
 			}
 		}
 	}
@@ -525,45 +534,32 @@ void Game::PlayerCollisionGhost()
 			if (D3DXVec3Length(&v) < 5) // 5 = distance
 			{
 				// Kollar så att pacman inte är död
-				if (!x->IsDead())
+				if (!mPlayer.IsDead() && !mPlayer.IsHit())
 				{
-					// Kollar ifall spöket är farligt
-					if (x->IsRoaming())
+					// Kollar så att spöket inte är död
+					if (!x->IsDead())
 					{
-						// Pacman dör
-						mPlayer.Kill();
-					}
-					// Kollar ifall spöket är ätbart
-					else if (x->IsEatable())
-					{
-						// Spöke dör
-						x->Kill();
-						//Increase number of eaten ghosts
-						m_ghostsEaten++;
-						//Award the player with (200 * eaten ghosts) points.
-						mPlayer.AddPoints(200 * m_ghostsEaten);
+						// Kollar ifall spöket är farligt
+						if (x->IsRoaming())
+						{
+							// Pacman dör
+							mPlayer.Kill();
+							m_audio.PlaySound("Content/Audio/Sounds/pacman_death.WAV");
+						}
+						// Kollar ifall spöket är ätbart
+						else if (x->IsEatable())
+						{
+							// Spöke dör
+							x->Kill();
+							m_audio.PlaySound("Content/Audio/Sounds/pacman_getghost.WAV");
+							//Increase number of eaten ghosts
+							m_ghostsEaten++;
+							//Award the player with (200 * eaten ghosts) points.
+							mPlayer.AddPoints(200 * m_ghostsEaten);
+						}
 					}
 				}
 			}
 		}
 	}
-}
-
-void Game::PlayerCollisionFruit()
-{
-	//for ( int i = 0; i < mObjList.size(); i++)
-	//{
-	//	Fruit* x = dynamic_cast<Fruit*>(mObjList[i]);
-	//	// Kollar ifall det är en Fruit
-	//	if (x != NULL)
-	//	{
-	//		// Kollar ifall pacman kolliderar med det
-	//		D3DXVECTOR3 v;
-	//		v = mPlayer.GetPosition() - *x->GetPositionPtr();
-	//		if (D3DXVec3Length(&v) < 5) // 5 = distance
-	//		{
-	//			// Kod för att äta frukten
-	//		}
-	//	}
-	//}
 }
