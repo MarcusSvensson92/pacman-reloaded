@@ -12,6 +12,7 @@
 #include "AudioEngine.h"
 #include "LightManager.h"
 #include "GUIManager.h"
+#include "HighScore.h"
 
 class Game : public d3dApp
 {

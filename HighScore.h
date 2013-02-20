@@ -3,22 +3,19 @@
 
 class HighScore
 {
-	struct Score
-	{
-		int			mScore;
-		std::string mName;
-	};
+
 
 public:
 	HighScore(void);
 	~HighScore(void);
 
-	std::vector<Score> SaveScore(int score,std::string name);
+	std::vector<long double> SaveScore(int score);
+	int							mMaxScores;
 
 private:
 
-	std::vector<Score>	mHighScores;
-	std::fstream		mFileStream;
-	int					mMaxScores;
+	std::vector<long double>	mHighScores;
+	std::fstream				mFileStream;
+	
 };
 

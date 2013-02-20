@@ -297,8 +297,8 @@ void Player::Kill()
 	{
 		mHit = true;
 		mFrame = 0;
-		mAnimationSpeed = 0.10f;
-		mMaxFrames = 12;
+		mAnimationSpeed = 0.14f;
+		mMaxFrames = 10;
 		mTexture = mKillTexture;
 	}
 }

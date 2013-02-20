@@ -620,7 +620,24 @@ void Game::PlayerDead()
 		}
 		else
 		{
-			MessageBoxA(0, "YOU SUCK!", 0, 0);
+			HighScore score;
+			std::vector<long double> saved;
+			saved = score.SaveScore(mPlayer.GetPoints());
+
+			std::string temp;
+			temp = std::to_string(saved[0]);
+
+			char str[255];
+			strcpy (str,temp.c_str());
+
+			for(int i= 1;i < score.mMaxScores;i++)
+			{
+				temp =  "\n" + std::to_string(saved[i]);
+				strcat (str,temp.c_str());
+			}
+			puts (str);
+
+			MessageBoxA(0,str,"High Scores", 0);
 			PostQuitMessage(0); // GAME OVER HERE
 		}
 	}
