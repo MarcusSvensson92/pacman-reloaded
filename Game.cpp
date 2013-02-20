@@ -621,14 +621,14 @@ void Game::PlaySound(std::string wavefile)
 							m_audio.PlaySound(wavefile);
 }
 
-<<<<<<< HEAD
 void Game::PlaySound(int index)
 {
 	if(gameType == FIRST_PERSON)
 		m_audio.PlaySoundAtPos(index,mPlayer.GetPosition());
 	else
 		m_audio.PlaySound(index);
-=======
+}
+
 bool Game::GameFreezed( const float dt )
 {
 	if (m_freezeTime > freezeTimer)
@@ -643,5 +643,4 @@ void Game::FreezeGame( float sec )
 {
 	m_freezeTime = sec;
 	freezeTimer = 0;
->>>>>>> dafb44c0c305c0907f1731fa1cb9c8d6ecaecf19
 }
