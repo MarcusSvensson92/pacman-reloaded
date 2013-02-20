@@ -31,6 +31,9 @@ public:
 	void Init(HINSTANCE, HWND, bool, bool, float, float);
 	void Update(const float dt);
 
+	void FreezeGame(float sec);
+	bool GameFreezed( const float dt );
+
 	void PlayerDead();
 
 	void UpdateAudio();
@@ -85,8 +88,8 @@ private:
 	float m_ghostblueTime;
 	float m_ghostweakTime;
 
-	float m_startTime;
-	float startTimer;
+	float m_freezeTime;
+	float freezeTimer;
 };
 
 #endif
