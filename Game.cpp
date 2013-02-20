@@ -209,8 +209,8 @@ void Game::UpdateAudio()
 	else
 		m_audio.UpdateListener(mPlayer.GetPosition(), mCamera.GetLook());
 
-	if (GetAsyncKeyState('m') & 0x8000)
-		m_audio.MuteSound();  // <- fungerar inte
+	//if (GetAsyncKeyState('m') & 0x8000)
+	//	m_audio.MuteSound();  // <- fungerar inte
 }
 
 void Game::Draw()
@@ -476,7 +476,7 @@ Stage/Name/Points
 void Game::PacManRampage()
 {
 	if (mPlayer.HasEatenCandy())
-		PlaySound("Content/Audio/Sounds/pacman_coinin.WAV");
+		PlaySound(2);//Content/Audio/Sounds/pacman_coinin.WAV
 
 	if (mPlayer.HasEatenSuperCandy())
 	{
@@ -621,4 +621,12 @@ void Game::PlaySound(std::string wavefile)
 							m_audio.PlaySoundAtPos(wavefile,mPlayer.GetPosition());
 							else
 							m_audio.PlaySound(wavefile);
+}
+
+void Game::PlaySound(int index)
+{
+	if(gameType == FIRST_PERSON)
+		m_audio.PlaySoundAtPos(index,mPlayer.GetPosition());
+	else
+		m_audio.PlaySound(index);
 }

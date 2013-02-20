@@ -74,6 +74,7 @@ private:
 	void DebugCam(const float dt );
 	void OldSchool();
 	void PlaySound(std::string);
+	void PlaySound(int index);
 
 	void PlayerCollisionGhost();
 	void PlayerCollisionFruit();

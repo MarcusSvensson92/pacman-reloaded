@@ -43,20 +43,20 @@ public:
 	void MuteSound();
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
 
+	void PlaySound(int index);
 	void PlaySound(std::string);
+	void PlaySoundAtPos(int index, D3DXVECTOR3 position);
 	void PlaySoundAtPos(std::string, D3DXVECTOR3 position);
 	void PlaySoundAtPosP(std::string, D3DXVECTOR3* position);
 
 private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
+	void InitializeBuffers();
 	void ShutdownDS();
 	bool LoadFiles();
 
-
-
-	bool PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer);
-	bool PlayWaveFile3D(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer);
+	bool PlayWaveFile(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer);
 
 	bool LoadWaveFile(char*, IDirectSoundBuffer8**,IDirectSound3DBuffer8**,int channels);
 	void ShutdownWaveFile(IDirectSoundBuffer8**,IDirectSound3DBuffer8**);
@@ -70,10 +70,11 @@ private:
 	IDirectSoundBuffer8* m_secondaryBufferMusic;//Used for looping music
 	IDirectSound3DBuffer8* m_secondary3DBufferSound;
 	IDirectSound3DBuffer8* m_secondary3DBufferMusic;
-	//Pacman
-	IDirectSoundBuffer8* m_secondaryBufferPacmanSounds;
 	//Consumables
-	IDirectSoundBuffer8* m_secondaryBufferConsumableSounds;
+	IDirectSoundBuffer8* m_secondaryBufferCandySound;
+	IDirectSound3DBuffer8* m_secondary3DBufferCandySound;
+	IDirectSoundBuffer8* m_secondaryBufferConsumableSound;
+	IDirectSound3DBuffer8* m_secondary3DBufferConsumableSound;
 	IDirectSoundBuffer8* m_secondaryBufferConsumableMusic;
 	IDirectSound3DBuffer8* m_secondary3DBufferConsumableMusic;
 	//Ghosts
@@ -81,6 +82,13 @@ private:
 	IDirectSoundBuffer8* m_secondaryBufferGhostSounds;
 	IDirectSound3DBuffer8* m_secondary3DBufferGhostMusic;
 	IDirectSound3DBuffer8* m_secondary3DBufferGhostSounds;
+
+	//Arrays used for holding the audio buffers
+	IDirectSoundBuffer8* m_secondaryBuffers[3];
+	IDirectSound3DBuffer8* m_secondary3DBuffers[3];
+	//Arrays for holding ghost audio buffers
+	IDirectSoundBuffer8* m_secondaryBuffersGhosts[3];
+	IDirectSound3DBuffer8* m_secondary3DBuffersGhosts[3];
 };
 
 #endif

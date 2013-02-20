@@ -38,26 +38,34 @@ bool AudioEngine::Initialize(HWND hwnd)
 	//If everything was succesfull
 	return true;
 }
-
+void AudioEngine::InitializeBuffers()
+{
+	//Music
+ m_secondaryBuffers[0] = m_secondaryBufferMusic;
+ m_secondary3DBuffers[0] = m_secondary3DBufferMusic;
+	//Sounds
+  m_secondaryBuffers[1] = m_secondaryBufferSound;
+ m_secondary3DBuffers[1] = m_secondary3DBufferSound;
+ 	//Candy
+ m_secondaryBuffers[2] = m_secondaryBufferCandySound;
+ m_secondary3DBuffers[2] = m_secondary3DBufferCandySound;
+}
 bool AudioEngine::LoadFiles()
 {
 	bool result;
 
-	//result = LoadWaveFile("Content/Audio/Music/MainMusicStereo.wav", &m_secondaryBufferMusic, NULL, 2);
-	//if(!result)
-	//	return false;
-
-	////Play the main music file
-	//result = PlayWaveFile2D(m_secondaryBufferMusic);
-	//if(!result)
-	//	return false;
-	//Load the main music into the secondaryBufferMusic
-	result = LoadWaveFile("Content/Audio/Music/pacman_beginning.WAV", &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
+		//Load the music played at the start of the map into the secondaryBufferMusic and play it
+	result = LoadWaveFile("Content/Audio/Music/pacman_beginning.WAV", &m_secondaryBuffers[0], &m_secondary3DBuffers[0], 1);
 	if(!result)
 		return false;
 
 	//Play the main music file
-	result = PlayWaveFile3D(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	result = PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[0], m_secondary3DBuffers[0]);
+	if(!result)
+		return false;
+
+	//Load candy sound that is played when eating candies
+	result = LoadWaveFile("Content/Audio/Sounds/pacman_coinin.WAV", &m_secondaryBuffers[2], &m_secondary3DBuffers[2], 1);
 	if(!result)
 		return false;
 }
@@ -65,8 +73,8 @@ bool AudioEngine::LoadFiles()
 void AudioEngine::Shutdown()
 {
 	//Release secondary buffers
-	ShutdownWaveFile(&m_secondaryBufferMusic,&m_secondary3DBufferMusic);
-	ShutdownWaveFile(&m_secondaryBufferSound,&m_secondary3DBufferSound);
+	for(int i = 0; i < sizeof(m_secondaryBuffers); i++)
+	ShutdownWaveFile(&m_secondaryBuffers[i],&m_secondary3DBuffers[i]);
 	//Shutdown the DirectSound AIP
 	ShutdownDS();
 
@@ -255,13 +263,14 @@ bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBu
 	waveFormat.nAvgBytesPerSec = waveFormat.nSamplesPerSec * waveFormat.nBlockAlign;
 	waveFormat.cbSize = 0;
 
+	//DSBPLAY_LOOPING
 	//Set buffer description for secondary buffer
 	bufferDesc.dwSize = sizeof(DSBUFFERDESC);
 	//Check if the file is got 1 or 2 channels to determin if it is in 3D
-	if(channels == 1)
-	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME | DSBCAPS_CTRL3D;
-	else if(channels == 2)
+	//if(channels == 1)
 	bufferDesc.dwFlags = DSBCAPS_CTRLVOLUME;
+	if(channels == 1)
+	bufferDesc.dwFlags += DSBCAPS_CTRL3D;
 	//
 	bufferDesc.dwBufferBytes = waveFileHeader.dataSize;
 	bufferDesc.dwReserved = 0;
@@ -346,9 +355,14 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 	return;
 }
 
+void AudioEngine::PlaySound(int index)
+{
+	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[index], m_secondary3DBuffers[index]);
+}
+
 void AudioEngine::PlaySound(std::string wavefile)
 {
-/*
+	/*
 
 	Vi skulle behöva olika playsound funtioner i m_audio.
 	[1] En funktion som spelar upp ljud på en Position pointer.
@@ -371,7 +385,7 @@ pacman_song1.wav			= borde spelas upp någonstans vid start.
 	strcpy(cstr, wavefile.c_str());
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	delete [] cstr;
-	PlayWaveFile3D(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBufferMusic, m_secondary3DBufferMusic);
 }
 
 void AudioEngine::PlaySoundAtPos(std::string wavefile, D3DXVECTOR3 position)
@@ -380,7 +394,13 @@ void AudioEngine::PlaySoundAtPos(std::string wavefile, D3DXVECTOR3 position)
 	strcpy(cstr, wavefile.c_str());
 	LoadWaveFile(cstr, &m_secondaryBufferMusic, &m_secondary3DBufferMusic, 1);
 	delete [] cstr;
-	PlayWaveFile3D(position, m_secondaryBufferMusic, m_secondary3DBufferMusic);
+	PlayWaveFile(position, m_secondaryBufferMusic, m_secondary3DBufferMusic);
+}
+
+
+void AudioEngine::PlaySoundAtPos(int index, D3DXVECTOR3 position)
+{
+	PlayWaveFile(position, m_secondaryBuffers[index], m_secondary3DBuffers[index]);
 }
 
 void AudioEngine::PlaySoundAtPosP(std::string wavefile, D3DXVECTOR3* position)
@@ -388,36 +408,7 @@ void AudioEngine::PlaySoundAtPosP(std::string wavefile, D3DXVECTOR3* position)
 	
 }
 
-bool AudioEngine::PlayWaveFile2D(IDirectSoundBuffer8* secondBuffer)
-{
-	HRESULT result;
- 
- 
-	// Set position at the beginning of the sound buffer.
-	result = secondBuffer->SetCurrentPosition(0);
-	if(FAILED(result))
-	{
-		return false;
-	}
- 
-	// Set volume of the buffer to 100%.
-	result = secondBuffer->SetVolume(DSBVOLUME_MAX);
-	if(FAILED(result))
-	{
-		return false;
-	}
- 
-	// Play the contents of the secondary sound buffer.
-	result = secondBuffer->Play(0, 0, 0);
-	if(FAILED(result))
-	{
-		return false;
-	}
- 
-	return true;
-}
-
-bool AudioEngine::PlayWaveFile3D(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer)
+bool AudioEngine::PlayWaveFile(D3DXVECTOR3 position,IDirectSoundBuffer8* secondBuffer, IDirectSound3DBuffer8* second3DBuffer)
 {
 	HRESULT result;
 
