@@ -8,10 +8,18 @@ AudioEngine::AudioEngine()
 	m_DirectSound = 0;
 	m_primaryBuffer = 0;
 	m_listener = 0;
-	m_secondaryBufferMusic = 0;
-	m_secondary3DBufferMusic = 0;
-	 m_secondaryBufferSound = 0;
-	 m_secondary3DBufferSound = 0;
+	for(int i = 0; i < sizeof(m_secondaryBuffers); i++)
+	{
+		 m_secondaryBuffers[i] = 0;
+		 m_secondary3DBuffers[i] = 0;
+	}
+	for(int i = 0; i < (sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0])); i++)
+	{
+		m_secondaryBuffersGhostMusic[i][0] = 0;
+		m_secondary3DBuffersGhostMusic[i][0] = 0;
+		m_secondaryBuffersGhostMusic[i][1] = 0;
+		m_secondary3DBuffersGhostMusic[i][1] = 0;
+	}
 }
 AudioEngine::AudioEngine(const AudioEngine& other)
 {
@@ -36,9 +44,6 @@ bool AudioEngine::Initialize(HWND hwnd)
 
 	//If everything was succesfull
 	return true;
-}
-void AudioEngine::InitializeBuffers()
-{
 }
 bool AudioEngine::LoadFiles()
 {
@@ -65,12 +70,12 @@ bool AudioEngine::LoadFiles()
 		return false;
 
 	//Load ghost normal sound
-	result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffers[4], &m_secondary3DBuffers[4], 1);
+	result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffers[4], &m_secondary3DBuffers[4], 1);//Remove this one when I get time
 	if(!result)
 		return false;
 
 	//Load ghost blue sound
-	result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffers[5], &m_secondary3DBuffers[5], 1);
+	result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffers[5], &m_secondary3DBuffers[5], 1);//Remove this one also
 	if(!result)
 		return false;
 
@@ -102,6 +107,11 @@ void AudioEngine::Shutdown()
 	//Release secondary buffers
 	for(int i = 0; i < sizeof(m_secondaryBuffers); i++)
 	ShutdownWaveFile(&m_secondaryBuffers[i],&m_secondary3DBuffers[i]);
+	for(int i = 0; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
+	{
+	ShutdownWaveFile(&m_secondaryBuffersGhostMusic[i][0],&m_secondary3DBuffersGhostMusic[i][0]);
+	ShutdownWaveFile(&m_secondaryBuffersGhostMusic[i][1],&m_secondary3DBuffersGhostMusic[i][1]);
+	}
 	//Shutdown the DirectSound AIP
 	ShutdownDS();
 
@@ -118,13 +128,13 @@ void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track[])
 {
 	for(int i = 0; i < 4; i++)
 	{
-		if(m_currentTrack[i] != track[i])
+		if(m_currentTrack[i] != track[i])//Check if the track should be switched
 		{
-			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->Stop();
-			m_currentTrack[i] = track[i];
-			PlaySoundGhost(i,m_currentTrack[i]);
+			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->Stop();//Stop the current track
+			m_currentTrack[i] = track[i];//Set new track
+			PlaySoundGhost(i,m_currentTrack[i]);//Play it
 		}
-		m_secondary3DBuffersGhostMusic[i][track[i]]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);
+		m_secondary3DBuffersGhostMusic[i][track[i]]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);//Update location of current track being played
 	}
 }
 
@@ -228,7 +238,6 @@ void AudioEngine::ShutdownDS()
 void AudioEngine::MuteSound()
 {
 	m_primaryBuffer->SetVolume(0);
-	m_secondaryBufferMusic->SetVolume(0);
 }
 
 bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer, int channels)

@@ -51,7 +51,6 @@ public:
 private: //DS = DirectSound
 
 	bool InitializeDS(HWND);
-	void InitializeBuffers();
 	void ShutdownDS();
 	bool LoadFiles();
 
@@ -65,23 +64,12 @@ private:
 	IDirectSoundBuffer* m_primaryBuffer;//Mixes the sounds from the secondary buffers and plays them.
 	
 	IDirectSound3DListener8* m_listener; //Listener used by pacman to simulate 3D sounds
-	IDirectSoundBuffer8* m_secondaryBufferSound;
-	IDirectSoundBuffer8* m_secondaryBufferMusic;//Used for looping music
-	IDirectSound3DBuffer8* m_secondary3DBufferSound;
-	IDirectSound3DBuffer8* m_secondary3DBufferMusic;
-	//Consumables
-	IDirectSoundBuffer8* m_secondaryBufferCandySound;
-	IDirectSound3DBuffer8* m_secondary3DBufferCandySound;
-	IDirectSoundBuffer8* m_secondaryBufferConsumableSound;
-	IDirectSound3DBuffer8* m_secondary3DBufferConsumableSound;
-	IDirectSoundBuffer8* m_secondaryBufferConsumableMusic;
-	IDirectSound3DBuffer8* m_secondary3DBufferConsumableMusic;
 
 	//Arrays used for holding the audio buffers
 	IDirectSoundBuffer8* m_secondaryBuffers[8];
 	IDirectSound3DBuffer8* m_secondary3DBuffers[8];
 
-	//Ghosts
+	//Audio buffers used by the ghosts
 	IDirectSoundBuffer8* m_secondaryBuffersGhostMusic[4][2];
 	IDirectSound3DBuffer8* m_secondary3DBuffersGhostMusic[4][2];
 	int m_currentTrack[4];
