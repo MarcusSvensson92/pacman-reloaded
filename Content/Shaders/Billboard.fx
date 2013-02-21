@@ -1,11 +1,9 @@
 #include "RenderStates.fx"
-
 cbuffer cbPerFrame
 {
 	matrix gWorld;
 	matrix gViewProj;
 	float3 gCameraPositionW;
-	
 };
 
 cbuffer cbPerObject
@@ -175,27 +173,49 @@ GSIn VS(VSIn input)
 [maxvertexcount(4)]
 void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 {
+	static const float PI = 3.14159265f;
+
 	float3 up = float3(0.f, 1.f, 0.f);
 	float3 look;
-	//if (gClassicView)
-	//	look = float3(1.f, 0.f, 0.f);
-	//else
-	//{
-		look = gCameraPositionW - input[0].positionW;
-		look = normalize(look);
-	//}
-	look *= float3(1.f, 1.f, 0.f);
+
+	look = gCameraPositionW - input[0].positionW;
+	look = normalize(look);
 
 	float3 right = cross(up, look);
+	float r = -right.x;
+	float3x3 rodriguez;
+
+	if (gClassicView)
+	{
+		float3x3 temp = {	(1 - cos(r)) * look.x * look.x + cos(r),
+							(1 - cos(r)) * look.x * look.y - sin(r) * look.z,
+							(1 - cos(r)) * look.x * look.z + sin(r) * look.y,
+
+							(1 - cos(r)) * look.y * look.x + sin(r) * look.z,
+							(1 - cos(r)) * look.y * look.y + cos(r),
+							(1 - cos(r)) * look.y * look.z - sin(r) * look.x,
+
+							(1 - cos(r)) * look.z * look.x - sin(r) * look.y, 
+							(1 - cos(r)) * look.z * look.y + sin(r) * look.x,
+							(1 - cos(r)) * look.z * look.z + cos(r) };	
+		rodriguez = temp;
+	}
+	else
+	{
+		float3x3 temp = {	1.0 , 0.0 , 0.0 ,
+							0.0 , 1.0 , 0.0 ,
+							0.0 , 0.0 , 1.0 };
+		rodriguez = temp;
+	}			
 
 	float halfWidth  = 0.5f * input[0].sizeW.x;
 	float halfHeight = 0.5f * input[0].sizeW.y;
 
 	float4 positions[4];
-	positions[0] = float4(input[0].positionW + halfWidth * right - halfHeight * up, 1.f);
-	positions[1] = float4(input[0].positionW + halfWidth * right + halfHeight * up, 1.f);
-	positions[2] = float4(input[0].positionW - halfWidth * right - halfHeight * up, 1.f);
-	positions[3] = float4(input[0].positionW - halfWidth * right + halfHeight * up, 1.f);
+	positions[0] = float4(input[0].positionW + mul((halfWidth * +right + halfHeight * -up), rodriguez), 1.f);
+	positions[1] = float4(input[0].positionW + mul((halfWidth * +right + halfHeight * +up), rodriguez), 1.f);
+	positions[2] = float4(input[0].positionW + mul((halfWidth * -right + halfHeight * -up), rodriguez), 1.f);
+	positions[3] = float4(input[0].positionW + mul((halfWidth * -right + halfHeight * +up), rodriguez), 1.f);
 
 	PSIn output;
 	[unroll]
