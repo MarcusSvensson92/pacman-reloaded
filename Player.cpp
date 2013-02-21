@@ -65,6 +65,12 @@ void Player::InitGFX(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 		MessageBox(0, failed.c_str(), "Fail!", 0);
 	}
 
+	if(FAILED(D3DX11CreateShaderResourceViewFromFile(device, "Content/Img/smile.png", 0, 0, &mSmileTexture, 0 )))
+	{
+		std::string failed = "Pacman Smiletexture Failed";
+		MessageBox(0, failed.c_str(), "Fail!", 0);
+	}
+
 	mTexture = mAliveTexture;
 }
 
@@ -108,6 +114,13 @@ void Player::Animation(const float dt)
 		mStatus = DEAD;
 		mLives--;
 		return;
+	}
+
+	if(mFrame >= mMaxFrames && mSmiling)
+	{
+		mFrame = 0;
+		mTexture = mAliveTexture;
+		mSmiling = false;
 	}
 
 	if(mFrame >= mMaxFrames)
@@ -314,4 +327,10 @@ void Player::NewDirection(Node* node)
 void Player::AddPoints(int points)
 {
 	mPoints+=points;
+}
+
+void Player::Win()
+{
+	mTexture = mSmileTexture;
+	mSmiling = true;
 }

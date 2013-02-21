@@ -26,6 +26,7 @@ public:
 
 	void Kill();
 	void Eat();
+	void Win();
 
 	void ReSpawn();
 	
@@ -90,8 +91,11 @@ private:
 	UINT			mImmortalityTimer;
 	UINT			mImmortalityMax;
 
+	bool			mSmiling;
+
 	ID3D11ShaderResourceView*	mKillTexture;
 	ID3D11ShaderResourceView*	mAliveTexture;
+	ID3D11ShaderResourceView*	mSmileTexture;
 
 	
 	void Move( const float dt);

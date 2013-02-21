@@ -193,7 +193,7 @@ void Game::Update(const float dt)
 	PlayerCollisionGhost();
 	NextLevel();
 
-	PlayerDead();
+	PlayerDead(); // ska det va två PlayerDead?
 
 	UpdateAudio();
 
@@ -336,6 +336,8 @@ void Game::OldSchool()
 		mLastKey = "A";
 	else if (GetAsyncKeyState('D') & 0x8000)
 		mLastKey = "D";
+	else if (GetAsyncKeyState('Q') & 0x8000)
+		{mLastKey = ""; mPlayer.Win(); FreezeGame(2);}
 	else 
 		mLastKey = "";
 }
@@ -377,7 +379,7 @@ void Game::NextLevel(void)
 
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;
-		FreezeGame(4.f);
+		FreezeGame(40.f);
 		PlaySound(0,false);
 
 		for ( int i = mObjList.size() - 1; i >= 0; i--)
@@ -718,6 +720,7 @@ bool Game::GameFreezed( const float dt )
 	else
 		return false;
 }
+
 void Game::FreezeGame( float sec )
 {
 	m_freezeTime = sec;
