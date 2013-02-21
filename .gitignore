@@ -28,7 +28,7 @@ _ReSharper*/
 *.vssscc
 $tf*/
 External/
-*HighScores.txt
 ipch/
 *.opensds
 *.sdf
+Content/HighScores.txt
