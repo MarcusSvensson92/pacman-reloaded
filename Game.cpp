@@ -205,25 +205,29 @@ void Game::Update(const float dt)
 void Game::UpdateAudio()
 {
 	D3DXVECTOR3 ghostPositions[4];
-	int count = 0;
-	for ( int i = 0; i < mObjList.size(); i++)
-	{
-		Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
-		//Check if ghost
-		if (g != NULL)
-		{
-			ghostPositions[count] = *g->GetPositionPtr();
-			count++;
-		}
-	}
 
 	if (gameType == OLD_SCHOOL)
 	{
+		for ( int i = 0; i < 3; i++)
+		{
+			ghostPositions[i] = D3DXVECTOR3(230, 0, 140);
+		}
 		m_audio.UpdateListener(D3DXVECTOR3(230, 0, 140), D3DXVECTOR3(0, 1, 0));
 		m_audio.UpdateGhostMusic(ghostPositions, 0);
 	}
 	else
 	{
+		int count = 0;
+		for ( int i = 0; i < mObjList.size(); i++)
+		{
+			Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
+			//Check if ghost
+			if (g != NULL)
+			{
+				ghostPositions[count] = *g->GetPositionPtr();
+				count++;
+			}
+		}
 		m_audio.UpdateListener(mPlayer.GetPosition(), mCamera.GetLook());
 		m_audio.UpdateGhostMusic(ghostPositions, 0);
 	}

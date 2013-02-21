@@ -86,11 +86,13 @@ bool AudioEngine::LoadFiles()
 		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
 		if(!result)
 			return false;
+		PlaySoundGhost(i,0);
+
 		//result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusicNormal[i], &m_secondary3DBuffersGhostMusicNormal[i], 1);
 		//if(!result)
 		//	return false;
 		////Super pill music
-		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][1], &m_secondary3DBuffersGhostMusic[i][1], 1);
+		result = LoadWaveFile("Content/Audio/Sounds/pacman_background2.WAV", &m_secondaryBuffersGhostMusic[i][1], &m_secondary3DBuffersGhostMusic[i][1], 1);
 		if(!result)
 			return false;
 		//result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffersGhostMusicBlue[i], &m_secondary3DBuffersGhostMusicBlue[i], 1);
