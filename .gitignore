@@ -31,4 +31,4 @@ External/
 ipch/
 *.opensds
 *.sdf
-Content/HighScores.txt
+HighScores.txt
