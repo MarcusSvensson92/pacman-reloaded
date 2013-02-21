@@ -180,8 +180,10 @@ void GS(point GSIn input[1], inout TriangleStream<PSIn> stream)
 
 	look = gCameraPositionW - input[0].positionW;
 	look = normalize(look);
-
 	float3 right = cross(up, look);
+	right = normalize(right);
+	up = cross(look, right);
+
 	float r = -right.x;
 	float3x3 rodriguez;
 
