@@ -38,7 +38,6 @@ class LightManager
 public:
 	LightManager(void);
 	~LightManager(void);
-	void Init();
 	void AddLight(D3DXVECTOR3* position, LightType type);
 	std::vector<PointLight> SetCandyLights();
 	std::vector<PointLight> SetMovingLights();

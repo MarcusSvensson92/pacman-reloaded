@@ -58,6 +58,9 @@ pacman_song1.wav			= borde spelas upp någonstans vid start.
 
 	m_GUIManager.InitScore(m_DeviceContext, m_Device);
 	m_GUIManager.InitLife(3, m_DeviceContext, m_Device);
+
+	std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 }
 
 void Game::initLevel(void)
@@ -218,10 +221,6 @@ void Game::Draw()
 	std::vector<PointLight> tempLights = m_lights.SetMovingLights();
 	m_shaders.get("Basic")->SetRawData("gMovingLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 
-	// Draw candy lights
-	tempLights = m_lights.SetCandyLights();
-	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
-
 	m_shaders.get("Basic")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
 	m_shaders.get("Billboard")->SetFloat3("gPlayerPos",mPlayer.GetPosition());
 
@@ -327,6 +326,8 @@ void Game::RemoveExpiredFruit()
 			if (f->Expired() || f->IsEaten())
 			{
 				m_lights.RemoveLight(f->GetPositionPtr(), FRUITLIGHT);
+				std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+				m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 				if (f->IsEaten())
 					PlaySound(2, false);
 				m_fruitNode->Item = NULL;
@@ -363,7 +364,12 @@ void Game::NextLevel(void)
 			{
 				c->ReSpawn();
 				if(c->IsSuperCandy())
-					m_lights.RemoveLight(c->GetPositionPtr(), SUPERCANDYLIGHT);
+				{
+					m_lights.AddLight(c->GetPositionPtr(), SUPERCANDYLIGHT);
+					std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+					m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
+				}
+
 			}
 
 			Ghost* g = dynamic_cast<Ghost*>(mObjList[i]);
@@ -399,7 +405,12 @@ void Game::CountEatenCandy()
 			if (x->IsEaten())
 			{
 				if(x->IsSuperCandy())
+				{
 					m_lights.RemoveLight(x->GetPositionPtr(), SUPERCANDYLIGHT);
+					std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+					m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
+				}
+
 				candyEaten++;
 			}
 	}
@@ -483,6 +494,8 @@ Stage/Name/Points
 	m_fruitNode->Item = fruit;
 
 	m_lights.AddLight(fruit->GetPositionPtr(), FRUITLIGHT);
+	std::vector<PointLight> tempLights = m_lights.SetCandyLights();
+	m_shaders.get("Basic")->SetRawData("gCandyLights", &tempLights[0], sizeof(PointLight)*tempLights.size());
 }
 
 void Game::PacManRampage()
