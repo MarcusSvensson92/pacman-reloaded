@@ -115,7 +115,7 @@ void AudioEngine::Shutdown()
 void AudioEngine::UpdateListener(D3DXVECTOR3 position,D3DXVECTOR3 orientation)
 {
 	m_listener->SetPosition(position.x,position.y,position.z,DS3D_IMMEDIATE);
-	m_listener->SetOrientation(-orientation.x,orientation.y,-orientation.z,0,1,0,DS3D_IMMEDIATE);
+	m_listener->SetOrientation(orientation.x,orientation.y,orientation.z,0,1,0,DS3D_IMMEDIATE);
 }
 
 void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track)
