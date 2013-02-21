@@ -192,13 +192,9 @@ void Game::Update(const float dt)
 	CountEatenCandy();
 	PlayerCollisionGhost();
 	NextLevel();
-
-	PlayerDead(); // ska det va två PlayerDead?
-
-	UpdateAudio();
-
 	PlayerDead();
 
+	UpdateAudio();
 	m_GUIManager.UpdateScore(static_cast<std::ostringstream*>( &(std::ostringstream() << mPlayer.GetPoints()) )->str(), m_DeviceContext, m_Device);
 }
 
@@ -383,7 +379,7 @@ void Game::NextLevel(void)
 
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;
-		FreezeGame(40.f);
+		FreezeGame(4.f);
 		PlaySound(0,false);
 
 		for ( int i = mObjList.size() - 1; i >= 0; i--)
