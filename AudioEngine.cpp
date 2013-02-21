@@ -80,24 +80,20 @@ bool AudioEngine::LoadFiles()
 		return false;
 
 	//Load ghost music
-	for(int i = 0; i < 3; i++)
+	for(int i = 0; i < 4; i++)
 	{
 		//Normal music
 		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
 		if(!result)
 			return false;
-		PlaySoundGhost(i,0);
 
-		//result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusicNormal[i], &m_secondary3DBuffersGhostMusicNormal[i], 1);
-		//if(!result)
-		//	return false;
 		////Super pill music
-		result = LoadWaveFile("Content/Audio/Sounds/pacman_background2.WAV", &m_secondaryBuffersGhostMusic[i][1], &m_secondary3DBuffersGhostMusic[i][1], 1);
+		result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffersGhostMusic[i][1], &m_secondary3DBuffersGhostMusic[i][1], 1);
 		if(!result)
 			return false;
-		//result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffersGhostMusicBlue[i], &m_secondary3DBuffersGhostMusicBlue[i], 1);
-		//if(!result)
-		//	return false;
+
+		m_currentTrack[i] = 0;
+		PlaySoundGhost(i,m_currentTrack[i]);
 	}
 }
 
@@ -118,10 +114,18 @@ void AudioEngine::UpdateListener(D3DXVECTOR3 position,D3DXVECTOR3 orientation)
 	m_listener->SetOrientation(orientation.x,orientation.y,orientation.z,0,1,0,DS3D_IMMEDIATE);
 }
 
-void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track)
+void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track[])
 {
-	for(int i = 0; i < 3; i++)
-m_secondary3DBuffersGhostMusic[i][track]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);
+	for(int i = 0; i < 4; i++)
+	{
+		if(m_currentTrack[i] != track[i])
+		{
+			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->Stop();
+			m_currentTrack[i] = track[i];
+			PlaySoundGhost(i,m_currentTrack[i]);
+		}
+		m_secondary3DBuffersGhostMusic[i][track[i]]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);
+	}
 }
 
 bool AudioEngine::InitializeDS(HWND hwnd)

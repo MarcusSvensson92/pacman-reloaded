@@ -42,7 +42,7 @@ public:
 	void Shutdown();
 	void MuteSound();
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
-	void UpdateGhostMusic(D3DXVECTOR3 position[], int track);
+	void UpdateGhostMusic(D3DXVECTOR3 position[], int track[]);
 
 	void PlaySound(int index,bool loop);
 	void PlaySoundGhost(int index, int track);//0 for nomal and 1 for super candy
@@ -84,10 +84,7 @@ private:
 	//Ghosts
 	IDirectSoundBuffer8* m_secondaryBuffersGhostMusic[4][2];
 	IDirectSound3DBuffer8* m_secondary3DBuffersGhostMusic[4][2];
-	/*IDirectSoundBuffer8* m_secondaryBuffersGhostMusicNormal[4];
-	IDirectSoundBuffer8* m_secondaryBuffersGhostMusicBlue[4];
-	IDirectSound3DBuffer8* m_secondary3DBuffersGhostMusicNormal[4];
-	IDirectSound3DBuffer8* m_secondary3DBuffersGhostMusicBlue[4];*/
+	int m_currentTrack[4];
 };
 
 #endif
