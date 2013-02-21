@@ -78,6 +78,25 @@ bool AudioEngine::LoadFiles()
 	result = LoadWaveFile("Content/Audio/Sounds/pacman_getghost.WAV", &m_secondaryBuffers[6], &m_secondary3DBuffers[6], 1);
 	if(!result)
 		return false;
+
+	//Load ghost music
+	for(int i = 0; i < 3; i++)
+	{
+		//Normal music
+		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
+		if(!result)
+			return false;
+		//result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusicNormal[i], &m_secondary3DBuffersGhostMusicNormal[i], 1);
+		//if(!result)
+		//	return false;
+		////Super pill music
+		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][1], &m_secondary3DBuffersGhostMusic[i][1], 1);
+		if(!result)
+			return false;
+		//result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffersGhostMusicBlue[i], &m_secondary3DBuffersGhostMusicBlue[i], 1);
+		//if(!result)
+		//	return false;
+	}
 }
 
 void AudioEngine::Shutdown()
@@ -95,6 +114,12 @@ void AudioEngine::UpdateListener(D3DXVECTOR3 position,D3DXVECTOR3 orientation)
 {
 	m_listener->SetPosition(position.x,position.y,position.z,DS3D_IMMEDIATE);
 	m_listener->SetOrientation(-orientation.x,orientation.y,-orientation.z,0,1,0,DS3D_IMMEDIATE);
+}
+
+void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track)
+{
+	for(int i = 0; i < 3; i++)
+m_secondary3DBuffersGhostMusic[i][track]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);
 }
 
 bool AudioEngine::InitializeDS(HWND hwnd)
@@ -368,6 +393,11 @@ void AudioEngine::ShutdownWaveFile(IDirectSoundBuffer8** secondaryBuffer, IDirec
 void AudioEngine::PlaySound(int index,bool loop)
 {
 	PlayWaveFile(D3DXVECTOR3(230, 0, 140), m_secondaryBuffers[index], m_secondary3DBuffers[index], loop);
+}
+
+void AudioEngine::PlaySoundGhost(int index, int track)
+{
+	PlayWaveFile(D3DXVECTOR3(230, 0, 140),  m_secondaryBuffersGhostMusic[index][track], m_secondary3DBuffersGhostMusic[index][track], true);
 }
 
 void AudioEngine::PlaySoundAtPos(int index, D3DXVECTOR3 position,bool loop)
