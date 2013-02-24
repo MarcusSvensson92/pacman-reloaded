@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "AudioEngine.h"
-std::stringstream ss;
-
 
 AudioEngine::AudioEngine()
 {
