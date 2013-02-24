@@ -221,19 +221,15 @@ void Game::UpdateAudio()
 
 	if (gameType == OLD_SCHOOL)
 	{
-		for ( int i = 0; i < 4; i++)
-		{
-			ghostPositions[i] = D3DXVECTOR3(230, 0, 140);
-		}
 		m_audio.UpdateListener(D3DXVECTOR3(230, 0, 140), D3DXVECTOR3(0, 1, 0));
+		m_audio.UpdateGhostMusic(D3DXVECTOR3(230, 0, 140), track[0]);
 	}
 	else
 	{
 		m_audio.UpdateListener(mPlayer.GetPosition(), mCamera.GetLook());
+		m_audio.UpdateGhostMusic(ghostPositions, track);
 	}
-	m_audio.UpdateGhostMusic(ghostPositions, track);
-	//if (GetAsyncKeyState('m') & 0x8000)
-	//	m_audio.MuteSound();  // <- fungerar inte
+	//Add code for muting sound?
 }
 
 void Game::Draw()
@@ -530,7 +526,6 @@ void Game::PacManRampage()
 
 	if (mPlayer.HasEatenSuperCandy())
 	{
-		PlaySound(5, false);
 		for (std::vector<Obj3D*>::iterator it = mObjList.begin(); it != mObjList.end(); it++)
 		{
 			if (Ghost* ghost = dynamic_cast<Ghost*>((*it)))
@@ -655,7 +650,7 @@ void Game::PlayerCollisionGhost()
 						{
 							// Spöke dör
 							x->Kill();
-							PlaySound(6, false);
+							PlaySound(4, false);
 							//Increase number of eaten ghosts
 							m_ghostsEaten++;
 							//Award the player with (200 * eaten ghosts) points.

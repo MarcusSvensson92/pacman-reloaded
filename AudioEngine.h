@@ -41,8 +41,10 @@ public:
 	void InitListener();
 	void Shutdown();
 	void MuteSound();
-	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);
-	void UpdateGhostMusic(D3DXVECTOR3 position[], int track[]);
+	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);//Updates the position of the listener
+	void UpdateGhostMusic(D3DXVECTOR3 position, int track);//Used in classic mode
+	void UpdateGhostMusic(D3DXVECTOR3 position[], int track[]);//Used in 1st person mode
+	void ChangeGhostMusic(int tracknumber);//Used for changing the track that is played when ghosts are not eatable
 
 	void PlaySound(int index,bool loop);
 	void PlaySoundGhost(int index, int track);//0 for nomal and 1 for super candy
@@ -66,13 +68,14 @@ private:
 	IDirectSound3DListener8* m_listener; //Listener used by pacman to simulate 3D sounds
 
 	//Arrays used for holding the audio buffers
-	IDirectSoundBuffer8* m_secondaryBuffers[8];
-	IDirectSound3DBuffer8* m_secondary3DBuffers[8];
+	IDirectSoundBuffer8* m_secondaryBuffers[5];
+	IDirectSound3DBuffer8* m_secondary3DBuffers[5];
 
 	//Audio buffers used by the ghosts
 	IDirectSoundBuffer8* m_secondaryBuffersGhostMusic[4][2];
 	IDirectSound3DBuffer8* m_secondary3DBuffersGhostMusic[4][2];
 	int m_currentTrack[4];
+	bool m_singleGhostSource;
 };
 
 #endif

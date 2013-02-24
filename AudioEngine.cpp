@@ -20,6 +20,7 @@ AudioEngine::AudioEngine()
 		m_secondaryBuffersGhostMusic[i][1] = 0;
 		m_secondary3DBuffersGhostMusic[i][1] = 0;
 	}
+	m_singleGhostSource = true;
 }
 AudioEngine::AudioEngine(const AudioEngine& other)
 {
@@ -69,23 +70,13 @@ bool AudioEngine::LoadFiles()
 	if(!result)
 		return false;
 
-	//Load ghost normal sound
-	result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffers[4], &m_secondary3DBuffers[4], 1);//Remove this one when I get time
-	if(!result)
-		return false;
-
-	//Load ghost blue sound
-	result = LoadWaveFile("Content/Audio/Sounds/pacman_power1.WAV", &m_secondaryBuffers[5], &m_secondary3DBuffers[5], 1);//Remove this one also
-	if(!result)
-		return false;
-
 	//Load ghost death sound
-	result = LoadWaveFile("Content/Audio/Sounds/pacman_getghost.WAV", &m_secondaryBuffers[6], &m_secondary3DBuffers[6], 1);
+	result = LoadWaveFile("Content/Audio/Sounds/pacman_getghost.WAV", &m_secondaryBuffers[4], &m_secondary3DBuffers[4], 1);
 	if(!result)
 		return false;
 
 	//Load ghost music
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
 	{
 		//Normal music
 		result = LoadWaveFile("Content/Audio/Sounds/pacman_background1.WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
@@ -124,18 +115,51 @@ void AudioEngine::UpdateListener(D3DXVECTOR3 position,D3DXVECTOR3 orientation)
 	m_listener->SetOrientation(orientation.x,orientation.y,orientation.z,0,1,0,DS3D_IMMEDIATE);
 }
 
+void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position,int track)
+{
+	if(m_singleGhostSource == false)
+		m_singleGhostSource = true;
+	if(m_currentTrack[0] != track)//Check if the track should be switched
+	{
+		m_secondaryBuffersGhostMusic[0][m_currentTrack[0]]->Stop();//Stop the current track
+		m_currentTrack[0] = track;//Set new track
+		PlaySoundGhost(0,m_currentTrack[0]);//Play it
+		m_secondary3DBuffersGhostMusic[0][track]->SetPosition(position.x,position.y,position.z, DS3D_IMMEDIATE);
+		for(int i = 1; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
+		{
+			m_secondaryBuffersGhostMusic[i][0]->Stop();
+			m_secondaryBuffersGhostMusic[i][1]->Stop();
+		}
+	}
+}
+
 void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track[])
 {
-	for(int i = 0; i < 4; i++)
+	for(int i = 0; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
 	{
+		if(m_singleGhostSource == true)
+		{
+			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->SetCurrentPosition(m_secondaryBuffersGhostMusic[0][m_currentTrack[i]]->GetCurrentPosition(0,0));
+			m_singleGhostSource = false;
+		}
 		if(m_currentTrack[i] != track[i])//Check if the track should be switched
 		{
 			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->Stop();//Stop the current track
 			m_currentTrack[i] = track[i];//Set new track
+			m_secondaryBuffersGhostMusic[i][m_currentTrack[i]]->SetCurrentPosition(0);
 			PlaySoundGhost(i,m_currentTrack[i]);//Play it
 		}
 		m_secondary3DBuffersGhostMusic[i][track[i]]->SetPosition(position[i].x,position[i].y,position[i].z, DS3D_IMMEDIATE);//Update location of current track being played
 	}
+}
+
+void AudioEngine::ChangeGhostMusic(int tracknumber)
+{
+	for(int i = 1; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
+	{
+		//LoadWaveFile("Content/Audio/Sounds/pacman_background"+tracknumber+".WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
+	}
+
 }
 
 bool AudioEngine::InitializeDS(HWND hwnd)
@@ -237,7 +261,10 @@ void AudioEngine::ShutdownDS()
 
 void AudioEngine::MuteSound()
 {
-	m_primaryBuffer->SetVolume(0);
+	/*if(m_primaryBuffer->GetVolume(DSBVOLUME_MAX))
+		m_primaryBuffer->SetVolume(DSBVOLUME_MIN);
+	else*/
+	m_secondaryBuffersGhostMusic[0][0]->Stop();
 }
 
 bool AudioEngine::LoadWaveFile(char* filename, IDirectSoundBuffer8** secondaryBuffer, IDirectSound3DBuffer8** secondary3DBuffer, int channels)
