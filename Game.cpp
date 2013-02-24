@@ -372,6 +372,9 @@ void Game::NextLevel(void)
 	if (m_eatenCandy == m_totalCandy)
 	{
 		ChangeLevel(m_level + 1);
+		
+		if(m_level == 5)//Change the music played by the ghosts
+			m_audio.ChangeGhostMusic();
 
 		m_eatenCandy = 0;
 		m_ghostsEaten = 0;

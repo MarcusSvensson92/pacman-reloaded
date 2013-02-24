@@ -44,7 +44,7 @@ public:
 	void UpdateListener(D3DXVECTOR3 position, D3DXVECTOR3 orientation);//Updates the position of the listener
 	void UpdateGhostMusic(D3DXVECTOR3 position, int track);//Used in classic mode
 	void UpdateGhostMusic(D3DXVECTOR3 position[], int track[]);//Used in 1st person mode
-	void ChangeGhostMusic(int tracknumber);//Used for changing the track that is played when ghosts are not eatable
+	void ChangeGhostMusic();//Used for changing the track that is played when ghosts are not eatable
 
 	void PlaySound(int index,bool loop);
 	void PlaySoundGhost(int index, int track);//0 for nomal and 1 for super candy

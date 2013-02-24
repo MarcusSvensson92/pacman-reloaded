@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "AudioEngine.h"
-
+std::stringstream ss;
 
 
 AudioEngine::AudioEngine()
@@ -153,11 +153,11 @@ void AudioEngine::UpdateGhostMusic(D3DXVECTOR3 position[],int track[])
 	}
 }
 
-void AudioEngine::ChangeGhostMusic(int tracknumber)
+void AudioEngine::ChangeGhostMusic()
 {
 	for(int i = 1; i < sizeof(m_secondaryBuffersGhostMusic)/sizeof(m_secondaryBuffersGhostMusic[0]); i++)
 	{
-		//LoadWaveFile("Content/Audio/Sounds/pacman_background"+tracknumber+".WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
+		LoadWaveFile("Content/Audio/Sounds/pacman_background2.WAV", &m_secondaryBuffersGhostMusic[i][0], &m_secondary3DBuffersGhostMusic[i][0], 1);
 	}
 
 }
