@@ -42,6 +42,7 @@ public:
 
 	void UpdateMatrix();
 	void Roll( float angle );
+
 private:
 
 	D3DXVECTOR3 mPosition;
